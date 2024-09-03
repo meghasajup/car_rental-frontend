@@ -1,6 +1,5 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import footerImage from '../assets/hone/footerIcon.png';
 
 export const Footer = () => {
   return (
@@ -11,30 +10,32 @@ export const Footer = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: 'easeOut' }}
         >
-          <h6 className="footer-title">Services</h6>
-          <a className="link link-hover">Branding</a>
-          <a className="link link-hover">Marketing</a>
-          <a className="link link-hover">Advertisement</a>
+          <h6 className="footer-title">Account</h6>
+          <a className="link link-hover">Profile</a>
+          <a className="link link-hover">Settings</a>
+          <a className="link link-hover">Billing</a>
+          <a className="link link-hover">Notifications</a>
         </motion.nav>
         <motion.nav
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: 'easeOut', delay: 0.2 }}
         >
-          <h6 className="footer-title">Company</h6>
-          <a className="link link-hover">About us</a>
+          <h6 className="footer-title">About</h6>
+          <a className="link link-hover">Services</a>
+          <a className="link link-hover">Pricing</a>
           <a className="link link-hover">Contact</a>
-          <a className="link link-hover">Jobs</a>
+          <a className="link link-hover">Careers</a>
         </motion.nav>
         <motion.nav
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: 'easeOut', delay: 0.4 }}
         >
-          <h6 className="footer-title">Legal</h6>
-          <a className="link link-hover">Terms of use</a>
-          <a className="link link-hover">Privacy policy</a>
-          <a className="link link-hover">Cookie policy</a>
+          <h6 className="footer-title">Company</h6>
+          <a className="link link-hover">Community</a>
+          <a className="link link-hover">Help center</a>
+          <a className="link link-hover">Support</a>
         </motion.nav>
       </footer>
       <footer className="footer bg-base-200 text-base-content border-base-300 border-t px-10 py-4">
@@ -44,18 +45,12 @@ export const Footer = () => {
           transition={{ duration: 0.6, ease: 'easeOut' }}
           className="grid grid-cols-1 md:grid-cols-2 items-center gap-4"
         >
-          <motion.img
-            src={footerImage}
-            alt="Footer Image"
-            initial={{ scale: 0.9 }}
-            animate={{ scale: 1 }}
-            transition={{ duration: 0.6, ease: 'easeOut' }}
-            className="w-12 h-12"
-          />
+
+          <h1 className="footer-title text-3xl">Carista</h1>
+          <br />
           <p>
-            Carista Luxury Car Rental
-            <br />
-            Providing reliable tech since 1999
+            Providing reliable tech since 1999 <br></br>
+            It's a never ending battle of making your cars better and also trying to be better yourself.
           </p>
         </motion.aside>
         <motion.nav

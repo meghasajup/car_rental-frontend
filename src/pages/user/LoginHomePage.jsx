@@ -5,17 +5,16 @@ import backgroundImage from '../../assets/hone/footerIcon.png';
 import drivingCarImage from '../../assets/hone/homepic2.jpg';
 import image1 from '../../assets/hone/homepic3.jpg';
 import image2 from '../../assets/hone/homepic4.png';
-import { Location } from '../../components/Location.jsx';
-import { HowItWorks } from './HowItworkPage.jsx';
-import Testimonials from './TestimonialsPage.jsx';
+import { Location } from '../../components/Location';
+import { HowItWorks } from './HowItworkPage';
+import { LocationSection } from './Locations';
+import Testimonials from './TestimonialsPage';
 
 export const LoginHomePage = () => {
   return (
     <main className="relative min-h-screen overflow-hidden w-full">
       {/* Hero Section */}
-      <section
-        className="relative z-10 flex flex-col items-center justify-center min-h-screen space-y-8 text-center px-4 md:px-8 lg:px-16 xl:px-24 w-full">
-
+      <section className="relative z-10 flex flex-col items-center justify-center min-h-screen space-y-8 text-center px-4 md:px-8 lg:px-16 xl:px-24 w-full">
         {/* Background Image */}
         <div className="absolute inset-0 z-0">
           <img src={backgroundImage} alt="Background" className="w-full h-full object-cover opacity-30" />
@@ -46,25 +45,15 @@ export const LoginHomePage = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: "easeOut", delay: 1 }}
         >
-          <img src={carImage} alt="Luxury Car" className="w-full object-contain" />
+          <img src={carImage} alt="Luxury sports car in front of a scenic background" className="w-full object-contain" />
         </motion.div>
 
         {/* Location Input Section */}
         <Location />
 
         {/* How It Works Section */}
-        <HowItWorks /> {/* Include the HowItWorks component here */}
-
-        {/* Book Now Button */}
-        {/* <motion.button
-          className="mt-8 mb-16 px-6 py-3 bg-gradient-to-r from-[#8A3FFC] via-[#5821CE] to-[#3B1AAB] rounded-full text-lg md:text-xl xl:text-2xl transition-transform shadow-lg"
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-        >
-          Book Now
-        </motion.button> */}
+        <HowItWorks />
       </section>
-
 
       {/* Car Driving Image Section */}
       <section className="relative z-10 w-full h-screen mt-16">
@@ -172,8 +161,43 @@ export const LoginHomePage = () => {
         </div>
       </section>
 
-      {/* Testimonials here */}
-      <Testimonials/>
+      {/* Add Location Section at the end */}
+      <LocationSection />
+
+      {/* Testimonials */}
+      <Testimonials />
+
+      {/* New Section: Book Your Dream Car */}
+      <section className="flex items-center justify-between px-8 py-20 text-grey">
+        <div>
+          <motion.h2
+            className="text-5xl font-bold mb-4"
+            initial={{ opacity: 0, x: -50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+          >
+            Book your dream car?
+          </motion.h2>
+          <motion.p
+            className="text-lg"
+            initial={{ opacity: 0, x: -50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut", delay: 0.3 }}
+          >
+            It’s a never-ending battle of making your cars better and also trying to be better yourself.
+          </motion.p>
+        </div>
+        <motion.button
+          className="px-8 py-4 text-lg font-semibold bg-gradient-to-r from-[#8A3FFC] via-[#5821CE] to-[#3B1AAB] text-black rounded-lg shadow-lg hover:bg-cyan-500 transition duration-300 ease-in-out"
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.8, ease: "easeOut", delay: 0.5 }}
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+        >
+          Book Your Car
+        </motion.button>
+      </section>
+
     </main>
   );
 };

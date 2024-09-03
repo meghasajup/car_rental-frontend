@@ -1,102 +1,107 @@
-import React from 'react';
+import { LogOut } from "lucide-react";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { userLogout } from "../../services/userApi";
+import toast from "react-hot-toast";
+import { axiosInstance } from "../../config/axiosInstance";
+import { motion } from "framer-motion";
+import backgroundImage from "../../assets/hone/footerIcon.png";
 
 export const ProfilePage = () => {
-  // Dummy data for illustration
-  const user = {
-    profileImage: 'https://example.com/profile.jpg',
-    name: 'John Doe',
-    memberSince: 'January 2021',
-    email: 'john.doe@example.com',
-    phone: '123-456-7890',
-    address: '123 Main St, Anytown, USA',
-    paymentMethods: [
-      { type: 'Visa', last4: '1234' },
-      { type: 'MasterCard', last4: '5678' }
-    ],
-    recentBookings: [
-      { car: 'Toyota Camry', date: '2024-08-30', status: 'Completed' },
-      { car: 'Honda Accord', date: '2024-09-01', status: 'Pending' }
-    ]
+  const navigate = useNavigate();
+  const [user, setUser] = useState({});
+
+  const handleLogOut = async () => {
+    const response = await userLogout();
+    if (response?.success) {
+      navigate("/");
+    }
   };
 
-  const handleClose = () => {
-    // Implement close functionality here
-    console.log('Close button clicked');
+  const fetchUserProfile = async () => {
+    try {
+      const response = await axiosInstance({
+        url: "/user/profile",
+        method: "GET",
+        withCredentials: true,
+      });
+      setUser(response?.data?.data);
+      console.log(response, "====response");
+    } catch (error) {
+      console.log(error);
+      toast.error("Error fetching user data");
+    }
   };
+
+  useEffect(() => {
+    fetchUserProfile();
+  }, []);
 
   return (
-    <div className="flex flex-col md:flex-row justify-center items-start md:items-center min-h-screen bg-gray-100 p-6">
-      <div className="relative bg-white rounded-lg shadow-lg w-full max-w-4xl p-6">
-        {/* Close Button */}
-        <button
-          onClick={handleClose}
-          className="absolute top-4 right-4 text-gray-600 hover:text-gray-900"
-          aria-label="Close"
-        >
-          <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
-          </svg>
-        </button>
-
-        {/* Profile Details */}
-        <div className="flex items-center justify-center md:justify-start mb-6">
-          <img
-            src={user.profileImage}
-            alt="Profile"
-            className="w-32 h-32 rounded-full border-4 border-gray-300"
-          />
-          <div className="ml-6">
-            <h2 className="text-3xl font-semibold text-gray-800">{user.name}</h2>
-            <p className="text-gray-500">Member Since: {user.memberSince}</p>
-          </div>
-        </div>
-        
-        {/* Contact Information */}
-        <div className="mb-6">
-          <h3 className="text-xl font-semibold text-gray-700 mb-2">Contact Information</h3>
-          <p className="text-gray-600"><strong>Email:</strong> {user.email}</p>
-          <p className="text-gray-600"><strong>Phone:</strong> {user.phone}</p>
-          <p className="text-gray-600"><strong>Address:</strong> {user.address}</p>
-        </div>
-
-        {/* Payment Methods */}
-        <div className="mb-6">
-          <h3 className="text-xl font-semibold text-gray-700 mb-2">Payment Methods</h3>
-          <ul>
-            {user.paymentMethods.map((method, index) => (
-              <li key={index} className="mb-2 text-gray-600">
-                <span className="font-semibold">{method.type}:</span> {method.last4 ? `**** **** **** ${method.last4}` : method.email}
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        {/* Recent Bookings */}
-        <div className="mb-6">
-          <h3 className="text-xl font-semibold text-gray-700 mb-2">Recent Bookings</h3>
-          <ul>
-            {user.recentBookings.map((booking, index) => (
-              <li key={index} className="mb-2 border-b pb-2">
-                <p className="text-gray-600"><strong>Car:</strong> {booking.car}</p>
-                <p className="text-gray-600"><strong>Date:</strong> {booking.date}</p>
-                <p className={`text-sm ${booking.status === 'Completed' ? 'text-green-600' : 'text-yellow-600'}`}>
-                  <strong>Status:</strong> {booking.status}
-                </p>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        {/* Action Buttons */}
-        <div className="flex justify-center space-x-4">
-          <button className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
-            Edit Profile
-          </button>
-          <button className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50">
-            Logout
-          </button>
-        </div>
+    <div className="relative min-h-screen overflow-hidden w-full flex flex-col items-center justify-center px-20 py-10">
+      {/* Background Image */}
+      <div className="absolute inset-0 z-0">
+        <img src={backgroundImage} alt="Background" className="w-full h-full object-cover opacity-30" />
       </div>
+
+      {/* Welcome Message */}
+      <motion.h1
+        className="text-4xl font-bold z-10"
+        initial={{ opacity: 0, y: -50 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+      >
+        Welcome, {user?.name}
+      </motion.h1>
+
+      {/* Profile Image */}
+      <motion.div
+        className="avatar z-10 mt-6"
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.8, ease: "easeOut", delay: 0.3 }}
+      >
+        <div className="w-45 rounded-xl">
+          <img src={user?.profileImage} alt="Profile" />
+        </div>
+      </motion.div>
+
+      {/* User Information */}
+      <motion.div
+        className="text-center z-10 mt-6"
+        initial={{ opacity: 0, y: 50 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, ease: "easeOut", delay: 0.5 }}
+      >
+        <p className="text-lg"> {user?.name}</p>
+        <p className="text-lg"> {user?.email}</p>
+        <p className="text-lg"> {user?.phone}</p>
+        <p className="text-base leading-relaxed mt-4">
+          Here’s your profile summary. Make sure your details are up to date for a seamless experience.
+        </p>
+      </motion.div>
+
+      {/* Edit Profile Button */}
+      <motion.button
+        className="px-6 py-2 text-md font-semibold bg-gradient-to-r from-[#FFB3B3] via-[#FF9999] to-[#FF8080] text-white rounded-lg shadow-lg hover:bg-red-300 transition duration-300 ease-in-out mt-6 z-10"
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.8, ease: "easeOut", delay: 0.6 }}
+      >
+        Edit Profile
+      </motion.button>
+
+      {/* Log-out Button */}
+      <motion.button
+        onClick={handleLogOut}
+        className="px-8 py-4 text-lg font-semibold bg-gradient-to-r from-[#8A3FFC] via-[#5821CE] to-[#3B1AAB] text-black rounded-lg shadow-lg hover:bg-cyan-500 transition duration-300 ease-in-out mt-6 z-10 flex items-center"
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.8, ease: "easeOut", delay: 0.7 }}
+      >
+        <span className="mr-2">Log-out</span>
+        <LogOut />
+      </motion.button>
     </div>
   );
 };

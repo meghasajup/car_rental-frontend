@@ -1,5 +1,5 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useRef } from 'react';
+import { motion, useInView } from 'framer-motion';
 import carImage from '../../assets/hone/carLandPage.png';
 import backgroundImage from '../../assets/hone/footerIcon.png';
 import drivingCarImage from '../../assets/hone/homepic2.jpg';
@@ -7,14 +7,16 @@ import image1 from '../../assets/hone/homepic3.jpg';
 import image2 from '../../assets/hone/homepic4.png';
 import { Location } from '../../components/Location.jsx';
 import { HowItWorks } from './HowItworkPage.jsx';
+import { LocationSection } from './Locations.jsx';
 
 export const HomePage = () => {
+  const sectionRef = useRef(null);
+  const isInView = useInView(sectionRef, { once: true });
+
   return (
     <main className="relative min-h-screen overflow-hidden w-full">
       {/* Hero Section */}
-      <section
-        className="relative z-10 flex flex-col items-center justify-center min-h-screen space-y-8 text-center px-4 md:px-8 lg:px-16 xl:px-24 w-full">
-
+      <section className="relative z-10 flex flex-col items-center justify-center min-h-screen space-y-8 text-center px-4 md:px-8 lg:px-16 xl:px-24 w-full">
         {/* Background Image */}
         <div className="absolute inset-0 z-0">
           <img src={backgroundImage} alt="Background" className="w-full h-full object-cover opacity-30" />
@@ -52,18 +54,8 @@ export const HomePage = () => {
         <Location />
 
         {/* How It Works Section */}
-        <HowItWorks /> {/* Include the HowItWorks component here */}
-
-        {/* Book Now Button */}
-        {/* <motion.button
-          className="mt-8 mb-16 px-6 py-3 bg-gradient-to-r from-[#8A3FFC] via-[#5821CE] to-[#3B1AAB] rounded-full text-lg md:text-xl xl:text-2xl transition-transform shadow-lg"
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-        >
-          Book Now
-        </motion.button> */}
+        <HowItWorks />
       </section>
-
 
       {/* Car Driving Image Section */}
       <section className="relative z-10 w-full h-screen mt-16">
@@ -123,12 +115,12 @@ export const HomePage = () => {
       </section>
 
       {/* Section with Two Images and Text */}
-      <section className="relative z-10 w-full h-screen mt-16 flex items-center justify-center px-8 lg:px-16 space-x-8">
+      <section ref={sectionRef} className="relative z-10 w-full h-screen mt-16 flex items-center justify-center px-8 lg:px-16 space-x-8">
         <div className="flex-1 space-y-4 text-grey">
           <motion.h2
             className="text-3xl md:text-4xl lg:text-6xl font-bold uppercase leading-tight"
             initial={{ opacity: 0, y: -50 }}
-            animate={{ opacity: 1, y: 0 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8, ease: "easeOut" }}
           >
             Enjoy your <br></br> holidays
@@ -136,7 +128,7 @@ export const HomePage = () => {
           <motion.h2
             className="text-2xl md:text-3xl lg:text-5xl font-bold uppercase leading-tight bg-clip-text text-transparent bg-gradient-to-r from-[#8A3FFC] via-[#5821CE] to-[#3B1AAB]"
             initial={{ opacity: 0, y: -50 }}
-            animate={{ opacity: 1, y: 0 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
           >
             Get lowest rental <br></br> car
@@ -144,7 +136,7 @@ export const HomePage = () => {
           <motion.p
             className="text-lg md:text-xl lg:text-1xl leading-relaxed"
             initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8, ease: "easeOut", delay: 0.5 }}
           >
             Self-driving cars are the natural extension of active safety and obviously something we should do. It’s a never-ending battle of making your cars better and also trying to be better yourself.
@@ -157,7 +149,7 @@ export const HomePage = () => {
             alt="Car driving on road"
             className="w-full h-full object-cover rounded-md"
             initial={{ opacity: 0, y: 100 }}
-            animate={{ opacity: 1, y: 0 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8, ease: "easeOut", delay: 0.5 }}
           />
           <motion.img
@@ -165,11 +157,49 @@ export const HomePage = () => {
             alt="Hand holding smartphone over road"
             className="w-full h-full object-cover rounded-md"
             initial={{ opacity: 0, y: 100 }}
-            animate={{ opacity: 1, y: 0 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8, ease: "easeOut", delay: 0.7 }}
           />
         </div>
       </section>
+
+
+      {/* Add Location Section at the end */}
+      <LocationSection />
+
+
+
+      {/* Book Your Dream Car */}
+      <section className="flex items-center justify-between px-8 py-20 text-grey">
+        <div>
+          <motion.h2
+            className="text-5xl font-bold mb-4"
+            initial={{ opacity: 0, x: -50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+          >
+            Book your dream car?
+          </motion.h2>
+          <motion.p
+            className="text-lg"
+            initial={{ opacity: 0, x: -50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut", delay: 0.3 }}
+          >
+            It’s a never-ending battle of making your cars better and also trying to be better yourself.
+          </motion.p>
+        </div>
+        <motion.button
+          className="px-8 py-4 text-lg font-semibold bg-gradient-to-r from-[#8A3FFC] via-[#5821CE] to-[#3B1AAB] text-black rounded-lg shadow-lg hover:bg-cyan-500 transition duration-300 ease-in-out"
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.8, ease: "easeOut", delay: 0.5 }}
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+        >
+          Book Your Car
+        </motion.button>
+      </section>
+
     </main>
   );
 };

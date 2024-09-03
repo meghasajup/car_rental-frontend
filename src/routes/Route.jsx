@@ -6,6 +6,12 @@ import { LoginPage } from "../pages/user/LoginPage";
 import { RegisterPage } from "../pages/user/RegisterPage";
 import { ErrorPage } from "../pages/user/ErrorPage";
 import { ContactPage } from "../pages/user/ContactPage";
+import { UserLayout } from "../layout/UserLayout";
+import { LoginHomePage } from "../pages/user/LoginHomePage";
+import { CarPage } from "../pages/user/CarPage";
+import { CarDetails } from "../pages/user/CarDetails";
+import { UserAuth } from "./protectedRoutes/UserAuth";
+import { ProfilePage } from "../pages/user/ProfilePage"
 
 export const router = createBrowserRouter([
     {
@@ -14,7 +20,7 @@ export const router = createBrowserRouter([
         errorElement: <ErrorPage />,
         children: [
             {
-                path: "/",
+                path: "",
                 element: <HomePage />
             },
             {
@@ -35,4 +41,43 @@ export const router = createBrowserRouter([
             }
         ],
     },
+    {
+        path: "user",
+        element: (
+            <UserAuth>
+                <UserLayout />
+            </UserAuth>
+        ),
+        children: [
+            {
+                path: "home",
+                element: <LoginHomePage />
+            },
+            {
+                path: "profile",
+                element: <ProfilePage />
+            },
+            {
+                path: "about",
+                element: <AboutPage />
+            },
+            {
+                path: "car",
+                element: <CarPage />
+            },
+            {
+                path: "my-cars",  //my-learnings
+                element: <h1>Cars Dashboard</h1>
+            },
+            {
+                path: "car-details/:id",
+                element: <CarDetails />
+            },
+
+            {
+                path: "contact",
+                element: <ContactPage />
+            },
+        ]
+    }
 ])

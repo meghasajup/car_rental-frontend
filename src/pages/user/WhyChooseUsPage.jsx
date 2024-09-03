@@ -6,7 +6,7 @@ import placeholderImage from '../../assets/hone/whychooseus.jpg';
 export const WhyChooseUs = () => {
   return (
     <motion.section
-      className="flex flex-col md:flex-row items-center justify-between px-8 py-16 bg-white transition-colors space-y-12 md:space-y-0 md:space-x-12"
+      className="flex flex-col md:flex-row items-center justify-between px-8 py-16 transition-colors space-y-12 md:space-y-0 md:space-x-12"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 1 }}
@@ -30,7 +30,7 @@ export const WhyChooseUs = () => {
         transition={{ duration: 0.8, ease: 'easeOut' }}
       >
         <motion.h2
-          className="text-4xl font-bold text-gray-800"
+          className="text-4xl font-bold text-gray"
           initial={{ y: -20 }}
           animate={{ y: 0 }}
           transition={{ duration: 0.5 }}
@@ -39,7 +39,7 @@ export const WhyChooseUs = () => {
         </motion.h2>
 
         <motion.p
-          className="text-lg text-gray-600"
+          className="text-lg text-gray"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.2 }}
@@ -55,10 +55,10 @@ export const WhyChooseUs = () => {
             transition={{ duration: 0.5, delay: 0.3 }}
             whileHover={{ scale: 1.05, x: 10 }}
           >
-            <FaHeadset className="text-gray-800 text-2xl" />
+            <FaHeadset className="text-gray text-2xl" />
             <div>
-              <h3 className="text-lg font-semibold text-gray-800">Customer Support</h3>
-              <p className="text-gray-600">24/7 customer support for all your needs.</p>
+              <h3 className="text-lg font-semibold text-gray">Customer Support</h3>
+              <p className="text-gray">24/7 customer support for all your needs.</p>
             </div>
           </motion.div>
 
@@ -69,10 +69,10 @@ export const WhyChooseUs = () => {
             transition={{ duration: 0.5, delay: 0.4 }}
             whileHover={{ scale: 1.05, x: 10 }}
           >
-            <FaTag className="text-gray-800 text-2xl" />
+            <FaTag className="text-gray text-2xl" />
             <div>
-              <h3 className="text-lg font-semibold text-gray-800">Best Price Guaranteed</h3>
-              <p className="text-gray-600">We ensure the best pricing for all our rentals.</p>
+              <h3 className="text-lg font-semibold text-gray">Best Price Guaranteed</h3>
+              <p className="text-gray">We ensure the best pricing for all our rentals.</p>
             </div>
           </motion.div>
 
@@ -83,9 +83,9 @@ export const WhyChooseUs = () => {
             transition={{ duration: 0.5, delay: 0.5 }}
             whileHover={{ scale: 1.05, x: 10 }}
           >
-            <FaMapMarkerAlt className="text-gray-800 text-2xl" />
+            <FaMapMarkerAlt className="text-gray text-2xl" />
             <div>
-              <h3 className="text-lg font-semibold text-gray-800">Many Locations</h3>
+              <h3 className="text-lg font-semibold text-gray">Many Locations</h3>
               <p className="text-gray-600">Available in multiple locations worldwide.</p>
             </div>
           </motion.div>
