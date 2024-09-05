@@ -16,7 +16,6 @@ export const UserAuth = ({ children }) => {
                 withCredentials: true
             });
             setUser(true);
-            console.log(response, '====>response');
             
         } catch (error) {
             navigate('/login')

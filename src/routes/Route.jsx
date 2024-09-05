@@ -12,6 +12,8 @@ import { CarPage } from "../pages/user/CarPage";
 import { CarDetails } from "../pages/user/CarDetails";
 import { UserAuth } from "./protectedRoutes/UserAuth";
 import { ProfilePage } from "../pages/user/ProfilePage"
+import { EditPage } from "../pages/user/EditPage";
+import { AdminLogin } from "../pages/admin/AdminLogin";
 
 export const router = createBrowserRouter([
     {
@@ -58,6 +60,10 @@ export const router = createBrowserRouter([
                 element: <ProfilePage />
             },
             {
+                path: "edit-profile",
+                element: <EditPage /> //not completed
+            },
+            {
                 path: "about",
                 element: <AboutPage />
             },
@@ -79,5 +85,9 @@ export const router = createBrowserRouter([
                 element: <ContactPage />
             },
         ]
+    },
+    {
+        path: "admin-login",
+        element: <AdminLogin />,
     }
 ])

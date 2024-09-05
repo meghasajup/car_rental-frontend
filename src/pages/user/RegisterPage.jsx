@@ -1,16 +1,38 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import backgroundImage from '../../assets/hone/footerIcon.png';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+import { userRegister } from '../../services/userApi';
+import toast from 'react-hot-toast';
 
 export const RegisterPage = () => {
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+
+  const navigate = useNavigate();
+
+  const onSubmit = async (data) => {
+    try {
+      const response = await userRegister(data)
+      toast.success('Registration Success');
+      navigate('/login');
+    } catch (error) {
+      toast.error('Registration Failed');
+      console.log(error);
+    }
+  };
+
   return (
     <div className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden">
 
       {/* Background Image */}
       <img src={backgroundImage} alt="Background" className="absolute inset-0 w-full h-full object-cover opacity-30" />
 
-      {/* Main Content with spacing for header and footer */}
       <motion.div
         className="relative z-10 bg-white bg-opacity-20 p-12 rounded-xl shadow-xl max-w-lg w-full mt-8 mb-8"
         initial={{ opacity: 0, scale: 0.9 }}
@@ -36,14 +58,15 @@ export const RegisterPage = () => {
           </motion.p>
         </div>
 
-        <form className="space-y-4"> {/* Reduced vertical spacing between fields */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4"> {/* Reduced horizontal spacing between Name and Mobile */}
+        <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="form-control">
               <label className="label">
                 <span className="label-text text-gray font-semibold">Full Name</span>
               </label>
               <input
                 type="text"
+                {...register("name")}
                 placeholder="Name"
                 className="input input-bordered rounded-lg p-3 text-black focus:outline-none focus:ring-2 focus:ring-cyan-500 transition-transform"
                 required
@@ -55,6 +78,7 @@ export const RegisterPage = () => {
               </label>
               <input
                 type="tel"
+                {...register("phone")}
                 placeholder="Mobile"
                 className="input input-bordered rounded-lg p-3 text-black focus:outline-none focus:ring-2 focus:ring-cyan-500 transition-transform"
                 required
@@ -68,6 +92,7 @@ export const RegisterPage = () => {
             </label>
             <input
               type="email"
+              {...register("email")}
               placeholder="Email"
               className="input input-bordered rounded-lg p-3 text-black focus:outline-none focus:ring-2 focus:ring-cyan-500 transition-transform"
               required
@@ -80,8 +105,9 @@ export const RegisterPage = () => {
             </label>
             <input
               type="password"
+              {...register("password")}
               placeholder="Password"
-              className="input input-bordered rounded-lg  p-3 text-black focus:outline-none focus:ring-2 focus:ring-cyan-500 transition-transform"
+              className="input input-bordered rounded-lg p-3 text-black focus:outline-none focus:ring-2 focus:ring-cyan-500 transition-transform"
               required
             />
           </div>
@@ -92,8 +118,9 @@ export const RegisterPage = () => {
             </label>
             <input
               type="password"
+              {...register("confirmPassword")}
               placeholder="Confirm Password"
-              className="input input-bordered rounded-lg  p-3 text-black focus:outline-none focus:ring-2 focus:ring-cyan-500 transition-transform"
+              className="input input-bordered rounded-lg p-3 text-black focus:outline-none focus:ring-2 focus:ring-cyan-500 transition-transform"
               required
             />
           </div>
@@ -104,22 +131,17 @@ export const RegisterPage = () => {
             </label>
             <input
               type="file"
-              className="input input-bordered rounded-lg  p-3 text-black focus:outline-none focus:ring-2 focus:ring-cyan-500 transition-transform"
+              {...register("profileImage")}
+              className="input input-bordered rounded-lg p-3 text-black focus:outline-none focus:ring-2 focus:ring-cyan-500 transition-transform"
+
               required
             />
           </div>
 
-          <div>
-            <label className="label">
-              <Link to="/login" className="label-text-alt link link-hover text-cyan-300">
-                Already have an account? Login
-              </Link>
-            </label>
-          </div>
-
           <div className="form-control">
             <motion.button
-              className="btn text-lg px-6 py-3 bg-gradient-to-r from-[#8A3FFC] via-[#5821CE] to-[#3B1AAB] rounded-full shadow-lg text-white transition-transform"
+              className="btn text-lg px-6 py-3 bg-gradient-to-r from-[#8A3FFC] via-[#5821CE] to-[#3B1AAB] rounded-full shadow-lg text-white transition-transform w-full"
+              type='submit'
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.95 }}
             >
@@ -127,6 +149,12 @@ export const RegisterPage = () => {
             </motion.button>
           </div>
         </form>
+
+        <div className="mt-4 text-center">
+          <Link to="/login" className="label-text-alt link link-hover text-cyan-300">
+            Already have an account? Login
+          </Link>
+        </div>
       </motion.div>
     </div>
   );

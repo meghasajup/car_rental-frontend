@@ -1,17 +1,30 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 
 export const Location = () => {
+  const [location, setLocation] = useState('');
+  const [showDropdown, setShowDropdown] = useState(false);
+
+  const locations = [
+    'Kochi', 'Kollam', 'Kottayam', 'Calicut',
+    'Trivandrum', 'Thrissur', 'Kannur', 'Alappuzha'
+  ];
+
+  const handleLocationSelect = (loc) => {
+    setLocation(loc);
+    setShowDropdown(false); // Close dropdown on select
+  };
+
   return (
-    <motion.div 
+    <motion.div
       className="relative z-20 mt-8 flex flex-col items-center w-full max-w-4xl mx-auto bg-white rounded-full shadow-md p-4 space-y-4 md:flex-row md:space-y-0 md:space-x-4 md:p-6 lg:px-8"
       initial={{ opacity: 0, y: 50 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.8, ease: "easeOut" }}
     >
       {/* Location Input */}
-      <motion.div 
-        className="flex items-center w-full md:w-auto space-x-2"
+      <motion.div
+        className="relative flex items-center w-full md:w-auto space-x-2"
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
@@ -24,11 +37,32 @@ export const Location = () => {
           type="text"
           placeholder="Search your location"
           className="w-full p-2 bg-transparent outline-none text-gray-600 placeholder-gray-400"
+          value={location}
+          onClick={() => setShowDropdown(!showDropdown)}
+          readOnly
         />
+        {showDropdown && (
+          <motion.ul
+            className="absolute top-full mt-2 w-full bg-white rounded-lg shadow-lg p-2 z-30 max-h-60 overflow-y-auto"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, ease: 'easeOut' }}
+          >
+            {locations.map((loc, index) => (
+              <li
+                key={index}
+                className="p-2 hover:bg-gray-200 cursor-pointer rounded-md text-gray-600"
+                onClick={() => handleLocationSelect(loc)}
+              >
+                {loc}
+              </li>
+            ))}
+          </motion.ul>
+        )}
       </motion.div>
 
       {/* Pickup Date-Time Input */}
-      <motion.div 
+      <motion.div
         className="flex items-center space-x-2 w-full md:w-auto"
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
@@ -46,7 +80,7 @@ export const Location = () => {
       </motion.div>
 
       {/* Return Date-Time Input */}
-      <motion.div 
+      <motion.div
         className="flex items-center space-x-2 w-full md:w-auto"
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}

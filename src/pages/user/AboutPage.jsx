@@ -60,7 +60,7 @@ export const AboutPage = () => {
           Our Mission <FaMapMarkerAlt className="ml-2 text-[#8A3FFC]" />
         </motion.h3>
         <motion.p
-          className="text-lg text-gray-700 leading-relaxed max-w-3xl mx-auto"
+          className="text-lg text-gray-500 leading-relaxed max-w-3xl mx-auto"
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: "easeOut", delay: 0.5 }}

@@ -4,10 +4,10 @@ import backgroundImage from '../../assets/hone/footerIcon.png';
 import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from "react-hook-form";
 import toast from 'react-hot-toast';
-import { userLogin } from '../../services/userApi';
+import { adminLogin } from '../../services/adminApi';
 
 
-export const LoginPage = () => {
+export const AdminLogin = () => {
 
   const {
     register,
@@ -19,14 +19,16 @@ export const LoginPage = () => {
 
   const onSubmit = async (data) => {
     try {
-      const response = await userLogin(data)
-      toast.success('Login Success');
-      navigate('/user/home');
+      const response = await adminLogin(data)
+      toast.success('Admin Login Success');
+      navigate('/admin');
     } catch (error) {
-      toast.error('Login Failed');
+      toast.error('Admin Login Failed');
       console.log(error);
     }
   };
+
+
 
   return (
     <div className="relative min-h-screen flex items-center justify-center overflow-hidden">
@@ -84,6 +86,11 @@ export const LoginPage = () => {
               className="input input-bordered rounded-lg text-grey focus:outline-none focus:ring-2 focus:ring-cyan-500 transition-transform"
               required
             />
+            <label className="label">
+              <Link to="/register" className="label-text-alt link link-hover text-cyan-300">
+                New User? Sign Up
+              </Link>
+            </label>
           </div>
           <div className="form-control">
             <motion.button
@@ -96,15 +103,6 @@ export const LoginPage = () => {
             </motion.button>
           </div>
         </form>
-
-        <div>
-          <label className="label">
-            <Link to="/register" className="label-text-alt link link-hover text-cyan-300">
-              New User? Sign Up
-            </Link>
-          </label>
-        </div>
-
       </motion.div>
     </div>
   );
