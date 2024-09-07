@@ -85,17 +85,6 @@ export const ProfilePage = () => {
         </p>
       </motion.div>
 
-      {/* Edit Profile Button */}
-      <motion.button
-        onClick={handleEditProfile} // Navigate to the edit page when clicked
-        className="px-6 py-2 text-md font-semibold bg-gradient-to-r from-[#FFB3B3] via-[#FF9999] to-[#FF8080] text-white rounded-lg shadow-lg hover:bg-red-300 transition duration-300 ease-in-out mt-6 z-10"
-        initial={{ opacity: 0, scale: 0.8 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.8, ease: "easeOut", delay: 0.6 }}
-      >
-        Edit Profile
-      </motion.button>
-
       {/* Log-out Button */}
       <motion.button
         onClick={handleLogOut}

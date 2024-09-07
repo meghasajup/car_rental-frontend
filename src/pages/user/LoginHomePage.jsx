@@ -7,8 +7,8 @@ import image1 from '../../assets/hone/homepic3.jpg';
 import image2 from '../../assets/hone/homepic4.png';
 import { Location } from '../../components/Location';
 import { HowItWorks } from './HowItworkPage';
-import { LocationSection } from './Locations';
 import Testimonials from './TestimonialsPage';
+import LocationSection from './Locations';
 
 export const LoginHomePage = () => {
   return (

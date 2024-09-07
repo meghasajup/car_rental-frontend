@@ -7,7 +7,7 @@ import toast from 'react-hot-toast';
 import { adminLogin } from '../../services/adminApi';
 
 
-export const AdminLogin = () => {
+export const AdminLoginPage = () => {
 
   const {
     register,
@@ -20,15 +20,13 @@ export const AdminLogin = () => {
   const onSubmit = async (data) => {
     try {
       const response = await adminLogin(data)
-      toast.success('Admin Login Success');
-      navigate('/admin');
+      toast.success('Login Success');
+      navigate('/admin/admin-home');
     } catch (error) {
-      toast.error('Admin Login Failed');
+      toast.error('Login Failed');
       console.log(error);
     }
   };
-
-
 
   return (
     <div className="relative min-h-screen flex items-center justify-center overflow-hidden">
@@ -58,7 +56,7 @@ export const AdminLogin = () => {
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}
           >
-            Sign in to continue your journey with us and access exclusive features.
+            Admin Sign in to manage users, content, and settings efficiently.
           </motion.p>
         </div>
 
@@ -86,11 +84,6 @@ export const AdminLogin = () => {
               className="input input-bordered rounded-lg text-grey focus:outline-none focus:ring-2 focus:ring-cyan-500 transition-transform"
               required
             />
-            <label className="label">
-              <Link to="/register" className="label-text-alt link link-hover text-cyan-300">
-                New User? Sign Up
-              </Link>
-            </label>
           </div>
           <div className="form-control">
             <motion.button

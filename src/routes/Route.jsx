@@ -11,9 +11,12 @@ import { LoginHomePage } from "../pages/user/LoginHomePage";
 import { CarPage } from "../pages/user/CarPage";
 import { CarDetails } from "../pages/user/CarDetails";
 import { UserAuth } from "./protectedRoutes/UserAuth";
-import { ProfilePage } from "../pages/user/ProfilePage"
-import { EditPage } from "../pages/user/EditPage";
-import { AdminLogin } from "../pages/admin/AdminLogin";
+import { ProfilePage } from "../pages/user/ProfilePage";
+import { CartPage } from "../pages/user/CartPage";
+import { AdminLoginPage } from "../pages/admin/AdminLoginPage";
+import { AdminHomePage } from "../pages/admin/AdminHomePage";
+import { AdminLayout } from "../layout/AdminLayout";
+import { AdminAuth } from "./protectedRoutes/AdminAuth";
 
 export const router = createBrowserRouter([
     {
@@ -60,10 +63,6 @@ export const router = createBrowserRouter([
                 element: <ProfilePage />
             },
             {
-                path: "edit-profile",
-                element: <EditPage /> //not completed
-            },
-            {
                 path: "about",
                 element: <AboutPage />
             },
@@ -72,14 +71,17 @@ export const router = createBrowserRouter([
                 element: <CarPage />
             },
             {
-                path: "my-cars",  //my-learnings
+                path: "my-cars",
                 element: <h1>Cars Dashboard</h1>
+            },
+            {
+                path: "cart",
+                element: <CartPage />
             },
             {
                 path: "car-details/:id",
                 element: <CarDetails />
             },
-
             {
                 path: "contact",
                 element: <ContactPage />
@@ -88,6 +90,20 @@ export const router = createBrowserRouter([
     },
     {
         path: "admin-login",
-        element: <AdminLogin />,
-    }
-])
+        element: <AdminLoginPage/>,
+    },
+    {
+        path: "admin",
+        element: (
+            <AdminAuth>
+                <AdminLayout />
+            </AdminAuth>
+        ),
+        children: [
+            {
+                path: "admin-home",
+                element: <AdminHomePage />
+            },
+        ]
+    },
+]);

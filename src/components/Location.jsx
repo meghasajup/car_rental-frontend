@@ -1,18 +1,33 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom'; // for navigation
 
 export const Location = () => {
   const [location, setLocation] = useState('');
+  const [pickupDateTime, setPickupDateTime] = useState('');
+  const [returnDateTime, setReturnDateTime] = useState('');
   const [showDropdown, setShowDropdown] = useState(false);
+  const navigate = useNavigate(); // to navigate to CarPage
 
   const locations = [
-    'Kochi', 'Kollam', 'Kottayam', 'Calicut',
-    'Trivandrum', 'Thrissur', 'Kannur', 'Alappuzha'
+    'Kasarkode', 'Kannur', 'Wayanad', 'Calicut',
+    'Malapuram', 'Palakkad', 'Thrissur', 'Kottayam',
+    'Alappuzha','Ernakulam','Kollam','Pathanamthitta',
+    'Idukki','Thiruvananthapuram',
   ];
 
   const handleLocationSelect = (loc) => {
     setLocation(loc);
-    setShowDropdown(false); // Close dropdown on select
+    setShowDropdown(false); 
+  };
+
+  const handleSearchClick = () => {
+    // Check if all fields are filled
+    if (location && pickupDateTime && returnDateTime) {
+      navigate('/user/car'); // Navigate to CarPage.jsx
+    } else {
+      alert('Please fill all fields before searching.');
+    }
   };
 
   return (
@@ -68,14 +83,16 @@ export const Location = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, ease: "easeOut", delay: 0.4 }}
       >
-        <svg className="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7H16M7 12H17M9 17H15" />
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v4m0 0a8 8 0 110 16A8 8 0 0112 8z" />
+        <svg className="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M8 7H16M7 12H17M9 17H15" />
+          <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v4m0 0a8 8 0 110 16A8 8 0 0112 8z" />
         </svg>
         <input
           type="datetime-local"
           className="w-full p-2 bg-transparent outline-none text-gray-600 placeholder-gray-400"
           placeholder="Pickup Date & Time"
+          value={pickupDateTime}
+          onChange={(e) => setPickupDateTime(e.target.value)}
         />
       </motion.div>
 
@@ -87,13 +104,15 @@ export const Location = () => {
         transition={{ duration: 0.8, ease: "easeOut", delay: 0.6 }}
       >
         <svg className="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7H16M7 12H17M9 17H15" />
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v4m0 0a8 8 0 110 16A8 8 0 0112 8z" />
+          <path strokeLinecap="round" strokeLinejoin="round" d="M8 7H16M7 12H17M9 17H15" />
+          <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v4m0 0a8 8 0 110 16A8 8 0 0112 8z" />
         </svg>
         <input
           type="datetime-local"
           className="w-full p-2 bg-transparent outline-none text-gray-600 placeholder-gray-400"
           placeholder="Return Date & Time"
+          value={returnDateTime}
+          onChange={(e) => setReturnDateTime(e.target.value)}
         />
       </motion.div>
 
@@ -105,6 +124,7 @@ export const Location = () => {
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, ease: "easeOut", delay: 0.8 }}
+        onClick={handleSearchClick}
       >
         Search
       </motion.button>

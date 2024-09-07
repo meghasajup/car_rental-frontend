@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { DarkMode } from '../ui/DarkMode';
 import { FaBars, FaTimes } from 'react-icons/fa'; 
-import { CircleUserRound, Heart } from 'lucide-react';
+import { BriefcaseBusiness, CircleUserRound } from 'lucide-react';
 
 export const UserHeader = () => {
   const [isOpen, setIsOpen] = useState(false); 
@@ -50,8 +50,8 @@ export const UserHeader = () => {
 
       <div className='hidden md:flex items-center gap-4'>
         <DarkMode />
-        <Heart />
-        <CircleUserRound />
+        <Link to={'/user/cart'}> <BriefcaseBusiness /></Link>
+        <Link to={'/user/profile'}><CircleUserRound /></Link>
       </div>
     </motion.div>
   );

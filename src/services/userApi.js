@@ -1,4 +1,3 @@
-import axios from "axios";
 import { axiosInstance } from "../config/axiosInstance";
 import toast from "react-hot-toast";
 
@@ -13,27 +12,26 @@ export const userLogin = async (data) => {
         return response?.data;
     } catch (error) {
         console.log(error);
-
+        toast.error('Login failed');
     }
 };
 
-
-export const userRegister = async (data) => {
+export const userRegister = async (formData) => {
     try {
         const response = await axiosInstance({
-            url: "/user/create",
-            method: "POST",
-            data,
-            withCredentials: true
+            url: '/user/create',
+            method: 'POST',
+            data: formData, 
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
         });
         return response?.data;
     } catch (error) {
         toast.error('Registration failed');
-        console.log(error);
+        console.error(error);
     }
-}
-
-
+};
 
 export const userLogout = async () => {
     try {
@@ -44,7 +42,7 @@ export const userLogout = async () => {
         });
         return response?.data;
     } catch (error) {
-        toast.error('Logout Failed')
+        toast.error('Logout Failed');
         console.log(error);
     }
 };

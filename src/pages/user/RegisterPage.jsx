@@ -18,7 +18,19 @@ export const RegisterPage = () => {
 
   const onSubmit = async (data) => {
     try {
-      const response = await userRegister(data)
+      const formData = new FormData();
+      formData.append('name', data.name);
+      formData.append('email', data.email);
+      formData.append('phone', data.phone);
+      formData.append('password', data.password);
+      formData.append('confirmPassword', data.confirmPassword);
+
+      // Append the profile image (file)
+      if (data.profileImage && data.profileImage[0]) {
+        formData.append('profileImage', data.profileImage[0]);
+      }
+
+      const response = await userRegister(formData);
       toast.success('Registration Success');
       navigate('/login');
     } catch (error) {
@@ -131,7 +143,7 @@ export const RegisterPage = () => {
             </label>
             <input
               type="file"
-              {...register("profileImage")}
+              {...register('profileImage')}
               className="input input-bordered rounded-lg p-3 text-black focus:outline-none focus:ring-2 focus:ring-cyan-500 transition-transform"
 
               required

@@ -7,7 +7,7 @@ import { WhyChooseUs } from './WhyChooseUsPage';
 export const AboutPage = () => {
   return (
     <div className="about-container relative overflow-hidden">
-      
+
       {/* Background Image */}
       <motion.div
         className="absolute inset-0 z-0"
@@ -39,8 +39,10 @@ export const AboutPage = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: "easeOut", delay: 0.5 }}
         >
-          At Morent, we take pride in being a Kerala-based car rental service that offers a wide range of vehicles for every occasion. 
-          Whether you’re a tourist exploring Kerala’s natural beauty or a local on a business trip, we have the perfect car for you.
+          we believe in making your travel experience seamless and enjoyable. As a trusted car rental service, we offer a wide selection of
+          well-maintained vehicles to suit every journey, whether you're traveling for business or anything in between. Our goal is to
+          provide affordable, flexible, and reliable rentals with excellent customer service, ensuring you have a smooth ride every time. Let us
+          be your go-to for convenient and hassle-free car rentals.
         </motion.p>
       </motion.section>
 
@@ -86,8 +88,8 @@ export const AboutPage = () => {
         </motion.h3>
         <div className="flex flex-wrap justify-center gap-6">
           {[
-            'Wide range of vehicles (SUVs, Sedans, Hatchbacks)',
-            'Flexible rental plans (daily, weekly, monthly)',
+            'Wide range of vehicles (Polo, Range Rover, Honda Civc and more)',
+            'Flexible rental plans',
             '24/7 customer support',
             'Easy online booking and cancellation',
             'Pickup and drop-off services'
@@ -109,7 +111,7 @@ export const AboutPage = () => {
 
 
       {/* Why Choose Us Section */}
-      <WhyChooseUs /> 
+      <WhyChooseUs />
 
       {/* Vision Section */}
       <motion.section
@@ -124,7 +126,7 @@ export const AboutPage = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
         >
-          Our Dream <FaRegSmileBeam className="ml-2" />
+          Our Dream
         </motion.h3>
         <motion.p
           className="text-lg leading-relaxed max-w-3xl mx-auto"
@@ -132,7 +134,10 @@ export const AboutPage = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: "easeOut", delay: 0.5 }}
         >
-          We envision becoming a nationally recognized car rental brand, starting from Kerala and expanding across India. Our goal is to offer affordable, quality car rentals with a customer-first approach, wherever you travel.
+          Our dream is to revolutionize the way people travel. We aim to create a world where renting a car is as easy and enjoyable as the
+          journey itself. By providing top-tier service, a diverse range of vehicles, and seamless online booking, we aspire to give every
+          customer the freedom to explore with confidence. Our vision is to be a driving force in sustainable, accessible transportation,
+          offering innovative solutions that keep you moving forward.
         </motion.p>
       </motion.section>
     </div>

@@ -7,7 +7,7 @@ import image1 from '../../assets/hone/homepic3.jpg';
 import image2 from '../../assets/hone/homepic4.png';
 import { Location } from '../../components/Location.jsx';
 import { HowItWorks } from './HowItworkPage.jsx';
-import { LocationSection } from './Locations.jsx';
+import LocationSection from './Locations.jsx';
 
 export const HomePage = () => {
   const sectionRef = useRef(null);
@@ -162,12 +162,8 @@ export const HomePage = () => {
           />
         </div>
       </section>
-
-
-      {/* Add Location Section at the end */}
-      <LocationSection />
-
-
+      
+      <LocationSection/>
 
       {/* Book Your Dream Car */}
       <section className="flex items-center justify-between px-8 py-20 text-grey">

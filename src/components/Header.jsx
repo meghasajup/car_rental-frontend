@@ -42,7 +42,7 @@ export const Header = () => {
       >
         <Link to={'/'} onClick={toggleMenu}>Home</Link>
         <Link to={'/about'} onClick={toggleMenu}>About Us</Link>
-        <Link to={'/user/car'} onClick={toggleMenu}>Car</Link>
+        <Link to={'/register'} onClick={toggleMenu}>Car</Link>
         <Link to={'/contact'} onClick={toggleMenu}>Contact</Link>
       </nav>
 

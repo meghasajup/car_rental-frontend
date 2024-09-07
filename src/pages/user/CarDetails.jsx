@@ -174,7 +174,7 @@ export const CarDetails = () => {
             transition={{ duration: 0.8, ease: "easeOut", delay: 0.5 }}
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
           >
-            Book Your Car
+            Book Now
           </motion.button>
         </div>
       </motion.div>

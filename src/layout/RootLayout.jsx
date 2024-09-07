@@ -7,9 +7,6 @@ export const RootLayout = () => {
   return (
     <div>
       <Header />
-      {/* <div className='min-h-96'>
-        <Outlet />
-      </div> */}
       <Outlet />
       <Footer />
     </div>
