@@ -12,7 +12,6 @@ import { CarPage } from "../pages/user/CarPage";
 import { CarDetails } from "../pages/user/CarDetails";
 import { UserAuth } from "./protectedRoutes/UserAuth";
 import { ProfilePage } from "../pages/user/ProfilePage";
-import { CartPage } from "../pages/user/CartPage";
 import { AdminLoginPage } from "../pages/admin/AdminLoginPage";
 import { AdminHomePage } from "../pages/admin/AdminHomePage";
 import { AdminLayout } from "../layout/AdminLayout";
@@ -25,6 +24,7 @@ import { AdminProfile } from "../pages/admin/AdminProfile";
 import { AdminCars } from "../pages/admin/AdminCars";
 import { BookingPage } from "../pages/user/BookingPage"
 import { PaymentPage } from "../pages/user/PaymentPage";
+import { CreateCar } from "../pages/admin/CreateCar";
 
 export const router = createBrowserRouter([
     {
@@ -79,10 +79,6 @@ export const router = createBrowserRouter([
                 element: <CarPage />
             },
             {
-                path: "cart",
-                element: <CartPage />
-            },
-            {
                 path: "car-details/:id",
                 element: <CarDetails />
             },
@@ -125,7 +121,8 @@ export const router = createBrowserRouter([
                 element: <AdminCarManagement />
             },
             {
-                path: ""
+                path: "create-course",
+                element: <CreateCar/>
             },
             {
                 path: "booking-management",
