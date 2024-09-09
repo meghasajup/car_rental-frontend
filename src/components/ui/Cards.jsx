@@ -56,10 +56,7 @@ export function CarCard({ car }) {
           {car.category || 'Category'}
         </Typography>
         <Typography color="gray" className="text-gray-500">
-          {car.fuelType || 'Fuel Type'}
-        </Typography>
-        <Typography color="gray" className="text-gray-500">
-          {car.description || 'No Description Available'}
+          {car.location || 'Not available'}
         </Typography>
         <div className="group mt-8 inline-flex flex-wrap items-center gap-3">
           <Tooltip content="Air Conditioning">
@@ -104,14 +101,6 @@ export function CarCard({ car }) {
           </Tooltip>
         </div>
       </CardBody>
-
-      <CardFooter className="pt-3">
-        <Link to={`/user/cart`}>
-          <Button size="lg"  className=" width-[80px] from-indigo-700 to-purple-700 bg-gradient-to-r text-white p-4">
-            Add to cart
-          </Button>
-        </Link>
-      </CardFooter>
 
       <CardFooter className="pt-3">
         <Link to={`/user/car-details/${car._id}`}>

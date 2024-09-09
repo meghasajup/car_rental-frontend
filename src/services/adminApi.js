@@ -12,7 +12,6 @@ export const adminLogin = async (data) => {
       return response?.data;
   } catch (error) {
       console.log(error);
-      toast.error('Login failed');
   }
 };
   
@@ -26,7 +25,6 @@ export const adminLogout = async () => {
       });
       return response?.data;
   } catch (error) {
-      toast.error('Logout Failed');
       console.log(error);
   }
 };

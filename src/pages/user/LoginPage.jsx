@@ -23,7 +23,7 @@ export const LoginPage = () => {
       toast.success('Login Success');
       navigate('/user/home');
     } catch (error) {
-      toast.error('Login Failed');
+      // toast.error('Login Failed');
       console.log(error);
     }
   };

@@ -11,26 +11,31 @@ export const RegisterPage = () => {
   const {
     register,
     handleSubmit,
+    setValue,
+    getValues,
     formState: { errors },
   } = useForm();
 
   const navigate = useNavigate();
 
-  const onSubmit = async (data) => {
+  const onSubmit = async () => {
     try {
       const formData = new FormData();
-      formData.append('name', data.name);
-      formData.append('email', data.email);
-      formData.append('phone', data.phone);
-      formData.append('password', data.password);
-      formData.append('confirmPassword', data.confirmPassword);
-
+      formData.append('username', getValues('username'));
+      formData.append('name', getValues('name'));
+      formData.append('email', getValues('email'));
+      formData.append('phone', getValues('phone'));
+      formData.append('password', getValues('password'));
+      formData.append('confirmPassword', getValues('confirmPassword'));
+  
       // Append the profile image (file)
-      if (data.profileImage && data.profileImage[0]) {
-        formData.append('profileImage', data.profileImage[0]);
+      const profileImage = getValues('profileImage')[0];
+      if (profileImage) {
+        formData.append('profileImage', profileImage);
       }
-
-      const response = await userRegister(formData);
+  
+      const response = await userRegister(formData); // Send FormData to the backend
+  
       toast.success('Registration Success');
       navigate('/login');
     } catch (error) {
@@ -38,6 +43,7 @@ export const RegisterPage = () => {
       console.log(error);
     }
   };
+  
 
   return (
     <div className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden">
@@ -72,6 +78,18 @@ export const RegisterPage = () => {
 
         <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {/* <div className="form-control">
+              <label className="label">
+                <span className="label-text text-gray font-semibold">User Name</span>
+              </label>
+              <input
+                type="text"
+                {...register("username")}
+                placeholder="UserName"
+                className="input input-bordered rounded-lg p-3 text-black focus:outline-none focus:ring-2 focus:ring-cyan-500 transition-transform"
+                required
+              />
+            </div> */}
             <div className="form-control">
               <label className="label">
                 <span className="label-text text-gray font-semibold">Full Name</span>

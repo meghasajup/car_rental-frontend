@@ -5,7 +5,6 @@ import backgroundImage from '../../assets/hone/footerIcon.png';
 import drivingCarImage from '../../assets/hone/homepic2.jpg';
 import image1 from '../../assets/hone/homepic3.jpg';
 import image2 from '../../assets/hone/homepic4.png';
-import { Location } from '../../components/Location';
 import { HowItWorks } from './HowItworkPage';
 import Testimonials from './TestimonialsPage';
 import LocationSection from './Locations';
@@ -48,8 +47,6 @@ export const LoginHomePage = () => {
           <img src={carImage} alt="Luxury sports car in front of a scenic background" className="w-full object-contain" />
         </motion.div>
 
-        {/* Location Input Section */}
-        <Location />
 
         {/* How It Works Section */}
         <HowItWorks />

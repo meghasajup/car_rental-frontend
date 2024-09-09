@@ -6,7 +6,6 @@ import { useForm } from "react-hook-form";
 import toast from 'react-hot-toast';
 import { adminLogin } from '../../services/adminApi';
 
-
 export const AdminLoginPage = () => {
 
   const {
@@ -20,15 +19,20 @@ export const AdminLoginPage = () => {
   const onSubmit = async (data) => {
     try {
       const response = await adminLogin(data)
-      toast.success('Login Success');
-      navigate('/admin/admin-home');
+      console.log(response);
+      if (response) {
+        toast.success('Login Success');
+        navigate('/admin/admin-dashboard');
+      }
     } catch (error) {
-      toast.error('Login Failed');
+      toast.error(error.response.data.message ||  'Invalid Credentials');
+
       console.log(error);
     }
   };
 
   return (
+
     <div className="relative min-h-screen flex items-center justify-center overflow-hidden">
 
       {/* Background Image */}

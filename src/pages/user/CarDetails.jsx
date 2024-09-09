@@ -1,15 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { axiosInstance } from '../../config/axiosInstance';
 import { FaGasPump, FaPalette, FaCogs, FaCar, FaTachometerAlt, FaMapMarkerAlt } from 'react-icons/fa';
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
-import { format } from 'date-fns';
 import { motion } from 'framer-motion';
 
 export const CarDetails = () => {
   const [carDetails, setCarDetails] = useState({});
-  const [selectedDates, setSelectedDates] = useState([null, null]); // [startDate, endDate]
   const { id } = useParams();
 
   const fetchCarDetails = async () => {
@@ -29,155 +25,99 @@ export const CarDetails = () => {
     fetchCarDetails();
   }, []);
 
-  const calculateDays = () => {
-    const [startDate, endDate] = selectedDates;
-    if (startDate && endDate) {
-      const differenceInTime = endDate.getTime() - startDate.getTime();
-      const differenceInDays = differenceInTime / (1000 * 3600 * 24);
-      return differenceInDays > 0 ? differenceInDays : 0;
-    }
-    return 0;
-  };
-
-  const formatSelectedDates = () => {
-    const [startDate, endDate] = selectedDates;
-    if (startDate && endDate) {
-      return `Selected dates: ${format(startDate, 'dd/MM/yyyy')} to ${format(endDate, 'dd/MM/yyyy')}`;
-    }
-    return 'No dates selected';
-  };
-
-  const pricePerDay = carDetails.pricePerDay || 100; // Default price if not available
-  const totalDays = calculateDays();
-  const totalPrice = totalDays * pricePerDay;
-
   return (
-    <div className="flex flex-col items-center">
-      {/* Full-width image with rounded edges and animation */}
-      <motion.div
-        className="relative w-full h-96 px-6"
-        initial={{ opacity: 0, y: -50 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
-      >
-        <img
-          src={carDetails.image || 'default-image-url.jpg'}
-          alt={carDetails.model || 'Car Image'}
-          className="w-full h-full object-contain rounded-lg py-8"
-        />
-      </motion.div>
-
-      {/* Car Details with animation */}
-      <motion.div
-        className="p-4"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.8, delay: 0.3 }}
-      >
-        <h1 className="text-2xl font-bold">{carDetails.model || 'Model'}</h1>
-
+    <div className="flex flex-col items-center p-6 text-grey">
+      {/* Main container with two columns: Image (Left) and Details (Right) */}
+      <div className="flex flex-row w-full gap-8">
+        {/* Left column with car image */}
         <motion.div
-          className="my-4"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.8, delay: 0.5 }}
+          className="w-1/2 h-auto mb-6"
+          initial={{ opacity: 0, x: -50 }}
+          animate={{ opacity: 1, x: 0 }}  
+          transition={{ duration: 0.8 }}
         >
-          <h2 className="text-xl">Brand: {carDetails.brand || 'Brand'}</h2>
-          <h2 className="text-xl">Category: {carDetails.category || 'Category'}</h2>
-          <h2 className="text-xl">Year: {carDetails.year || 'Year'}</h2>
-          <h2 className="text-xl">Register Number: {carDetails.registerNumber || 'Register Number'}</h2>
-        </motion.div>
-
-        {/* Icons and Car Details in a single row with text below */}
-        <motion.div
-          className="grid grid-cols-6 gap-4 my-4 text-center"
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.8, delay: 0.7 }}
-        >
-          {/* Fuel Type */}
-          <div className="flex flex-col items-center">
-            <FaGasPump className="text-3xl mb-2" />
-            <span>{carDetails.fuelType || 'Petrol'}</span>
-          </div>
-
-          {/* Color */}
-          <div className="flex flex-col items-center">
-            <FaPalette className="text-3xl mb-2" />
-            <span>{carDetails.color || 'Color'}</span>
-          </div>
-
-          {/* Transmission */}
-          <div className="flex flex-col items-center">
-            <FaCogs className="text-3xl mb-2" />
-            <span>{carDetails.transmission || 'Transmission'}</span>
-          </div>
-
-          {/* Seats */}
-          <div className="flex flex-col items-center">
-            <FaCar className="text-3xl mb-2" />
-            <span>{carDetails.capacity || 'Seats'}</span>
-          </div>
-
-          {/* Mileage */}
-          <div className="flex flex-col items-center">
-            <FaTachometerAlt className="text-3xl mb-2" />
-            <span>{carDetails.mileage || 'Mileage'}</span>
-          </div>
-
-          {/* Location */}
-          <div className="flex flex-col items-center">
-            <FaMapMarkerAlt className="text-3xl mb-2" />
-            <span>{carDetails.location || 'Kasarkode to Kannur'}</span>
-          </div>
-        </motion.div>
-
-        {/* Description with animation */}
-        <motion.div
-          className="my-4"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.8, delay: 0.9 }}
-        >
-          <h2 className="text-xl">Description:</h2>
-          <p>{carDetails.description || 'Description text goes here.'}</p>
-        </motion.div>
-
-        {/* Date Selection and Pricing */}
-        <div className="my-4 gap-8">
-          <h2 className="text-xl font-semibold mb-2">Select Rental Dates:</h2>
-          <DatePicker
-            selected={selectedDates[0]}
-            onChange={(dates) => setSelectedDates(dates)} // [startDate, endDate]
-            startDate={selectedDates[0]}
-            endDate={selectedDates[1]}
-            selectsRange
-            className="border p-2 rounded-md w-full"
-            placeholderText="Select rental date range"
+          <img
+            src={carDetails.image || 'default-image-url.jpg'}
+            alt={carDetails.model || 'Car Image'}
+            className="w-full h-full object-contain rounded-lg shadow-lg"
           />
-          <p className="mt-2 text-lg">{formatSelectedDates()}</p>
-        </div>
+        </motion.div>
 
-        {/* Pricing Information */}
-        <div className="my-4">
-          <h2 className="text-xl font-semibold">Price Per Day: ${pricePerDay}</h2>
-          <h2 className="text-xl font-semibold">Total Days: {totalDays}</h2>
-          <h2 className="text-xl font-semibold">Total Price: ${totalPrice.toFixed(2)}</h2>
-        </div>
+        {/* Right column with car information */}
+        <motion.div
+          className="w-1/2 p-4 rounded-lg shadow-lg"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.8, delay: 0.3 }}
+        >
+          <h1 className="text-3xl font-bold mb-2">{carDetails.model || 'Model'}</h1>
 
-        {/* Book Your Car Button */}
-        <div className="flex justify-center my-8">
-          <motion.button
-            className="px-8 py-4 text-lg font-semibold bg-gradient-to-r from-[#8A3FFC] via-[#5821CE] to-[#3B1AAB] text-black rounded-lg shadow-lg hover:bg-cyan-500 transition duration-300 ease-in-out"
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, ease: "easeOut", delay: 0.5 }}
-            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-          >
-            Book Now
-          </motion.button>
-        </div>
-      </motion.div>
+          {/* Information with icons */}
+          <p className="text-lg mb-4">Category: {carDetails.category || 'Category'}</p>
+          <p className="text-lg mb-4">Brand: {carDetails.brand || 'Brand'}</p>
+
+          <div className="flex items-center mb-4">
+            <FaGasPump className="mr-2 text-xl" />
+            <p className="text-lg">{carDetails.fuelType || 'Petrol'}</p>
+          </div>
+
+          <div className="flex items-center mb-4">
+            <FaPalette className="mr-2 text-xl" />
+            <p className="text-lg">{carDetails.color || 'Color'}</p>
+          </div>
+
+          <div className="flex items-center mb-4">
+            <FaCogs className="mr-2 text-xl" />
+            <p className="text-lg">{carDetails.transmission || 'Manual'}</p>
+          </div>
+
+          <div className="flex items-center mb-4">
+            <FaCar className="mr-2 text-xl" />
+            <p className="text-lg">{carDetails.capacity || '4 Seats'}</p>
+          </div>
+
+          <div className="flex items-center mb-4">
+            <FaTachometerAlt className="mr-2 text-xl" />
+            <p className="text-lg">{carDetails.mileage || 'Mileage'}</p>
+          </div>
+
+          <div className="flex items-center mb-4">
+            <FaMapMarkerAlt className="mr-2 text-xl" />
+            <p className="text-lg">{carDetails.location || 'Location'}</p>
+          </div>
+
+          {/* Add Price Per Day */}
+          <div className="flex items-center mb-4">
+            <p className="text-lg">Price/day: {carDetails.pricePerDay ? `₹${carDetails.pricePerDay}` : 'Price Per Day'}</p>
+          </div>
+
+          <p className="text-lg mb-4">Registration Number: {carDetails.registrationNumber || 'Register Number'}</p>
+          <p className="text-lg mb-4">Year: {carDetails.year || 'Year'}</p>
+
+          {/* Book Now Button */}
+          <div className="flex justify-center mt-8">
+            <Link
+              to={{
+                pathname: `/user/booking/${carDetails._id}`,
+                state: {
+                  carDetails
+                }
+              }}
+            >
+              <motion.button
+                className="px-8 py-4 text-lg font-semibold bg-gradient-to-r from-[#8A3FFC] via-[#5821CE] to-[#3B1AAB] text-white rounded-lg shadow-lg hover:bg-cyan-500 transition duration-300 ease-in-out"
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.8, ease: 'easeOut', delay: 0.5 }}
+                onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+              >
+                Book Now
+              </motion.button>
+            </Link>
+
+          </div>
+        </motion.div>
+      </div>
     </div>
   );
 };

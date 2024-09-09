@@ -17,6 +17,14 @@ import { AdminLoginPage } from "../pages/admin/AdminLoginPage";
 import { AdminHomePage } from "../pages/admin/AdminHomePage";
 import { AdminLayout } from "../layout/AdminLayout";
 import { AdminAuth } from "./protectedRoutes/AdminAuth";
+import { AdminUserManagement } from "../pages/admin/AdminUserManagement";
+import { AdminCarManagement } from "../pages/admin/AdminCarManagement";
+import { AdminBookingManagement } from "../pages/admin/AdminBookingManagement";
+import { AdminReviewManagement } from "../pages/admin/AdminReviewManagement";
+import { AdminProfile } from "../pages/admin/AdminProfile";
+import { AdminCars } from "../pages/admin/AdminCars";
+import { BookingPage } from "../pages/user/BookingPage"
+import { PaymentPage } from "../pages/user/PaymentPage";
 
 export const router = createBrowserRouter([
     {
@@ -71,16 +79,20 @@ export const router = createBrowserRouter([
                 element: <CarPage />
             },
             {
-                path: "my-cars",
-                element: <h1>Cars Dashboard</h1>
-            },
-            {
                 path: "cart",
                 element: <CartPage />
             },
             {
                 path: "car-details/:id",
                 element: <CarDetails />
+            },
+            {
+                path: "booking/:id",
+                element: <BookingPage />
+            },
+            {
+                path: "payment/:id",
+                element: <PaymentPage />
             },
             {
                 path: "contact",
@@ -90,7 +102,7 @@ export const router = createBrowserRouter([
     },
     {
         path: "admin-login",
-        element: <AdminLoginPage/>,
+        element: <AdminLoginPage />,
     },
     {
         path: "admin",
@@ -101,9 +113,36 @@ export const router = createBrowserRouter([
         ),
         children: [
             {
-                path: "admin-home",
+                path: "admin-dashboard",
                 element: <AdminHomePage />
             },
+            {
+                path: "user-management",
+                element: <AdminUserManagement />
+            },
+            {
+                path: "car-management",
+                element: <AdminCarManagement />
+            },
+            {
+                path: ""
+            },
+            {
+                path: "booking-management",
+                element: <AdminBookingManagement />
+            },
+            {
+                path: "review-management",
+                element: <AdminReviewManagement />
+            },
+            {
+                path: "admin-profile",
+                element: <AdminProfile />
+            },
+            {
+                path: "admin-cars",
+                element: <AdminCars />,
+            }
         ]
     },
 ]);

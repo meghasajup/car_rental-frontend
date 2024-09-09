@@ -28,7 +28,6 @@ export const userRegister = async (formData) => {
         });
         return response?.data;
     } catch (error) {
-        toast.error('Registration failed');
         console.error(error);
     }
 };
@@ -42,7 +41,6 @@ export const userLogout = async () => {
         });
         return response?.data;
     } catch (error) {
-        toast.error('Logout Failed');
         console.log(error);
     }
 };

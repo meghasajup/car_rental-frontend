@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { FaCheckCircle, FaMapMarkerAlt, FaCar, FaRegSmileBeam } from 'react-icons/fa';
-import backgroundImage from '../../assets/hone/footerIcon.png'; // Use the background image from the homepage
+import backgroundImage from '../../assets/hone/footerIcon.png'; 
 import { WhyChooseUs } from './WhyChooseUsPage';
 
 export const AboutPage = () => {
