@@ -63,7 +63,7 @@ export const LoginHomePage = () => {
           transition={{ duration: 0.8, ease: "easeOut", delay: 0.5 }}
         />
 
-        {/* Animated Overlay Text */}
+        
         <div className="absolute inset-0 flex flex-col justify-center space-y-4 text-white px-8 lg:px-16">
           <motion.div
             className="space-y-2"
@@ -109,7 +109,7 @@ export const LoginHomePage = () => {
         </div>
       </section>
 
-      {/* Section with Two Images and Text */}
+      
       <section className="relative z-10 w-full h-screen mt-16 flex items-center justify-center px-8 lg:px-16 space-x-8">
         <div className="flex-1 space-y-4 text-grey">
           <motion.h2
@@ -158,13 +158,13 @@ export const LoginHomePage = () => {
         </div>
       </section>
 
-      {/* Add Location Section at the end */}
+      {/* Location Section */}
       <LocationSection />
 
       {/* Testimonials */}
       <Testimonials />
 
-      {/* New Section: Book Your Dream Car */}
+      {/* Book Your Dream Car */}
       <section className="flex items-center justify-between px-8 py-20 text-grey">
         <div>
           <motion.h2

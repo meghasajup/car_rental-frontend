@@ -5,7 +5,6 @@ import { motion } from 'framer-motion';
 const LocationSection = () => {
   return (
     <div className="flex flex-col items-center justify-center">
-      {/* Faster Vertical Rotation for Location Icon */}
       <motion.div
         animate={{ rotateY: 360 }}
         transition={{
@@ -17,7 +16,7 @@ const LocationSection = () => {
         <FaMapMarkerAlt className="text-red-500 text-6xl mb-4" />
       </motion.div>
       
-      {/* Animated Text */}
+      
       <motion.p
         className="text-lg text-center max-w-md"
         initial={{ opacity: 0, y: 20 }}

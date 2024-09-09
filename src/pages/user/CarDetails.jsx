@@ -27,7 +27,7 @@ export const CarDetails = () => {
 
   return (
     <div className="flex flex-col items-center p-6 text-grey">
-      {/* Main container with two columns: Image (Left) and Details (Right) */}
+      
       <div className="flex flex-row w-full gap-8">
         {/* Left column with car image */}
         <motion.div
