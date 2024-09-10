@@ -7,7 +7,6 @@ export const userLogin = async (data) => {
             url: '/user/login',
             method: 'POST',
             data,
-            withCredentials: true
         });
         return response?.data;
     } catch (error) {
