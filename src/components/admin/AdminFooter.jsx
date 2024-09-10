@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 export const AdminFooter = () => {
   return (
     <motion.footer 
-      className="bg-gray-800 text-white py-6 mt-8"
+      className="text-grey py-6 mt-8 shadow-xl"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 1 }}

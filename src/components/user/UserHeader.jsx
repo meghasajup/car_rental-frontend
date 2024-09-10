@@ -2,18 +2,13 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { DarkMode } from '../ui/DarkMode';
-import { FaBars, FaTimes } from 'react-icons/fa';
-import { CircleUserRound } from 'lucide-react';
+import { FaBars, FaTimes } from 'react-icons/fa'; // Icons for hamburger menu
 
 export const UserHeader = () => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false); // State to toggle the menu
 
-  const toggleMenu = () => {
-    setIsOpen(!isOpen);
-  };
-
-  const closeMenu = () => {
-    setIsOpen(false);
+  const handleMenuToggle = () => {
+    setIsMenuOpen(!isMenuOpen);
   };
 
   return (
@@ -35,66 +30,52 @@ export const UserHeader = () => {
         </motion.h1>
       </div>
 
-      {/* Hamburger Icon for Mobile with Grey Background */}
-      <div className='md:hidden flex items-center'>
-        <button
-          onClick={toggleMenu}
-          aria-label="Toggle Menu"
-          className="p-2 rounded  "
-        >
-          {isOpen ? <FaTimes size={24} className="text-black dark:text-grey" /> : <FaBars size={24} className="text-black dark:text-grey" />}
+      {/* Hamburger Icon for Small Screens */}
+      <div className='md:hidden'>
+        <button onClick={handleMenuToggle} className="text-3xl focus:outline-none">
+          {isMenuOpen ? <FaTimes /> : <FaBars />}
         </button>
       </div>
 
       {/* Navigation Menu */}
       <nav
-        className={`${isOpen ? 'flex' : 'hidden'
-          } flex-col md:flex md:flex-row items-center gap-6 md:gap-20 font-semibold absolute md:static top-20 left-0 w-full md:w-auto shadow-md md:shadow-none p-6 md:p-0 z-10`}
+        className={`${
+          isMenuOpen ? 'flex' : 'hidden'
+        } md:flex flex-col md:flex-row items-center gap-6 md:gap-20 font-semibold absolute md:static top-20 left-0 w-full md:w-auto bg-white md:bg-transparent shadow-md md:shadow-none z-50 md:z-auto`}
       >
         <Link
           to={'/user/home'}
-          onClick={closeMenu}
-          className="text-gray dark:text-gray hover:text-blue-500 dark:hover:text-blue-300 transition-colors"
+          className="text-gray dark:text-gray hover:text-blue-500 dark:hover:text-blue-300 transition-colors px-4 py-2 md:px-0"
         >
           Home
         </Link>
         <Link
           to={'/user/about'}
-          onClick={closeMenu}
-          className="text-gray dark:text-gray hover:text-blue-500 dark:hover:text-blue-300 transition-colors"
+          className="text-gray dark:text-gray hover:text-blue-500 dark:hover:text-blue-300 transition-colors px-4 py-2 md:px-0"
         >
           About Us
         </Link>
         <Link
           to={'/user/car'}
-          onClick={closeMenu}
-          className="text-gray dark:text-gray hover:text-blue-500 dark:hover:text-blue-300 transition-colors"
+          className="text-gray dark:text-gray hover:text-blue-500 dark:hover:text-blue-300 transition-colors px-4 py-2 md:px-0"
         >
           Car
         </Link>
         <Link
           to={'/user/contact'}
-          onClick={closeMenu}
-          className="text-gray dark:text-gray hover:text-blue-500 dark:hover:text-blue-300 transition-colors"
+          className="text-gray dark:text-gray hover:text-blue-500 dark:hover:text-blue-300 transition-colors px-4 py-2 md:px-0"
         >
           Contact
         </Link>
-
-        {/* Dark Mode and Profile Icon in Mobile View */}
-        <div className="flex flex-col md:hidden gap-4 mt-4">
-          <DarkMode />
-          <Link to={'/user/profile'} onClick={closeMenu}>
-            <CircleUserRound className="text-black dark:text-white" />
-          </Link>
-        </div>
       </nav>
 
-
-      {/* Right Section with Dark Mode and Profile Icon for Larger Screens */}
-      <div className='hidden md:flex items-center gap-4'>
+      {/* Right Section with Dark Mode and Profile Button */}
+      <div className='flex items-center gap-4'>
         <DarkMode />
         <Link to={'/user/profile'}>
-          <CircleUserRound className="text-grey dark:text-grey" />
+          <button className="bg-gradient-to-r from-[#8A3FFC] via-[#5821CE] to-[#3B1AAB] text-white px-3 py-2 rounded-full">
+            Profile
+          </button>
         </Link>
       </div>
     </motion.div>

@@ -20,8 +20,6 @@ import { AdminUserManagement } from "../pages/admin/AdminUserManagement";
 import { AdminCarManagement } from "../pages/admin/AdminCarManagement";
 import { AdminBookingManagement } from "../pages/admin/AdminBookingManagement";
 import { AdminReviewManagement } from "../pages/admin/AdminReviewManagement";
-import { AdminProfile } from "../pages/admin/AdminProfile";
-import { AdminCars } from "../pages/admin/AdminCars";
 import { BookingPage } from "../pages/user/BookingPage"
 import { PaymentPage } from "../pages/user/PaymentPage";
 import { CreateCar } from "../pages/admin/CreateCar";
@@ -121,7 +119,7 @@ export const router = createBrowserRouter([
                 element: <AdminCarManagement />
             },
             {
-                path: "create-course",
+                path: "create-car",
                 element: <CreateCar/>
             },
             {
@@ -132,14 +130,6 @@ export const router = createBrowserRouter([
                 path: "review-management",
                 element: <AdminReviewManagement />
             },
-            {
-                path: "admin-profile",
-                element: <AdminProfile />
-            },
-            {
-                path: "admin-cars",
-                element: <AdminCars />,
-            }
         ]
     },
 ]);

@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 export const Footer = () => {
   return (
     <>
-      <footer className="footer bg-base-200 text-base-content p-10">
+      <footer className="footer bg-base-200 text-base-content p-10 shadow-xl">
         <motion.nav
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}

@@ -1,14 +1,25 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { DarkMode } from '../ui/DarkMode';
 import { FaBars, FaTimes } from 'react-icons/fa';
+import { axiosInstance } from '../../config/axiosInstance'; 
 
 export const AdminHeader = () => {
   const [isOpen, setIsOpen] = useState(false); // State for mobile menu
+  const navigate = useNavigate(); // For navigation after logout
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
+  };
+
+  const handleLogout = async () => {
+    try {
+      await axiosInstance.post('/admin/logout');
+      navigate('/'); // Redirect to homepage after logout
+    } catch (error) {
+      console.error('Logout failed:', error);
+    }
   };
 
   return (
@@ -48,15 +59,14 @@ export const AdminHeader = () => {
 
       <div className='hidden md:flex items-center gap-4'>
         <DarkMode />
-        <Link to={"/admin/admin-profile"}>
-          <motion.button
-            className="mt-2 px-3 py-2 bg-gradient-to-r from-[#8A3FFC] via-[#5821CE] to-[#3B1AAB] rounded-full text-lg md:text-l hover:scale-105 transition-transform"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            Logout
-          </motion.button>
-        </Link>
+        <motion.button
+          onClick={handleLogout}
+          className="mt-2 px-3 py-2 text-white bg-gradient-to-r from-[#8A3FFC] via-[#5821CE] to-[#3B1AAB] rounded-full text-lg md:text-l hover:scale-105 transition-transform"
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+        >
+          Logout
+        </motion.button>
       </div>
     </motion.div>
   );

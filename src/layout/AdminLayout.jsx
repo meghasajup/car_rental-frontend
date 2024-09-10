@@ -7,10 +7,10 @@ export const AdminLayout = () => {
   return (
     <div>
       <AdminHeader />
-      {/* <div className='min-h-96'>
+      <div className='min-h-96'>
         <Outlet />
-      </div> */}
-      <Outlet />
+      </div>
+      {/* <Outlet /> */}
       <AdminFooter />
     </div>
   )
