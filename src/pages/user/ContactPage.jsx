@@ -1,8 +1,42 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import contactBackground from '../../assets/hone/footerIcon.png';
+import { toast } from 'react-hot-toast';
+import { Link } from 'react-router-dom';
 
 export const ContactPage = () => {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    message: ''
+  });
+
+  const handleInputChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    // Simple form validation (can be expanded)
+    if (formData.name && formData.email && formData.message) {
+      // Show success toast
+      toast.success('Message sent successfully!');
+
+      // Clear the form
+      setFormData({
+        name: '',
+        email: '',
+        message: ''
+      });
+    } else {
+      toast.error('Please fill in all fields.');
+    }
+  };
+
   return (
     <main className="relative min-h-screen flex flex-col items-center justify-center w-full px-4 md:px-8 lg:px-16 xl:px-24 space-y-12">
       {/* Background Image */}
@@ -34,13 +68,18 @@ export const ContactPage = () => {
         initial={{ opacity: 0, y: 100 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, ease: "easeOut", delay: 1 }}
+        onSubmit={handleSubmit}
       >
         <div className="flex flex-col space-y-4">
           <label className="text-lg md:text-xl">Name</label>
           <input
             type="text"
+            name="name"
+            value={formData.name}
+            onChange={handleInputChange}
             className="px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-600"
             placeholder="Enter your name"
+            required
           />
         </div>
 
@@ -48,17 +87,25 @@ export const ContactPage = () => {
           <label className="text-lg md:text-xl">Email</label>
           <input
             type="email"
+            name="email"
+            value={formData.email}
+            onChange={handleInputChange}
             className="px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-600"
             placeholder="Enter your email"
+            required
           />
         </div>
 
         <div className="flex flex-col space-y-4">
           <label className="text-lg md:text-xl">Message</label>
           <textarea
+            name="message"
+            value={formData.message}
+            onChange={handleInputChange}
             className="px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-600"
             placeholder="Your message"
             rows="5"
+            required
           />
         </div>
 
@@ -82,6 +129,21 @@ export const ContactPage = () => {
         <p className="text-lg md:text-xl">Email: carista@example.com</p>
         <p className="text-lg md:text-xl">Phone: +91 9876543210</p>
         <p className="text-lg md:text-xl">Address:  Carista, Near Calicut Beach, Beach Rd,<br></br> opp. Lions Park, Vellayil,<br></br> Kozhikode, Kerala <br></br> 673032</p>
+      </motion.div>
+
+      {/* Link to Home Page */}
+      <motion.div
+        className="relative z-10 mt-8"
+        initial={{ opacity: 0, y: 100 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, ease: "easeOut", delay: 1.5 }}
+      >
+        <Link
+          to="/user/home"
+          className="text-lg md:text-xl text-purple-600 hover:underline"
+        >
+          Back to Home
+        </Link>
       </motion.div>
     </main>
   );

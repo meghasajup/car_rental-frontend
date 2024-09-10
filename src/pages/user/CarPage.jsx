@@ -59,13 +59,18 @@ export const CarPage = () => {
         {categories.map((category, index) => (
           <button
             key={index}
-            className={`px-4 py-2 rounded ${selectedCategory === category ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
+            className={`px-5 py-3 rounded-full transition-all duration-300 shadow-md ${selectedCategory === category
+                ? 'bg-gradient-to-r from-blue-400 to-purple-500 text-white shadow-lg'
+                : 'bg-gray-100 text-gray-600'
+              } hover:bg-gradient-to-r hover:from-blue-300 hover:to-purple-400 hover:text-white`}
             onClick={() => handleCategoryChange(category)}
           >
             {category}
           </button>
         ))}
       </div>
+
+
 
       {/* Car List */}
       <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 lg:gap-10'>

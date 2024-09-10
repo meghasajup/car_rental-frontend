@@ -7,7 +7,6 @@ import {
   Typography,
   Button,
   Tooltip,
-  IconButton,
 } from "@material-tailwind/react";
 import 'tailwindcss/tailwind.css';
 import { Link } from "react-router-dom";
@@ -41,8 +40,9 @@ export function CarCard({ car }) {
           {car.location || 'Not available'}
         </Typography>
         <div className="group mt-8 inline-flex flex-wrap items-center gap-3">
+          {/* Tooltip for Air Conditioning */}
           <Tooltip content="Air Conditioning">
-            <span className="cursor-pointer rounded-full border border-gray-200/5 bg-gray-500/5 p-3 text-gray-500 transition-colors hover:border-gray-900/10 hover:bg-gray-900/10 hover:!opacity-100 group-hover:opacity-70">
+            <span className="cursor-pointer p-3 text-gray hover:text-gray">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5">
                 <path d="M6 12a6 6 0 0112 0H6z" />
                 <path d="M12 6a6 6 0 016 6h-1.2a4.8 4.8 0 00-4.8-4.8V6zM6.8 12H6a6 6 0 016-6v1.2a4.8 4.8 0 00-4.8 4.8zM12 18a6 6 0 016-6h1.2a4.8 4.8 0 00-4.8 4.8V18zM6.8 18H6a6 6 0 016-6v1.2a4.8 4.8 0 00-4.8 4.8z" />
@@ -50,32 +50,36 @@ export function CarCard({ car }) {
             </span>
           </Tooltip>
 
+          {/* Tooltip for Bluetooth */}
           <Tooltip content="Bluetooth">
-            <span className="cursor-pointer rounded-full border border-gray-200/5 bg-gray-500/5 p-3 text-gray-500 transition-colors hover:border-gray-900/10 hover:bg-gray-900/10 hover:!opacity-100 group-hover:opacity-70">
+            <span className="cursor-pointer p-3 text-gray-500 hover:text-indigo-600">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5">
                 <path d="M11.97 2.03L10 4l1.5 1.5 1.47-1.46 1.5 1.5-2.97 2.97 3 3.01-1.5 1.5L12 10.5l-1.5 1.5 1.5 1.5-1.97 1.97 3.97 3.97L15.5 18l-2.03-2.03 1.97-1.97-2.97-2.97 2.97-2.97L12 4l1.5-1.5L13 2.03 11.97 2.03z" />
               </svg>
             </span>
           </Tooltip>
 
+          {/* Tooltip for GPS */}
           <Tooltip content="GPS">
-            <span className="cursor-pointer rounded-full border border-gray-200/5 bg-gray-500/5 p-3 text-gray-500 transition-colors hover:border-gray-900/10 hover:bg-gray-900/10 hover:!opacity-100 group-hover:opacity-70">
+            <span className="cursor-pointer p-3 text-gray-500 hover:text-indigo-600">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5">
                 <path d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 3a2 2 0 110 4 2 2 0 010-4zm0 12a8 8 0 01-8-8 8 8 0 018-8 8 8 0 018 8 8 8 0 01-8 8z" />
               </svg>
             </span>
           </Tooltip>
 
+          {/* Tooltip for Parking Sensors */}
           <Tooltip content="Parking Sensors">
-            <span className="cursor-pointer rounded-full border border-gray-200/5 bg-gray-500/5 p-3 text-gray-500 transition-colors hover:border-gray-900/10 hover:bg-gray-900/10 hover:!opacity-100 group-hover:opacity-70">
+            <span className="cursor-pointer p-3 text-gray-500 hover:text-indigo-600">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5">
                 <path d="M12 2a10 10 0 00-10 10 10 10 0 0010 10 10 10 0 0010-10 10 10 0 00-10-10zm0 16a6 6 0 01-6-6 6 6 0 016-6 6 6 0 016 6 6 6 0 01-6 6zm0-9a3 3 0 100 6 3 3 0 000-6z" />
               </svg>
             </span>
           </Tooltip>
 
+          {/* Tooltip for USB Port */}
           <Tooltip content="USB Port">
-            <span className="cursor-pointer rounded-full border border-gray-200/5 bg-gray-500/5 p-3 text-gray-500 transition-colors hover:border-gray-900/10 hover:bg-gray-900/10 hover:!opacity-100 group-hover:opacity-70">
+            <span className="cursor-pointer p-3 text-gray-500 hover:text-indigo-600">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5">
                 <path d="M12 2a2 2 0 00-2 2v5a2 2 0 002 2 2 2 0 002-2V4a2 2 0 00-2-2zm0 7a1 1 0 01-1-1V4a1 1 0 012 0v4a1 1 0 01-1 1zm-6 9h4v-2H6a2 2 0 00-2 2v1a1 1 0 001 1h4v-2H6v-2zm8 0h4v-2h-4v2zm-6-6h12v2H8v-2z" />
               </svg>

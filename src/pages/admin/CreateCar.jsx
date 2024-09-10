@@ -41,6 +41,8 @@ export const CreateCar = () => {
       }
     } catch (error) {
       toast.error('Error creating car. Please try again.');
+      console.log(error);
+      
     }
   };
 

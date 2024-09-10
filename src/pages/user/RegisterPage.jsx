@@ -34,7 +34,7 @@ export const RegisterPage = () => {
         formData.append('profileImage', profileImage);
       }
   
-      const response = await userRegister(formData); // Send FormData to the backend
+      const response = await userRegister(formData);
   
       toast.success('Registration Success');
       navigate('/login');

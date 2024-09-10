@@ -13,9 +13,10 @@ export const ProfilePage = () => {
 
   const handleLogOut = async () => {
     const response = await userLogout();
-    if (response?.success) {
-      navigate("/");
-    }
+    // if (response?.success) {
+    //   navigate("/");
+    // }
+    navigate("/");
   };
 
   const fetchUserProfile = async () => {
