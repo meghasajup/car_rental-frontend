@@ -15,8 +15,9 @@ export const AdminReviewManagement = () => {
 
   const fetchReviews = async () => {
     try {
-      const response = await axiosInstance.get('/admin/getAllReviews');
-      setReviews(response.data.reviews);
+      const response = await axiosInstance.get('/admin/reviews');
+      console.log(response.data.data)
+      setReviews(response.data.data);
     } catch (error) {
       toast.error('Failed to load reviews');
     }

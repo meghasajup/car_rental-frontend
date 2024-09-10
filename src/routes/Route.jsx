@@ -21,8 +21,8 @@ import { AdminCarManagement } from "../pages/admin/AdminCarManagement";
 import { AdminBookingManagement } from "../pages/admin/AdminBookingManagement";
 import { AdminReviewManagement } from "../pages/admin/AdminReviewManagement";
 import { BookingPage } from "../pages/user/BookingPage"
-import { PaymentPage } from "../pages/user/PaymentPage";
 import { CreateCar } from "../pages/admin/CreateCar";
+import { PaymentSuccess } from "../pages/user/PaymentSuccess";
 
 export const router = createBrowserRouter([
     {
@@ -85,8 +85,8 @@ export const router = createBrowserRouter([
                 element: <BookingPage />
             },
             {
-                path: "payment/:id",
-                element: <PaymentPage />
+                path:"payment-success",
+                element: <PaymentSuccess />
             },
             {
                 path: "contact",

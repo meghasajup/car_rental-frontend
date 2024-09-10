@@ -65,7 +65,7 @@ export const ProfilePage = () => {
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.8, ease: "easeOut", delay: 0.3 }}
       >
-        <div className="w-45 rounded-xl">
+        <div className="w-60 rounded-xl">
           <img src={user?.profileImage} alt="Profile" />
         </div>
       </motion.div>

@@ -54,7 +54,7 @@ export const Header = () => {
           About Us
         </Link>
         <Link
-          to="/car"
+          to="/register"
           className="text-gray dark:text-gray hover:text-blue-500 dark:hover:text-blue-300 transition-colors"
         >
           Car
@@ -105,7 +105,7 @@ export const Header = () => {
               About Us
             </Link>
             <Link
-              to="/car"
+              to="/register"
               className="text-gray dark:text-gray hover:text-blue-500 dark:hover:text-blue-300 transition-colors"
               onClick={toggleMenu}
             >

@@ -3,31 +3,58 @@ import { Link, useParams } from 'react-router-dom';
 import { axiosInstance } from '../../config/axiosInstance';
 import { FaGasPump, FaPalette, FaCogs, FaCar, FaTachometerAlt, FaMapMarkerAlt } from 'react-icons/fa';
 import { motion } from 'framer-motion';
+import { useForm } from 'react-hook-form';
+import { toast } from 'react-hot-toast';
 
 export const CarDetails = () => {
   const [carDetails, setCarDetails] = useState({});
+  const [reviews, setReviews] = useState([]);
   const { id } = useParams();
-
+  const { register, handleSubmit, reset } = useForm();
+  
+  // Fetch car details
   const fetchCarDetails = async () => {
     try {
-      const response = await axiosInstance({
-        url: `/car/getCar/${id}`,
-        method: 'GET',
-        withCredentials: true,
-      });
+      const response = await axiosInstance.get(`/car/getCar/${id}`);
       setCarDetails(response?.data?.data);
     } catch (error) {
       console.log(error);
     }
   };
 
+  // Fetch car reviews
+  const fetchCarReviews = async () => {
+    try {
+      const response = await axiosInstance.get(`/review/getReviewsByCarId/${id}`);
+      setReviews(response?.data?.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // Submit review
+  const onSubmitReview = async (data) => {
+    try {
+      const response = await axiosInstance.post('/review/createReviews', {
+        carId: id,
+        ...data,
+      });
+      toast.success('Review submitted successfully!');
+      reset(); // Reset form fields after submission
+      fetchCarReviews(); // Reload reviews after submission
+    } catch (error) {
+      console.log(error);
+      toast.error('Failed to submit review');
+    }
+  };
+
   useEffect(() => {
     fetchCarDetails();
+    fetchCarReviews();
   }, []);
 
   return (
     <div className="flex flex-col items-center p-6 text-grey">
-      
       <div className="flex flex-row w-full gap-8">
         {/* Left column with car image */}
         <motion.div
@@ -86,9 +113,8 @@ export const CarDetails = () => {
             <p className="text-lg">{carDetails.location || 'Location'}</p>
           </div>
 
-          {/* Add Price Per Day */}
           <div className="flex items-center mb-4">
-            <p className="text-lg">Price/day: {carDetails.pricePerDay ? `₹${carDetails.pricePerDay}` : 'Price Per Day'}</p>
+            <p className="text-lg">Price/day: ₹{carDetails.pricePerDay || 'Price Per Day'}</p>
           </div>
 
           <p className="text-lg mb-4">Registration Number: {carDetails.registrationNumber || 'Register Number'}</p>
@@ -96,27 +122,71 @@ export const CarDetails = () => {
 
           {/* Book Now Button */}
           <div className="flex justify-center mt-8">
-            <Link
-              to={{
-                pathname: `/user/booking/${carDetails._id}`,
-                state: {
-                  carDetails
-                }
-              }}
-            >
+            <Link to={`/user/booking/${carDetails._id}`}>
               <motion.button
                 className="px-8 py-4 text-lg font-semibold bg-gradient-to-r from-[#8A3FFC] via-[#5821CE] to-[#3B1AAB] text-white rounded-lg shadow-lg hover:bg-cyan-500 transition duration-300 ease-in-out"
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.8, ease: 'easeOut', delay: 0.5 }}
-                onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
               >
                 Book Now
               </motion.button>
             </Link>
-
           </div>
         </motion.div>
+      </div>
+
+      {/* Review Section */}
+      <div className="w-full mt-12">
+        <h2 className="text-2xl font-semibold mb-4">Reviews</h2>
+
+        {/* Review Form */}
+        <form onSubmit={handleSubmit(onSubmitReview)} className="mb-8">
+          <div className="flex flex-col mb-4">
+            <label className="text-lg mb-2">Rating</label>
+            <select className="border p-2 rounded" {...register('rating', { required: true })}>
+              <option value="">Select Rating</option>
+              <option value="1">1 - Poor</option>
+              <option value="2">2 - Fair</option>
+              <option value="3">3 - Good</option>
+              <option value="4">4 - Very Good</option>
+              <option value="5">5 - Excellent</option>
+            </select>
+          </div>
+
+          <div className="flex flex-col mb-4">
+            <label className="text-lg mb-2">Review</label>
+            <textarea
+              className="border p-2 rounded"
+              rows="4"
+              {...register('reviewText', { required: true })}
+              placeholder="Write your review"
+            ></textarea>
+          </div>
+
+          <button
+            type="submit"
+            className="px-6 py-3 bg-blue-500 text-white rounded-lg shadow-lg hover:bg-blue-700 transition duration-300"
+          >
+            Submit Review
+          </button>
+        </form>
+
+        {/* Display Reviews */}
+        <div className="flex flex-col space-y-6">
+          {reviews.length > 0 ? (
+            reviews.map((review) => (
+              <div key={review._id} className="p-4 border rounded-lg shadow-md">
+                <p className="font-semibold">{review.user.name}</p>
+                <p>Rating: {review.rating}</p>
+                <p>{review.reviewText}</p>
+                <p className="text-gray-500 text-sm">Reviewed on {new Date(review.createdAt).toLocaleDateString()}</p>
+              </div>
+            ))
+          ) : (
+            <p>No reviews yet.</p>
+          )}
+        </div>
       </div>
     </div>
   );

@@ -4,6 +4,8 @@ import { useForm } from 'react-hook-form';
 import { axiosInstance } from '../../config/axiosInstance';
 import { motion } from 'framer-motion';
 import backgroundImage from '../../assets/hone/footerIcon.png';
+import toast from 'react-hot-toast';
+import { loadStripe } from '@stripe/stripe-js';
 
 export const BookingPage = () => {
   const [carDetails, setCarDetails] = useState({});
@@ -14,14 +16,17 @@ export const BookingPage = () => {
   const [pickupDetails, setPickupDetails] = useState({});
   const [dropoffDetails, setDropoffDetails] = useState({});
 
+
   // Fetch car details
   useEffect(() => {
     const fetchCarDetails = async () => {
       try {
         const response = await axiosInstance.get(`/car/getCar/${id}`, { withCredentials: true });
         setCarDetails(response?.data?.data);
+        console.log(response);
+        
       } catch (error) {
-        console.error("Error fetching car details:", error);
+        console.error('Error fetching car details:', error);
       }
     };
     fetchCarDetails();
@@ -35,7 +40,7 @@ export const BookingPage = () => {
     return carDetails.pricePerDay * days;
   };
 
-  // Handle total cost calculation without submission
+  // Handle cost calculation
   const handleCalculateCost = (data) => {
     const total = calculateTotalCost(data.pickupDateTime, data.dropoffDateTime);
     setTotalCost(total);
@@ -51,50 +56,55 @@ export const BookingPage = () => {
     });
   };
 
-  // Handle form submission for booking
-  const handleBooking = async (data) => {
-    const total = calculateTotalCost(data.pickupDateTime, data.dropoffDateTime);
-    setTotalCost(total);
+  // Handle payment
+//   const handlePayment = async () => {
+//     try {
+//         const total = calculateTotalCost(watch('pickupDateTime'), watch('dropoffDateTime'));
 
-    // Assuming user ID is available from auth context or state
-    const userId = '66dbd672412b11102d2b14f1'; 
+//         const stripe = await stripePromise;
+//         const sessionResponse = await axiosInstance.post('/payment/create-payment', {
+//             carId: id,
+//             amount: total,
+//         });
 
-    try {
-      const bookingResponse = await axiosInstance.post(`/booking/createBooking`, {
-        withCredentials: true,
-        user: userId,
-        car: id,
-        startDate: data.pickupDateTime.split('T')[0],
-        startTime: data.pickupDateTime.split('T')[1],
-        returnDate: data.dropoffDateTime.split('T')[0],
-        returnTime: data.dropoffDateTime.split('T')[1],
-        totalPrice: total,
-        pickupLocation: data.pickupLocation,
-        dropoffLocation: data.dropoffLocation,
-        licenceNumber: data.licenceNumber,
-      });
+//         const sessionId = sessionResponse?.data?.sessionId;
 
-      const bookingId = bookingResponse?.data?.data?.bookingId;
+//         const result = await stripe.redirectToCheckout({ sessionId });
+//         if (result.error) {
+//             toast.error(result.error.message);
+//         }
+//     } catch (error) {
+//         console.error('Error initiating payment:', error);
+//         toast.error('An error occurred. Please try again.');
+//     }
+// };
 
-      navigate(`/user/payment/${bookingId}`, {
-        state: {
-          bookingId,
-          totalCost: total,
-          carDetails,
-          pickupDetails: {
-            location: data.pickupLocation,
-            dateTime: data.pickupDateTime,
-          },
-          dropoffDetails: {
-            location: data.dropoffLocation,
-            dateTime: data.dropoffDateTime,
-          },
-        },
-      });
-    } catch (error) {
-      console.error('Error creating booking:', error.response?.data || error.message);
-    }
-  };
+
+const makePayment = async () => {
+  try {
+    const stripe = await loadStripe(import.meta.env.VITE_REACT_APP_STRIPE_API_KEY);
+    const total = calculateTotalCost(watch('pickupDateTime'), watch('dropoffDateTime'));
+
+    const sessionResponse = await axiosInstance({
+      url: "/payment/create-payment",
+      method: "POST",
+      data: {  carDetails,
+        amount: total, },
+    });
+    console.log(sessionResponse, "session=======>");
+
+    const sessionId = sessionResponse?.data?.sessionId;
+
+    const result = await stripe.redirectToCheckout({
+      sessionId: sessionId,
+    });
+
+  } catch (error) {
+    console.error("Payment processing error:", error);
+    toast.error("An error occurred during payment processing. Please try again.");
+  }
+};
+
 
   // Validate dates
   useEffect(() => {
@@ -102,9 +112,9 @@ export const BookingPage = () => {
       const start = new Date(watch('pickupDateTime'));
       const end = new Date(watch('dropoffDateTime'));
       if (end < start) {
-        setError("dropoffDateTime", { message: "Dropoff date cannot be earlier than pickup date" });
+        setError('dropoffDateTime', { message: 'Dropoff date cannot be earlier than pickup date' });
       } else {
-        clearErrors("dropoffDateTime");
+        clearErrors('dropoffDateTime');
       }
     }
   }, [watch('pickupDateTime'), watch('dropoffDateTime'), setError, clearErrors]);
@@ -201,28 +211,30 @@ export const BookingPage = () => {
         {pickupDetails.location && (
           <div className="mt-4">
             <p className="text-lg font-semibold">Pickup Details</p>
-            <p className="text-lg">Location: {pickupDetails.location}</p>
-            <p className="text-lg">Date and Time: {pickupDetails.dateTime}</p>
+            <p>Location: {pickupDetails.location}</p>
+            <p>Date/Time: {pickupDetails.dateTime}</p>
           </div>
         )}
-
         {dropoffDetails.location && (
           <div className="mt-4">
             <p className="text-lg font-semibold">Dropoff Details</p>
-            <p className="text-lg">Location: {dropoffDetails.location}</p>
-            <p className="text-lg">Date and Time: {dropoffDetails.dateTime}</p>
+            <p>Location: {dropoffDetails.location}</p>
+            <p>Date/Time: {dropoffDetails.dateTime}</p>
           </div>
         )}
 
-        {/* Book Your Car Button */}
-        <motion.button
-          className="w-full px-8 py-4 text-lg font-semibold bg-gradient-to-r from-[#8A3FFC] via-[#5821CE] to-[#3B1AAB] text-white rounded-lg mt-4"
-          onClick={handleSubmit(handleBooking)}
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-        >
-          Book Your Car
-        </motion.button>
+        {/* Pay Now Button */}
+        {totalCost > 0 && (
+          <motion.button
+            onClick={handleSubmit(makePayment)}
+            className="mt-6 w-full px-4 py-2 text-white bg-green-500 rounded-lg hover:bg-green-600 transition duration-300"
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8 }}
+          >
+            Pay Now
+          </motion.button>
+        )}
       </motion.div>
     </div>
   );
