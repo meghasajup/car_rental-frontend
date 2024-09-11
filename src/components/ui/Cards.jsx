@@ -21,6 +21,7 @@ export function CarCard({ car }) {
   return (
     <Card className="w-full max-w-[26rem] shadow-2xl p-4 bg-transparent transform transition-all duration-300 hover:shadow-3xl hover:scale-105">
       <CardHeader floated={false} color="blue-gray">
+
         <img
           src={car.image}
           alt="car image"
@@ -29,12 +30,13 @@ export function CarCard({ car }) {
       </CardHeader>
       <CardBody>
         <div className="mb-3 flex items-center justify-between">
-          <Typography variant="h5" color="blue-gray" className="font-medium text-gray-500 tex">
+          <Typography variant="h5" color="blue-gray" className="font-medium text-gray-500">
             {car.model || 'Model'}
           </Typography>
         </div>
         <Typography color="gray" className="text-gray-500">
-          {car.category || 'Category'}
+          Price Per Day: ₹{car.pricePerDay || 'Price per day'}
+
         </Typography>
         <Typography color="gray" className="text-gray-500">
           {car.location || 'Not available'}

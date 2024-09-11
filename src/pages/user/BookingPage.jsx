@@ -16,7 +16,6 @@ export const BookingPage = () => {
   const [pickupDetails, setPickupDetails] = useState({});
   const [dropoffDetails, setDropoffDetails] = useState({});
 
-
   // Fetch car details
   useEffect(() => {
     const fetchCarDetails = async () => {
@@ -24,7 +23,6 @@ export const BookingPage = () => {
         const response = await axiosInstance.get(`/car/getCar/${id}`, { withCredentials: true });
         setCarDetails(response?.data?.data);
         console.log(response);
-        
       } catch (error) {
         console.error('Error fetching car details:', error);
       }
@@ -56,68 +54,43 @@ export const BookingPage = () => {
     });
   };
 
-  // Handle payment
-//   const handlePayment = async () => {
-//     try {
-//         const total = calculateTotalCost(watch('pickupDateTime'), watch('dropoffDateTime'));
+  // Handle booking creation and payment
+  const bookingSubmit = async (data) => {
+    try {
+      // Create the booking
+      const bookingResponse = await axiosInstance.post('/booking/createBooking', {
+        ...data,
+        car: id,
+        user: '66e071ec53f36dfb8b78e40c',
+        totalCost,
+      }, {
+        withCredentials: true,
+      });
 
-//         const stripe = await stripePromise;
-//         const sessionResponse = await axiosInstance.post('/payment/create-payment', {
-//             carId: id,
-//             amount: total,
-//         });
+      // Proceed with payment
+      const sessionResponse = await axiosInstance({
+        url: "/payment/create-payment",
+        method: "POST",
+        data: {
+          carDetails,
+          amount: totalCost,
+        },
+      });
+      
+      const stripe = await loadStripe(import.meta.env.VITE_REACT_APP_STRIPE_API_KEY);
+      const sessionId = sessionResponse?.data?.sessionId;
+      
+      const result = await stripe.redirectToCheckout({ sessionId });
 
-//         const sessionId = sessionResponse?.data?.sessionId;
-
-//         const result = await stripe.redirectToCheckout({ sessionId });
-//         if (result.error) {
-//             toast.error(result.error.message);
-//         }
-//     } catch (error) {
-//         console.error('Error initiating payment:', error);
-//         toast.error('An error occurred. Please try again.');
-//     }
-// };
-
-
-const makePayment = async () => {
-  try {
-    const stripe = await loadStripe(import.meta.env.VITE_REACT_APP_STRIPE_API_KEY);
-    const total = calculateTotalCost(watch('pickupDateTime'), watch('dropoffDateTime'));
-
-    const sessionResponse = await axiosInstance({
-      url: "/payment/create-payment",
-      method: "POST",
-      data: {  carDetails,
-        amount: total, },
-    });
-    console.log(sessionResponse, "session=======>");
-
-    const sessionId = sessionResponse?.data?.sessionId;
-
-    const result = await stripe.redirectToCheckout({
-      sessionId: sessionId,
-    });
-
-  } catch (error) {
-    console.error("Payment processing error:", error);
-    toast.error("An error occurred during payment processing. Please try again.");
-  }
-};
-
-
-  // Validate dates
-  useEffect(() => {
-    if (watch('pickupDateTime') && watch('dropoffDateTime')) {
-      const start = new Date(watch('pickupDateTime'));
-      const end = new Date(watch('dropoffDateTime'));
-      if (end < start) {
-        setError('dropoffDateTime', { message: 'Dropoff date cannot be earlier than pickup date' });
-      } else {
-        clearErrors('dropoffDateTime');
+      if (result.error) {
+        toast.error(result.error.message);
       }
+
+    } catch (error) {
+      console.error('Error creating booking or processing payment:', error);
+      toast.error('An error occurred. Please try again.');
     }
-  }, [watch('pickupDateTime'), watch('dropoffDateTime'), setError, clearErrors]);
+  };
 
   return (
     <div
@@ -226,7 +199,8 @@ const makePayment = async () => {
         {/* Pay Now Button */}
         {totalCost > 0 && (
           <motion.button
-            onClick={handleSubmit(makePayment)}
+            type='button'
+            onClick={handleSubmit(bookingSubmit)}
             className="mt-6 w-full px-4 py-2 text-white bg-green-500 rounded-lg hover:bg-green-600 transition duration-300"
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}

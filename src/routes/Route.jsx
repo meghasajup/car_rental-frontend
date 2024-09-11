@@ -23,6 +23,7 @@ import { AdminReviewManagement } from "../pages/admin/AdminReviewManagement";
 import { BookingPage } from "../pages/user/BookingPage"
 import { CreateCar } from "../pages/admin/CreateCar";
 import { PaymentSuccess } from "../pages/user/PaymentSuccess";
+import { AdminReportManagement } from "../pages/admin/AdminReportManagement";
 
 export const router = createBrowserRouter([
     {
@@ -129,6 +130,9 @@ export const router = createBrowserRouter([
             {
                 path: "review-management",
                 element: <AdminReviewManagement />
+            },{
+                path: "report-management",
+                element: <AdminReportManagement />
             },
         ]
     },

@@ -69,8 +69,8 @@ export const AdminReviewManagement = () => {
   };
 
   const startEditReview = (review) => {
-    setValue('userId', review.userId);
-    setValue('carId', review.carId);
+    setValue('userId', review.user);
+    setValue('carId', review.car);
     setValue('rating', review.rating);
     setValue('reviewText', review.reviewText);
     setEditingReviewId(review._id);
@@ -141,8 +141,8 @@ export const AdminReviewManagement = () => {
           <tbody>
             {reviews.map((review) => (
               <tr key={review._id}>
-                <td className="px-4 py-2">{review.userId}</td>
-                <td className="px-4 py-2">{review.carId}</td>
+                <td className="px-4 py-2">{review.user}</td>
+                <td className="px-4 py-2">{review.car}</td>
                 <td className="px-4 py-2">{review.rating}</td>
                 <td className="px-4 py-2">{review.reviewText}</td>
                 <td className="px-4 py-2 flex space-x-2">

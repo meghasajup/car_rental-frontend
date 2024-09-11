@@ -20,8 +20,10 @@ export const LoginPage = () => {
   const onSubmit = async (data) => {
     try {
       const response = await userLogin(data)
-      toast.success('Login Success');
-      navigate('/user/home');
+      if (response) {
+        toast.success('Login Success');
+        navigate('/user/home');
+      }
     } catch (error) {
       // toast.error('Login Failed');
       console.log(error);

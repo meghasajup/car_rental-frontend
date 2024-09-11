@@ -52,7 +52,7 @@ export const AdminLoginPage = () => {
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.6, ease: "easeOut" }}
           >
-            Welcome Back
+            Hello Admin....👋
           </motion.h1>
           <motion.p
             className="text-lg text-gray mb-8"

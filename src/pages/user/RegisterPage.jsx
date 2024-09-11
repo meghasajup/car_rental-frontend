@@ -98,7 +98,7 @@ export const RegisterPage = () => {
                 type="text"
                 {...register("name")}
                 placeholder="Name"
-                className="input input-bordered rounded-lg p-3 text-black focus:outline-none focus:ring-2 focus:ring-cyan-500 transition-transform"
+                className="input input-bordered rounded-lg p-3 text-gray focus:outline-none focus:ring-2 focus:ring-cyan-500 transition-transform"
                 required
               />
             </div>
@@ -110,7 +110,7 @@ export const RegisterPage = () => {
                 type="tel"
                 {...register("phone")}
                 placeholder="Mobile"
-                className="input input-bordered rounded-lg p-3 text-black focus:outline-none focus:ring-2 focus:ring-cyan-500 transition-transform"
+                className="input input-bordered rounded-lg p-3 text-gray focus:outline-none focus:ring-2 focus:ring-cyan-500 transition-transform"
                 required
               />
             </div>
@@ -124,7 +124,7 @@ export const RegisterPage = () => {
               type="email"
               {...register("email")}
               placeholder="Email"
-              className="input input-bordered rounded-lg p-3 text-black focus:outline-none focus:ring-2 focus:ring-cyan-500 transition-transform"
+              className="input input-bordered rounded-lg p-3 text-gray focus:outline-none focus:ring-2 focus:ring-cyan-500 transition-transform"
               required
             />
           </div>
@@ -137,7 +137,7 @@ export const RegisterPage = () => {
               type="password"
               {...register("password")}
               placeholder="Password"
-              className="input input-bordered rounded-lg p-3 text-black focus:outline-none focus:ring-2 focus:ring-cyan-500 transition-transform"
+              className="input input-bordered rounded-lg p-3 text-gray focus:outline-none focus:ring-2 focus:ring-cyan-500 transition-transform"
               required
             />
           </div>
@@ -150,7 +150,7 @@ export const RegisterPage = () => {
               type="password"
               {...register("confirmPassword")}
               placeholder="Confirm Password"
-              className="input input-bordered rounded-lg p-3 text-black focus:outline-none focus:ring-2 focus:ring-cyan-500 transition-transform"
+              className="input input-bordered rounded-lg p-3 text-gray focus:outline-none focus:ring-2 focus:ring-cyan-500 transition-transform"
               required
             />
           </div>
@@ -162,7 +162,7 @@ export const RegisterPage = () => {
             <input
               type="file"
               {...register('profileImage')}
-              className="input input-bordered rounded-lg p-3 text-black focus:outline-none focus:ring-2 focus:ring-cyan-500 transition-transform"
+              className="input input-bordered rounded-lg p-3 text-gray focus:outline-none focus:ring-2 focus:ring-cyan-500 transition-transform"
 
               required
             />
