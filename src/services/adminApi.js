@@ -9,6 +9,9 @@ export const adminLogin = async (data) => {
           method: 'POST',
           data,
           withCredentials: true,
+          headers: {
+            "Access-Control-Allow-Origin": "*"
+          }
       });
       return response?.data;
   } catch (error) {

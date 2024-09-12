@@ -17,7 +17,8 @@ export const AdminAuth = ({ children }) => {
                 method: 'GET',
                 withCredentials: true,
                 headers: {
-                    Authorization: `Bearer ${Cookies.get('loginToken')}` 
+                    Authorization: `Bearer ${Cookies.get('loginToken')}` ,
+                    "Access-Control-Allow-Origin": "*"
                 }
             });
             setAdmin(true); // Admin is authenticated
