@@ -9,9 +9,6 @@ export const adminLogin = async (data) => {
           method: 'POST',
           data,
           withCredentials: true,
-          headers: {
-            Authorization: `Bearer ${Cookies.get('admintoken')}` 
-        }
       });
       return response?.data;
   } catch (error) {
