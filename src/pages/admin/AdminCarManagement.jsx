@@ -3,6 +3,7 @@ import { axiosInstance } from "../../config/axiosInstance";
 import { useNavigate } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
 import "./AdminCarStyle.css";
+import Cookies from 'js-cookie';
 
 export const AdminCarManagement = () => {
   const [cars, setCars] = useState([]);
@@ -27,7 +28,14 @@ export const AdminCarManagement = () => {
   useEffect(() => {
     const fetchCars = async () => {
       try {
-        const { data } = await axiosInstance.get("/admin/cars");
+        const { data } = await axiosInstance.get({
+          url: "/admin/cars",
+          method: 'GET',
+          headers: {
+              "Access-Control-Allow-Origin": "*",
+              Authorization: `Bearer ${Cookies.get('loginToken')}` ,
+            }
+      });
         setCars(data.data);
       } catch (error) {
         toast.error("Error fetching cars");
