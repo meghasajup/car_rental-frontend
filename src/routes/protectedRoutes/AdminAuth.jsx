@@ -16,6 +16,10 @@ export const AdminAuth = ({ children }) => {
                 url: '/admin/check-admin',
                 method: 'GET',
                 withCredentials: true,
+                headers: {
+                    "Access-Control-Allow-Origin": "*",
+                    Authorization: `Bearer ${Cookies.get('loginToken')}` ,
+                  }
             });
             setAdmin(true); // Admin is authenticated
         } catch (error) {
