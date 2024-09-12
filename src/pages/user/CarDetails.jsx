@@ -5,13 +5,15 @@ import { FaGasPump, FaPalette, FaCogs, FaCar, FaTachometerAlt, FaMapMarkerAlt } 
 import { motion } from 'framer-motion';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
+import ReactStars from 'react-rating-stars-component'; // Import the star rating component
 
 export const CarDetails = () => {
   const [carDetails, setCarDetails] = useState({});
   const [reviews, setReviews] = useState([]);
   const { id } = useParams();
   const { register, handleSubmit, reset } = useForm();
-  
+  const [rating, setRating] = useState(0); // State for star rating
+
   // Fetch car details
   const fetchCarDetails = async () => {
     try {
@@ -37,10 +39,11 @@ export const CarDetails = () => {
     try {
       const response = await axiosInstance.post('/review/createReviews', {
         carId: id,
+        rating, // Add the star rating
         ...data,
       });
       toast.success('Review submitted successfully!');
-      reset(); // Reset form fields after submission
+      reset();
       fetchCarReviews(); // Reload reviews after submission
     } catch (error) {
       console.log(error);
@@ -53,6 +56,16 @@ export const CarDetails = () => {
     fetchCarReviews();
   }, []);
 
+  // Configuration for ReactStars
+  const starConfig = {
+    size: 30,
+    count: 5,
+    isHalf: false,
+    value: rating,
+    onChange: (newRating) => setRating(newRating),
+    activeColor: "#ffd700",
+  };
+
   return (
     <div className="flex flex-col items-center p-6 text-grey">
       <div className="flex flex-row w-full gap-8">
@@ -60,7 +73,7 @@ export const CarDetails = () => {
         <motion.div
           className="w-1/2 h-auto mb-6"
           initial={{ opacity: 0, x: -50 }}
-          animate={{ opacity: 1, x: 0 }}  
+          animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8 }}
         >
           <img
@@ -144,14 +157,7 @@ export const CarDetails = () => {
         <form onSubmit={handleSubmit(onSubmitReview)} className="mb-8">
           <div className="flex flex-col mb-4">
             <label className="text-lg mb-2">Rating</label>
-            <select className="border p-2 rounded" {...register('rating', { required: true })}>
-              <option value="">Select Rating</option>
-              <option value="1">1 - Poor</option>
-              <option value="2">2 - Fair</option>
-              <option value="3">3 - Good</option>
-              <option value="4">4 - Very Good</option>
-              <option value="5">5 - Excellent</option>
-            </select>
+            <ReactStars {...starConfig} />
           </div>
 
           <div className="flex flex-col mb-4">
@@ -178,9 +184,20 @@ export const CarDetails = () => {
             reviews.map((review) => (
               <div key={review._id} className="p-4 border rounded-lg shadow-md">
                 <p className="font-semibold">{review.user.name}</p>
-                <p>Rating: {review.rating}</p>
-                <p>{review.reviewText}</p>
-                <p className="text-gray-500 text-sm">Reviewed on {new Date(review.createdAt).toLocaleDateString()}</p>
+
+                {/* Display Star Rating */}
+                <ReactStars
+                  count={5}
+                  size={24}
+                  value={review.rating} // Display the rating from the review
+                  edit={false} // Make the stars non-editable
+                  activeColor="#ffd700"
+                />
+
+                <p className="mt-2">{review.reviewText}</p>
+                <p className="text-gray-500 text-sm">
+                  Reviewed on {new Date(review.createdAt).toLocaleDateString()}
+                </p>
               </div>
             ))
           ) : (
