@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import { axiosInstance } from '../../config/axiosInstance';
 import toast from 'react-hot-toast';
 import { FaEdit, FaTrashAlt } from 'react-icons/fa';
+import Cookies from 'js-cookie';
 
 export const AdminBookingManagement = () => {
   const { register, handleSubmit, reset, setValue } = useForm();
@@ -12,7 +13,14 @@ export const AdminBookingManagement = () => {
   // Fetch all bookings
   const fetchBookings = async () => {
     try {
-      const { data } = await axiosInstance.get('/admin/bookings');
+      const { data } = await axiosInstance({
+        url: '/admin/bookings',
+        method: 'GET',
+        headers: {
+            "Access-Control-Allow-Origin": "*",
+            Authorization: `Bearer ${Cookies.get('loginToken')}` ,
+          }
+    })
       setBookings(data.data);
       console.log(data.data);
     } catch (error) {

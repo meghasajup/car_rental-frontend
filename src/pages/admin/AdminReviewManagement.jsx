@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import { axiosInstance } from '../../config/axiosInstance';
 import toast from 'react-hot-toast';
 import { FaEdit, FaTrash, FaStar } from 'react-icons/fa';
+import Cookies from 'js-cookie';
 
 export const AdminReviewManagement = () => {
   const { register, handleSubmit, reset, formState: { errors }, setValue } = useForm();
@@ -16,7 +17,14 @@ export const AdminReviewManagement = () => {
 
   const fetchReviews = async () => {
     try {
-      const response = await axiosInstance.get('/admin/reviews');
+      const response = await axiosInstance({
+        url: '/admin/reviews',
+        method: 'GET',
+        headers: {
+            "Access-Control-Allow-Origin": "*",
+            Authorization: `Bearer ${Cookies.get('loginToken')}` ,
+          }
+    })
       console.log(response.data.data);
       setReviews(response.data.data);
     } catch (error) {
