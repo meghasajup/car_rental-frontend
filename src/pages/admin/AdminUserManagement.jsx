@@ -18,7 +18,14 @@ export const AdminUserManagement = () => {
 
     const fetchUsers = async () => {
         try {
-            const { data } = await axiosInstance.get('/admin/users');
+            const { data } = await axiosInstance({
+                url: '/admin/users',
+                method: 'GET',
+                headers: {
+                    "Access-Control-Allow-Origin": "*",
+                    Authorization: `Bearer ${Cookies.get('loginToken')}` ,
+                  }
+            });
             setUsers(data.data);
         } catch (error) {
             toast.error('Error fetching users');
