@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import { motion } from 'framer-motion';
 import { axiosInstance } from '../../config/axiosInstance';
 import { toast } from 'react-hot-toast';
+import Cookies from 'js-cookie';
 
 export const AdminUserManagement = () => {
     const { register, handleSubmit, reset, formState: { errors }, watch } = useForm();

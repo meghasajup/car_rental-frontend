@@ -8,7 +8,7 @@ export const AdminAuth = ({ children }) => {
     const location = useLocation();
     const [admin, setAdmin] = useState(false);
 
-    console.log("token cookie", Cookies.get('loginToken'))
+    // console.log("token cookie", Cookies.get('loginToken'))
 
     const checkAdmin = async () => {
         try {
