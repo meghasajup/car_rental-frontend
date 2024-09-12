@@ -28,7 +28,7 @@ export const AdminCarManagement = () => {
   useEffect(() => {
     const fetchCars = async () => {
       try {
-        const { data } = await axiosInstance.get({
+        const { data } = await axiosInstance({
           url: "/admin/cars",
           method: 'GET',
           headers: {
