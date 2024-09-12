@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { axiosInstance } from '../../config/axiosInstance';
 import { useLocation, useNavigate } from 'react-router-dom';
+import Cookies from 'js-cookie';
 
 export const AdminAuth = ({ children }) => {
     const navigate = useNavigate();
     const location = useLocation();
     const [admin, setAdmin] = useState(false);
+
+    // console.log("token cookie", Cookies.get('admintoken'))
 
     const checkAdmin = async () => {
         try {
@@ -13,6 +16,9 @@ export const AdminAuth = ({ children }) => {
                 url: '/admin/check-admin',
                 method: 'GET',
                 withCredentials: true,
+                headers: {
+                    Authorization: `Bearer ${Cookies.get('admintoken')}` 
+                }
             });
             setAdmin(true); // Admin is authenticated
         } catch (error) {
