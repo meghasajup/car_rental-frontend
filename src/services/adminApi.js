@@ -1,5 +1,6 @@
 import { toast } from "react-hot-toast";
 import { axiosInstance } from "../config/axiosInstance";
+import Cookies from 'js-cookie';
 
 export const adminLogin = async (data) => {
   try {
@@ -7,7 +8,10 @@ export const adminLogin = async (data) => {
           url: '/admin/login',
           method: 'POST',
           data,
-          withCredentials: true
+          withCredentials: true,
+          headers: {
+            Authorization: `Bearer ${Cookies.get('admintoken')}` 
+        }
       });
       return response?.data;
   } catch (error) {

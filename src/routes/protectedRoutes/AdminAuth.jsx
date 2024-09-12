@@ -8,7 +8,7 @@ export const AdminAuth = ({ children }) => {
     const location = useLocation();
     const [admin, setAdmin] = useState(false);
 
-    // console.log("token cookie", Cookies.get('admintoken'))
+    console.log("token cookie", Cookies.get('loginToken'))
 
     const checkAdmin = async () => {
         try {
@@ -17,7 +17,7 @@ export const AdminAuth = ({ children }) => {
                 method: 'GET',
                 withCredentials: true,
                 headers: {
-                    Authorization: `Bearer ${Cookies.get('admintoken')}` 
+                    Authorization: `Bearer ${Cookies.get('loginToken')}` 
                 }
             });
             setAdmin(true); // Admin is authenticated

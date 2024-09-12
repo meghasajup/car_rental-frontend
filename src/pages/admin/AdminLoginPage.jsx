@@ -5,6 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from "react-hook-form";
 import toast from 'react-hot-toast';
 import { adminLogin } from '../../services/adminApi';
+import Cookies from 'js-cookie';
 
 export const AdminLoginPage = () => {
 
@@ -22,6 +23,7 @@ export const AdminLoginPage = () => {
       console.log(response);
       if (response) {
         toast.success('Login Success');
+        Cookies.set("loginToken", response.loginToken)
         navigate('/admin/admin-dashboard');
       }
     } catch (error) {
