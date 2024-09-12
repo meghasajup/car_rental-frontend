@@ -10,7 +10,8 @@ export const adminLogin = async (data) => {
           data,
           withCredentials: true,
           headers: {
-            "Access-Control-Allow-Origin": "*"
+            "Access-Control-Allow-Origin": "*",
+            Authorization: `Bearer ${Cookies.get('loginToken')}` ,
           }
       });
       return response?.data;

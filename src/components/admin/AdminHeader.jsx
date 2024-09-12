@@ -5,6 +5,7 @@ import { DarkMode } from '../ui/DarkMode';
 import { FaBars, FaTimes } from 'react-icons/fa';
 import { axiosInstance } from '../../config/axiosInstance';
 import { toast } from 'react-hot-toast';
+import Cookies from 'js-cookie';
 
 export const AdminHeader = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -17,6 +18,7 @@ export const AdminHeader = () => {
   const handleLogout = async () => {
     try {
       await axiosInstance.post('/admin/logout');
+      Cookies.remove("loginToken")
       toast.success('Successfully logged out!');
       navigate('/');
     } catch (error) {
