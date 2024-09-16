@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import Cookies from 'js-cookie';
 import {
   Card,
   CardHeader,
@@ -12,31 +13,21 @@ import 'tailwindcss/tailwind.css';
 import { Link } from "react-router-dom";
 import { axiosInstance } from '../../config/axiosInstance'; 
 
-export function CarCard({ car }) {
-  // Initialize state from local storage
-  const [isLiked, setIsLiked] = useState(() => {
-    const saved = localStorage.getItem(`car-${car._id}-liked`);
-    return saved === 'true' ? true : false;
-  });
+export function CarCard({ car, userId }) {
+  const [isLiked, setIsLiked] = useState(car.isLiked || false);
 
   // Function to handle add/remove to wishlist
   const toggleWishlist = async () => {
     try {
       if (isLiked) {
-        const response = await removeFromWishlist(car._id);
+        const response = await removeFromWishlist(car._id, userId);
         if (response.success) {
           setIsLiked(false); 
-          localStorage.setItem(`car-${car._id}-liked`, 'false');
-        } else {
-          console.error(response.message);
         }
       } else {
-        const response = await addToWishlist(car._id);
+        const response = await addToWishlist(car._id, userId);
         if (response.success) {
           setIsLiked(true); 
-          localStorage.setItem(`car-${car._id}-liked`, 'true');
-        } else {
-          console.error(response.message);
         }
       }
     } catch (error) {
@@ -45,9 +36,9 @@ export function CarCard({ car }) {
   };
 
   // Add car to the wishlist
-  const addToWishlist = async (carId) => {
+  const addToWishlist = async (carId, userId) => {
     try {
-      const response = await axiosInstance.post('/wishlist/add', { carId });
+      const response = await axiosInstance.post('/wishlist/add', { carId, userId });
       return response.data; 
     } catch (error) {
       console.error("Error adding to wishlist:", error);
@@ -56,13 +47,12 @@ export function CarCard({ car }) {
   };
 
   // Remove car from the wishlist
-  const removeFromWishlist = async (carId) => {
+  const removeFromWishlist = async (carId, userId) => {
     try {
-      const response = await axiosInstance.delete(`/wishlist/remove/${carId}`);
-      console.log('Remove response:', response.data); 
+      const response = await axiosInstance.delete(`/wishlist/remove/${carId}/${userId}`);
       return response.data; 
     } catch (error) {
-      console.error("Error removing from wishlist:", error.response?.data?.message || error.message);
+      console.error(error);
       return { success: false, message: error.response?.data?.message || "Error removing from wishlist" };
     }
   };
