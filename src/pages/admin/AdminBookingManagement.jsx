@@ -66,8 +66,8 @@ export const AdminBookingManagement = () => {
   // Set form data when editing
   const startEdit = (booking) => {
     setEditingBookingId(booking._id);
-    setValue('user', booking.user?._id || 'N/A');
-    setValue('car', booking.car?._id || 'N/A');
+    setValue('user', booking.user?.name || 'N/A');
+    setValue('car', booking.car?.brand || 'N/A');
     setValue('startDate', booking.startDate);
     setValue('startTime', booking.startTime);
     setValue('returnDate', booking.returnDate);
@@ -100,8 +100,8 @@ export const AdminBookingManagement = () => {
           <tbody>
             {bookings.map((booking) => (
               <tr key={booking._id} className="hover:bg-gray-100">
-                <td className="px-4 py-2 border">{booking.user ? booking.user._id : 'N/A'}</td>
-                <td className="px-4 py-2 border">{booking.car ? booking.car._id : 'N/A'}</td>
+                <td className="px-4 py-2 border">{booking.user ? booking.user.name : 'N/A'}</td>
+                <td className="px-4 py-2 border">{booking.car ? booking.car.brand : 'N/A'}</td>
                 <td className="px-4 py-2 border">{new Date(booking.pickupDateTime).toLocaleDateString()}</td>
                 <td className="px-4 py-2 border">{new Date(booking.pickupDateTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</td>
                 <td className="px-4 py-2 border">{new Date(booking.dropoffDateTime).toLocaleDateString()}</td>
@@ -134,19 +134,19 @@ export const AdminBookingManagement = () => {
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 mt-8 p-6 rounded-lg shadow-xl border border-gray-900">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label>User ID</label>
+              <label>User</label>
               <input
                 {...register('user', { required: true })}
                 className="border p-2 w-full rounded"
-                placeholder="User ID"
+                placeholder="User "
               />
             </div>
             <div>
-              <label>Car ID</label>
+              <label>Car</label>
               <input
                 {...register('car', { required: true })}
                 className="border p-2 w-full rounded"
-                placeholder="Car ID"
+                placeholder="Car "
               />
             </div>
           </div>

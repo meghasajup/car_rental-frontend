@@ -105,7 +105,7 @@ export const AdminHomePage = () => {
           <BarChart2 className="w-12 h-12 text-gray mb-4" />
           <h2 className="text-2xl font-bold mb-2">Reports Management</h2>
           <p className="text-gray mb-4">Generate and view system reports.</p>
-          <Link to="/admin/reports-management">
+          <Link to="/admin/report-management">
             <motion.button
               className="mt-2 px-3 py-2 bg-gradient-to-r from-[#8A3FFC] via-[#5821CE] to-[#3B1AAB] text-white rounded-full text-lg hover:scale-105 transition-transform"
               whileHover={{ scale: 1.05 }}

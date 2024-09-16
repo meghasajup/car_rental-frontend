@@ -54,7 +54,7 @@ export const Header = () => {
           About Us
         </Link>
         <Link
-          to="/register"
+          to="/login"
           className="text-gray dark:text-gray hover:text-blue-500 dark:hover:text-blue-300 transition-colors"
         >
           Car
@@ -97,6 +97,7 @@ export const Header = () => {
             >
               Home
             </Link>
+
             <Link
               to="/about"
               className="text-gray dark:text-gray hover:text-blue-500 dark:hover:text-blue-300 transition-colors"
@@ -104,13 +105,15 @@ export const Header = () => {
             >
               About Us
             </Link>
+
             <Link
-              to="/register"
+              to="/login"
               className="text-gray dark:text-gray hover:text-blue-500 dark:hover:text-blue-300 transition-colors"
               onClick={toggleMenu}
             >
               Car
             </Link>
+
             <Link
               to="/contact"
               className="text-gray dark:text-gray hover:text-blue-500 dark:hover:text-blue-300 transition-colors"
@@ -118,6 +121,7 @@ export const Header = () => {
             >
               Contact
             </Link>
+
             <div className="flex items-center gap-4">
               <DarkMode />
               <Link to="/register" onClick={toggleMenu}>

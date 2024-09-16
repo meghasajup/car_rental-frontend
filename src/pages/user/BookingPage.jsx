@@ -11,10 +11,11 @@ export const BookingPage = () => {
   const [carDetails, setCarDetails] = useState({});
   const { id } = useParams();
   const navigate = useNavigate();
-  const { register, handleSubmit, watch, setError, clearErrors, formState: { errors } } = useForm();
+  const { register, handleSubmit, watch, setError, clearErrors, formState: { errors }, setValue } = useForm();
   const [totalCost, setTotalCost] = useState(0);
   const [pickupDetails, setPickupDetails] = useState({});
   const [dropoffDetails, setDropoffDetails] = useState({});
+  const [selfDrive, setSelfDrive] = useState(true); 
 
   // Fetch car details
   useEffect(() => {
@@ -22,7 +23,6 @@ export const BookingPage = () => {
       try {
         const response = await axiosInstance.get(`/car/getCar/${id}`, { withCredentials: true });
         setCarDetails(response?.data?.data);
-        console.log(response);
       } catch (error) {
         console.error('Error fetching car details:', error);
       }
@@ -34,7 +34,7 @@ export const BookingPage = () => {
   const calculateTotalCost = (pickupDateTime, dropoffDateTime) => {
     const start = new Date(pickupDateTime);
     const end = new Date(dropoffDateTime);
-    const days = Math.max((end - start) / (1000 * 60 * 60 * 24), 1); // Ensure at least 1 day
+    const days = Math.max((end - start) / (1000 * 60 * 60 * 24), 1); 
     return carDetails.pricePerDay * days;
   };
 
@@ -61,20 +61,16 @@ export const BookingPage = () => {
       const bookingResponse = await axiosInstance.post('/booking/createBooking', {
         ...data,
         car: id,
-        user: '66e071ec53f36dfb8b78e40c',
+        user: '66e071ec53f36dfb8b78e40c', 
         totalCost,
       }, {
         withCredentials: true,
       });
 
       // Proceed with payment
-      const sessionResponse = await axiosInstance({
-        url: "/payment/create-payment",
-        method: "POST",
-        data: {
-          carDetails,
-          amount: totalCost,
-        },
+      const sessionResponse = await axiosInstance.post('/payment/create-payment', {
+        carDetails,
+        amount: totalCost,
       });
       
       const stripe = await loadStripe(import.meta.env.VITE_REACT_APP_STRIPE_API_KEY);
@@ -89,6 +85,18 @@ export const BookingPage = () => {
     } catch (error) {
       console.error('Error creating booking or processing payment:', error);
       toast.error('An error occurred. Please try again.');
+    }
+  };
+
+  // Handle self-drive toggle change
+  const handleToggleChange = (event) => {
+    const isChecked = event.target.checked;
+    setSelfDrive(isChecked);
+    
+    if (!isChecked) {
+      // Clear the license number field if not self-drive
+      setValue('licenceNumber', '');
+      clearErrors('licenceNumber');
     }
   };
 
@@ -150,16 +158,30 @@ export const BookingPage = () => {
             {errors.dropoffDateTime && <p className="text-red-500">Dropoff date and time are required</p>}
           </div>
 
-          {/* Licence Number */}
-          <div>
-            <label className="block mb-2">Licence Number</label>
+          {/* Toggle for Self Drive */}
+          <div className="flex items-center mb-4">
             <input
-              {...register('licenceNumber', { required: true })}
-              className="w-full p-2 border border-gray-300 rounded"
-              placeholder="Enter Licence Number"
+              type="checkbox"
+              id="selfDriveToggle"
+              checked={selfDrive}
+              onChange={handleToggleChange}
+              className="mr-2"
             />
-            {errors.licenceNumber && <p className="text-red-500">Licence number is required</p>}
+            <label htmlFor="selfDriveToggle">Self Drive</label>
           </div>
+
+          {/* Licence Number */}
+          {selfDrive && (
+            <div>
+              <label className="block mb-2">Licence Number</label>
+              <input
+                {...register('licenceNumber', { required: selfDrive })}
+                className="w-full p-2 border border-gray-300 rounded"
+                placeholder="Enter Licence Number"
+              />
+              {errors.licenceNumber && <p className="text-red-500">Licence number is required</p>}
+            </div>
+          )}
 
           {/* Calculate Total Cost Button */}
           <motion.button
@@ -200,7 +222,7 @@ export const BookingPage = () => {
         {totalCost > 0 && (
           <motion.button
             type='button'
-            onClick={handleSubmit(bookingSubmit)}
+            onClick={() => handleSubmit(bookingSubmit)()}
             className="mt-6 w-full px-4 py-2 text-white bg-green-500 rounded-lg hover:bg-green-600 transition duration-300"
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}

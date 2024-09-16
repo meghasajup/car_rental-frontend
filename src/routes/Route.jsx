@@ -24,6 +24,9 @@ import { BookingPage } from "../pages/user/BookingPage"
 import { CreateCar } from "../pages/admin/CreateCar";
 import { PaymentSuccess } from "../pages/user/PaymentSuccess";
 import { AdminReportManagement } from "../pages/admin/AdminReportManagement";
+import { CarDashboard } from "../pages/user/CarDashboard";
+import { PaymentCancel } from "../pages/user/PaymentCancel";
+import { Wishlist } from "../pages/user/Wishlist";
 
 export const router = createBrowserRouter([
     {
@@ -82,12 +85,24 @@ export const router = createBrowserRouter([
                 element: <CarDetails />
             },
             {
+                path: "wishlist",
+                element: <Wishlist />
+            },
+            {
                 path: "booking/:id",
                 element: <BookingPage />
             },
             {
-                path:"payment-success",
+                path: "dashboard",
+                element: <CarDashboard />
+            },
+            {
+                path: "payment-success",
                 element: <PaymentSuccess />
+            },
+            {
+                path: "payment-failed",
+                element: <PaymentCancel />
             },
             {
                 path: "contact",
@@ -121,7 +136,7 @@ export const router = createBrowserRouter([
             },
             {
                 path: "create-car",
-                element: <CreateCar/>
+                element: <CreateCar />
             },
             {
                 path: "booking-management",
@@ -130,7 +145,8 @@ export const router = createBrowserRouter([
             {
                 path: "review-management",
                 element: <AdminReviewManagement />
-            },{
+            },
+            {
                 path: "report-management",
                 element: <AdminReportManagement />
             },

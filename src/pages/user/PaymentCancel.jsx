@@ -2,16 +2,16 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 
-export const PaymentSuccess = () => {
+export const PaymentCancel = () => {
   return (
-    <div className="flex items-center justify-center min-h-screen   ">
+    <div className="flex items-center justify-center min-h-screen">
       <motion.div
         className="max-w-lg p-8 bg-white rounded-lg shadow-lg text-center"
         initial={{ opacity: 0, scale: 0.8 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.5 }}
       >
-        {/* Animated Success SVG */}
+        {/* Animated Cancel SVG */}
         <motion.svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 52 52"
@@ -22,7 +22,7 @@ export const PaymentSuccess = () => {
             cy="26"
             r="25"
             fill="none"
-            stroke="#4CAF50"
+            stroke="#F44336"
             strokeWidth="4"
             strokeDasharray="157"
             strokeDashoffset="157"
@@ -30,26 +30,37 @@ export const PaymentSuccess = () => {
             animate={{ strokeDashoffset: 0 }}
             transition={{ duration: 1, ease: "easeInOut" }}
           />
-          <motion.path
-            fill="none"
-            stroke="#4CAF50"
+          <motion.line
+            x1="16"
+            y1="16"
+            x2="36"
+            y2="36"
+            stroke="#F44336"
             strokeWidth="4"
             strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeDasharray="35"
-            strokeDashoffset="35"
-            d="M14 27l8 8 16-16"
-            initial={{ strokeDashoffset: 35 }}
-            animate={{ strokeDashoffset: 0 }}
-            transition={{ duration: 1, delay: 0.5, ease: "easeInOut" }}
+            initial={{ pathLength: 0 }}
+            animate={{ pathLength: 1 }}
+            transition={{ duration: 0.8, ease: "easeInOut" }}
+          />
+          <motion.line
+            x1="36"
+            y1="16"
+            x2="16"
+            y2="36"
+            stroke="#F44336"
+            strokeWidth="4"
+            strokeLinecap="round"
+            initial={{ pathLength: 0 }}
+            animate={{ pathLength: 1 }}
+            transition={{ duration: 0.8, delay: 0.3, ease: "easeInOut" }}
           />
         </motion.svg>
 
-        <h1 className="text-2xl font-bold text-gray-900 mb-4">Payment Successful!</h1>
-        <p className="text-gray-600 mb-6">Thank you for your purchase. Your payment has been processed successfully.</p>
-        
+        <h1 className="text-2xl font-bold text-gray-900 mb-4">Payment Cancelled</h1>
+        <p className="text-gray-600 mb-6">Your payment was not completed. Please try again or contact support if you need help.</p>
+
         <Link to="/user/home" className="inline-block px-6 py-3 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition duration-300">
-          Go to Homepage
+          Return to Homepage
         </Link>
       </motion.div>
     </div>

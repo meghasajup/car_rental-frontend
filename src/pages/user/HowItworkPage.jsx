@@ -1,5 +1,5 @@
 import React from 'react';
-import { MapPin, Calendar, Car } from 'lucide-react'; 
+import { Car, Calendar, Package } from 'lucide-react'; 
 import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
 
@@ -28,10 +28,10 @@ export const HowItWorks = () => {
             animate={{ opacity: isInView ? 1 : 0, y: isInView ? 0 : 50 }}
             transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
           >
-            <MapPin size={64} color={iconColor} className="mx-auto" />
-            <h3 className="text-xl font-semibold mt-4">Choose location</h3>
+            <Car size={64} color={iconColor} className="mx-auto" />
+            <h3 className="text-xl font-semibold mt-4">Choose car</h3>
             <p className="text-gray-600">
-              Choose your location and find your best car
+              Choose your car and find the best option for you
             </p>
           </motion.div>
           <motion.div
@@ -52,7 +52,7 @@ export const HowItWorks = () => {
             animate={{ opacity: isInView ? 1 : 0, y: isInView ? 0 : 50 }}
             transition={{ duration: 0.8, ease: "easeOut", delay: 0.6 }}
           >
-            <Car size={64} color={iconColor} className="mx-auto" />
+            <Package size={64} color={iconColor} className="mx-auto" /> {/* Updated icon */}
             <h3 className="text-xl font-semibold mt-4">Book your car</h3>
             <p className="text-gray-600">
               Book your car and we will deliver it directly to you

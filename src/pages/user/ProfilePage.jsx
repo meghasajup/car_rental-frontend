@@ -13,9 +13,6 @@ export const ProfilePage = () => {
 
   const handleLogOut = async () => {
     const response = await userLogout();
-    // if (response?.success) {
-    //   navigate("/");
-    // }
     navigate("/");
   };
 
@@ -27,9 +24,7 @@ export const ProfilePage = () => {
         withCredentials: true,
       });
       setUser(response?.data?.data);
-      console.log(response, "====response");
     } catch (error) {
-      console.log(error);
       toast.error("Error fetching user data");
     }
   };
@@ -39,7 +34,11 @@ export const ProfilePage = () => {
   }, []);
 
   const handleEditProfile = () => {
-    navigate("/user/edit-profile"); 
+    navigate("/user/edit-profile");
+  };
+
+  const handleDashboard = () => {
+    navigate("/user/dashboard"); 
   };
 
   return (
@@ -78,18 +77,32 @@ export const ProfilePage = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, ease: "easeOut", delay: 0.5 }}
       >
-        <p className="text-lg"> {user?.name}</p>
-        <p className="text-lg"> {user?.email}</p>
-        <p className="text-lg"> {user?.phone}</p>
+        <p className="text-lg">{user?.name}</p>
+        <p className="text-lg">{user?.email}</p>
+        <p className="text-lg">{user?.phone}</p>
         <p className="text-base leading-relaxed mt-4">
           Here’s your profile summary. Make sure your details are up to date for a seamless experience.
         </p>
       </motion.div>
 
+      {/* Dashboard Button */}
+      <motion.button
+        onClick={handleDashboard}
+        className="px-4 py-2 text-lg font-semibold bg-gradient-to-r from-[#8A3FFC] via-[#5821CE] to-[#3B1AAB] text-white rounded-lg shadow-lg hover:bg-cyan-500 transition duration-300 ease-in-out mt-6 z-10 flex items-center"
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.8, ease: "easeOut", delay: 0.7 }}
+      >
+        <span className="mr-2">Dashboard</span>
+      </motion.button>
+
+
+
+
       {/* Log-out Button */}
       <motion.button
         onClick={handleLogOut}
-        className="px-8 py-4 text-lg font-semibold bg-gradient-to-r from-[#8A3FFC] via-[#5821CE] to-[#3B1AAB] text-black rounded-lg shadow-lg hover:bg-cyan-500 transition duration-300 ease-in-out mt-6 z-10 flex items-center"
+        className="px-8 py-4 text-lg font-semibold bg-gradient-to-r from-[#FF7F7F] via-[#FF4C4C] to-[#FF1A1A] text-white rounded-lg shadow-lg hover:bg-cyan-500 transition duration-300 ease-in-out mt-4 z-10 flex items-center"
         initial={{ opacity: 0, scale: 0.8 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.8, ease: "easeOut", delay: 0.7 }}
@@ -97,6 +110,7 @@ export const ProfilePage = () => {
         <span className="mr-2">Log-out</span>
         <LogOut />
       </motion.button>
+
     </div>
   );
 };

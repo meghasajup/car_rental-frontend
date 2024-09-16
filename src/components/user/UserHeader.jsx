@@ -2,10 +2,11 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { DarkMode } from '../ui/DarkMode';
-import { FaBars, FaTimes } from 'react-icons/fa'; // Icons for hamburger menu
+import { FaBars, FaTimes } from 'react-icons/fa';
+import { Heart } from 'lucide-react'; // Import Heart icon
 
 export const UserHeader = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false); // State to toggle the menu
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const handleMenuToggle = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -39,9 +40,8 @@ export const UserHeader = () => {
 
       {/* Navigation Menu */}
       <nav
-        className={`${
-          isMenuOpen ? 'flex' : 'hidden'
-        } md:flex flex-col md:flex-row items-center gap-6 md:gap-20 font-semibold absolute md:static top-20 left-0 w-full md:w-auto bg-white md:bg-transparent shadow-md md:shadow-none z-50 md:z-auto`}
+        className={`${isMenuOpen ? 'flex' : 'hidden'
+          } md:flex flex-col md:flex-row items-center gap-6 md:gap-20 font-semibold absolute md:static top-20 left-0 w-full md:w-auto bg-white md:bg-transparent shadow-md md:shadow-none z-50 md:z-auto`}
       >
         <Link
           to={'/user/home'}
@@ -69,9 +69,12 @@ export const UserHeader = () => {
         </Link>
       </nav>
 
-      {/* Right Section with Dark Mode and Profile Button */}
+      {/* Right Section with Dark Mode, Profile Button, and Heart Icon */}
       <div className='flex items-center gap-4'>
         <DarkMode />
+        <Link to={"/user/wishlist"}>
+          <Heart className="w-6 h-6 cursor-pointer hover:scale-110 transition-transform" />
+        </Link>
         <Link to={'/user/profile'}>
           <button className="bg-gradient-to-r from-[#8A3FFC] via-[#5821CE] to-[#3B1AAB] text-white px-3 py-2 rounded-full">
             Profile
