@@ -24,27 +24,11 @@ export const AdminReviewManagement = () => {
             "Access-Control-Allow-Origin": "*",
             Authorization: `Bearer ${Cookies.get('loginToken')}` ,
           }
-    })
+    });
       console.log(response.data.data);
       setReviews(response.data.data);
     } catch (error) {
       toast.error('Failed to load reviews');
-    }
-  };
-
-  const createReview = async (data) => {
-    try {
-      const response = await axiosInstance.post('/admin/createReview', { ...data, rating });
-      if (response.data.success) {
-        toast.success('Review created successfully!');
-        fetchReviews();
-        reset();
-        setRating(0);  // Reset stars after creation
-      } else {
-        toast.error(response.data.message);
-      }
-    } catch (error) {
-      toast.error('Failed to create review');
     }
   };
 
@@ -90,8 +74,6 @@ export const AdminReviewManagement = () => {
   const onSubmit = (data) => {
     if (editingReviewId) {
       updateReview(data);
-    } else {
-      createReview(data);
     }
   };
 
@@ -115,54 +97,55 @@ export const AdminReviewManagement = () => {
   return (
     <div className="p-6 space-y-6 max-w-4xl mx-auto">
       <h2 className="text-2xl font-bold mb-4 text-center">
-        {editingReviewId ? 'Update Review' : 'Create Review'}
+        {editingReviewId ? 'Update Review' : 'Reviews'}
       </h2>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 shadow-xl border border-gray-700 p-6 rounded-lg">
-        <div className="space-y-1">
-          <label className="block text-lg font-medium">User ID</label>
-          <input
-            className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            {...register('userId', { required: true })}
-          />
-          {errors.userId && <p className="text-red-500">User ID is required</p>}
-        </div>
-
-        <div className="space-y-1">
-          <label className="block text-lg font-medium">Car ID</label>
-          <input
-            className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            {...register('carId', { required: true })}
-          />
-          {errors.carId && <p className="text-red-500">Car ID is required</p>}
-        </div>
-
-        <div className="space-y-1">
-          <label className="block text-lg font-medium">Rating</label>
-          <div className="flex space-x-1">
-            {renderStars(rating)}
+      {editingReviewId && (
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 shadow-xl border border-gray-700 p-6 rounded-lg">
+          <div className="space-y-1">
+            <label className="block text-lg font-medium">User ID</label>
+            <input
+              className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              {...register('userId', { required: true })}
+            />
+            {errors.userId && <p className="text-red-500">User ID is required</p>}
           </div>
-          {errors.rating && <p className="text-red-500">Rating is required</p>}
-        </div>
 
-        <div className="space-y-1">
-          <label className="block text-lg font-medium">Review Text</label>
-          <textarea
-            className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            {...register('reviewText', { required: true, minLength: 15, maxLength: 200 })}
-          />
-          {errors.reviewText && <p className="text-red-500">Review must be between 15 and 200 characters</p>}
-        </div>
+          <div className="space-y-1">
+            <label className="block text-lg font-medium">Car ID</label>
+            <input
+              className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              {...register('carId', { required: true })}
+            />
+            {errors.carId && <p className="text-red-500">Car ID is required</p>}
+          </div>
 
-        <button
-          type="submit"
-          className="w-full bg-gradient-to-r from-[#8A3FFC] via-[#5821CE] to-[#3B1AAB] hover:bg-blue-600 text-white py-2 rounded-lg shadow transition duration-300"
-        >
-          {editingReviewId ? 'Update Review' : 'Create Review'}
-        </button>
-      </form>
+          <div className="space-y-1">
+            <label className="block text-lg font-medium">Rating</label>
+            <div className="flex space-x-1">
+              {renderStars(rating)}
+            </div>
+            {errors.rating && <p className="text-red-500">Rating is required</p>}
+          </div>
 
-      <h2 className="text-2xl font-bold mb-4 text-center">All Reviews</h2>
+          <div className="space-y-1">
+            <label className="block text-lg font-medium">Review Text</label>
+            <textarea
+              className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              {...register('reviewText', { required: true, minLength: 15, maxLength: 200 })}
+            />
+            {errors.reviewText && <p className="text-red-500">Review must be between 15 and 200 characters</p>}
+          </div>
+
+          <button
+            type="submit"
+            className="w-full bg-gradient-to-r from-[#8A3FFC] via-[#5821CE] to-[#3B1AAB] hover:bg-blue-600 text-white py-2 rounded-lg shadow transition duration-300"
+          >
+            Update Review
+          </button>
+        </form>
+      )}
+
       <div className="overflow-x-auto">
         <table className="w-full border border-gray-300 divide-y divide-gray-200 shadow-md rounded-lg">
           <thead>
