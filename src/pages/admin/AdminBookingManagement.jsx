@@ -86,7 +86,8 @@ export const AdminBookingManagement = () => {
             <strong>Car Number:</strong> ${car.registrationNumber}<br>
             <strong>Car Brand:</strong> ${car.model}<br>
             <strong>Car Year:</strong> ${car.year}<br>
-            <strong>Car Fuel:</strong> ${car.fuelType}<br><br>
+            <strong>Car Fuel:</strong> ${car.fuelType}<br>
+            <strong>Price Per Day: ₹</strong> ${car.pricePerDay}<br><br>
             <strong>User Details:</strong><br>
             <strong>User Id:</strong> ${user._id}<br>
             <strong>Name:</strong> ${user.name}<br>

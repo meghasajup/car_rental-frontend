@@ -117,7 +117,7 @@ export const AdminCarManagement = () => {
             <img src={car.image} alt={`${car.brand} ${car.model}`} className="car-image" />
             <h2>{car.brand} {car.model}</h2>
             <p>Year: {car.year}</p>
-            <p>Price Per Day: ${car.pricePerDay}</p>
+            <p>Price Per Day: ₹{car.pricePerDay}</p>
             {/* Display other car details */}
             <div className="car-actions">
               <button

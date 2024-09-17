@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import Cookies from 'js-cookie';
+import React, { useState } from 'react';
 import {
   Card,
   CardHeader,
@@ -9,9 +8,8 @@ import {
   Button,
   Tooltip,
 } from "@material-tailwind/react";
-import 'tailwindcss/tailwind.css';
 import { Link } from "react-router-dom";
-import { axiosInstance } from '../../config/axiosInstance'; 
+import { axiosInstance } from '../../config/axiosInstance';
 
 export function CarCard({ car, userId }) {
   const [isLiked, setIsLiked] = useState(car.isLiked || false);
@@ -19,43 +17,52 @@ export function CarCard({ car, userId }) {
   // Function to handle add/remove to wishlist
   const toggleWishlist = async () => {
     try {
+      setIsLiked((prevLiked) => !prevLiked); // Optimistically update the state
+
       if (isLiked) {
         const response = await removeFromWishlist(car._id, userId);
-        if (response.success) {
-          setIsLiked(false); 
+        if (!response.success) {
+          setIsLiked(true);
+          console.error(response.message);
         }
       } else {
         const response = await addToWishlist(car._id, userId);
-        if (response.success) {
-          setIsLiked(true); 
+        if (!response.success) {
+          setIsLiked(false);
+          console.error(response.message);
         }
       }
     } catch (error) {
       console.error("Error toggling wishlist:", error);
+      setIsLiked((prevLiked) => !prevLiked);
     }
   };
 
-  // Add car to the wishlist
+  // Add car to the wishlist (using push)
   const addToWishlist = async (carId, userId) => {
     try {
-      const response = await axiosInstance.post('/wishlist/add', { carId, userId });
-      return response.data; 
+      const response = await axiosInstance.post('/wishlist/add', {
+        carId,
+        userId,
+      });
+      return response.data;
     } catch (error) {
       console.error("Error adding to wishlist:", error);
       return { success: false, message: error.response?.data?.message || "Error adding to wishlist" };
     }
   };
 
-  // Remove car from the wishlist
+  // Remove car from the wishlist (using pull)
   const removeFromWishlist = async (carId, userId) => {
     try {
-      const response = await axiosInstance.delete(`/wishlist/remove/${carId}/${userId}`);
-      return response.data; 
+      const response = await axiosInstance.delete(`/wishlist/remove/${carId}`);
+      return response.data;
     } catch (error) {
-      console.error(error);
+      console.error("Error removing from wishlist:", error);
       return { success: false, message: error.response?.data?.message || "Error removing from wishlist" };
     }
   };
+  
 
   return (
     <Card className="w-full max-w-[26rem] shadow-2xl p-4 bg-transparent transform transition-all duration-300 hover:shadow-3xl hover:scale-105">
@@ -125,7 +132,7 @@ export function CarCard({ car, userId }) {
         </Typography>
 
         <div className="group mt-8 inline-flex flex-wrap items-center gap-3">
-          {/* Tooltip for Air Conditioning */}
+          {/* Feature Tooltips */}
           <Tooltip content="Air Conditioning" className="bg-indigo-500 text-white">
             <span className="cursor-pointer p-3 text-gray-500 hover:text-indigo-600">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5">
@@ -133,8 +140,6 @@ export function CarCard({ car, userId }) {
               </svg>
             </span>
           </Tooltip>
-
-          {/* Tooltip for Bluetooth */}
           <Tooltip content="Bluetooth" className="bg-indigo-500 text-white">
             <span className="cursor-pointer p-3 text-gray-500 hover:text-indigo-600">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5">
@@ -142,8 +147,6 @@ export function CarCard({ car, userId }) {
               </svg>
             </span>
           </Tooltip>
-
-          {/* Tooltip for GPS */}
           <Tooltip content="GPS" className="bg-indigo-500 text-white">
             <span className="cursor-pointer p-3 text-gray-500 hover:text-indigo-600">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5">
@@ -151,8 +154,6 @@ export function CarCard({ car, userId }) {
               </svg>
             </span>
           </Tooltip>
-
-          {/* Tooltip for Parking Sensors */}
           <Tooltip content="Parking Sensors" className="bg-indigo-500 text-white">
             <span className="cursor-pointer p-3 text-gray-500 hover:text-indigo-600">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5">
@@ -160,8 +161,6 @@ export function CarCard({ car, userId }) {
               </svg>
             </span>
           </Tooltip>
-
-          {/* Tooltip for USB Port */}
           <Tooltip content="USB Port" className="bg-indigo-500 text-white">
             <span className="cursor-pointer p-3 text-gray-500 hover:text-indigo-600">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5">

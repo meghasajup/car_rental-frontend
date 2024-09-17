@@ -55,11 +55,11 @@ export const CarPage = () => {
       </motion.h1>
 
       {/* Category Filter Buttons */}
-      <div className='flex justify-center space-x-4 mb-6'>
+      <div className='flex flex-wrap justify-center space-x-4 mb-6'>
         {categories.map((category, index) => (
           <button
             key={index}
-            className={`px-5 py-3 rounded-full transition-all duration-300 shadow-md ${selectedCategory === category
+            className={`px-4 py-2 rounded-full transition-all duration-300 shadow-md text-sm md:text-base ${selectedCategory === category
                 ? 'bg-gradient-to-r from-blue-400 to-purple-500 text-white shadow-lg'
                 : 'bg-gray-100 text-gray-600'
               } hover:bg-gradient-to-r hover:from-blue-300 hover:to-purple-400 hover:text-white`}
@@ -69,8 +69,6 @@ export const CarPage = () => {
           </button>
         ))}
       </div>
-
-
 
       {/* Car List */}
       <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 lg:gap-10'>

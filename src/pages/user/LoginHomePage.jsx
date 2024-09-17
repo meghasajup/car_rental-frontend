@@ -8,6 +8,7 @@ import image2 from '../../assets/hone/homepic4.png';
 import { HowItWorks } from './HowItworkPage';
 import Testimonials from './TestimonialsPage';
 import LocationSection from './Locations';
+import { Link } from 'react-router-dom';
 
 export const LoginHomePage = () => {
   return (
@@ -63,7 +64,7 @@ export const LoginHomePage = () => {
           transition={{ duration: 0.8, ease: "easeOut", delay: 0.5 }}
         />
 
-        
+
         <div className="absolute inset-0 flex flex-col justify-center space-y-4 text-white px-8 lg:px-16">
           <motion.div
             className="space-y-2"
@@ -109,7 +110,7 @@ export const LoginHomePage = () => {
         </div>
       </section>
 
-      
+
       <section className="relative z-10 w-full h-screen mt-16 flex items-center justify-center px-8 lg:px-16 space-x-8">
         <div className="flex-1 space-y-4 text-grey">
           <motion.h2
@@ -184,15 +185,18 @@ export const LoginHomePage = () => {
             It’s a never-ending battle of making your cars better and also trying to be better yourself.
           </motion.p>
         </div>
-        <motion.button
-          className="px-8 py-4 text-lg font-semibold bg-gradient-to-r from-[#8A3FFC] via-[#5821CE] to-[#3B1AAB] text-black rounded-lg shadow-lg hover:bg-cyan-500 transition duration-300 ease-in-out"
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.8, ease: "easeOut", delay: 0.5 }}
-          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-        >
-          Book Your Car
-        </motion.button>
+        <Link to="/user/car">
+          <motion.button
+            className="px-8 py-4 text-lg font-semibold bg-gradient-to-r from-[#8A3FFC] via-[#5821CE] to-[#3B1AAB] text-black rounded-lg shadow-lg hover:bg-cyan-500 transition duration-300 ease-in-out"
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8, ease: "easeOut", delay: 0.5 }}
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          >
+            Book Your Car
+          </motion.button>
+        </Link>
+
       </section>
 
     </main>
