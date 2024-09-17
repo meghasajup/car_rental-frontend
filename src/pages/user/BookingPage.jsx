@@ -100,6 +100,19 @@ export const BookingPage = () => {
     }
   };
 
+  // Get today's date in the format required by datetime-local
+  const getTodayDate = () => {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0'); // Add leading zero if needed
+    const day = String(today.getDate()).padStart(2, '0'); // Add leading zero if needed
+    const hours = String(today.getHours()).padStart(2, '0');
+    const minutes = String(today.getMinutes()).padStart(2, '0');
+    return `${year}-${month}-${day}T${hours}:${minutes}`;
+  };
+
+  const today = getTodayDate();
+
   return (
     <div
       className="flex flex-col items-center p-6 text-grey"
@@ -176,12 +189,14 @@ export const BookingPage = () => {
                 {...register('pickupDateTime', { required: true })}
                 className="w-full p-2 border border-gray-300 rounded"
                 type="datetime-local"
+                min={today} // Set the minimum date to today's date
               />
               {/* Dropoff Date/Time */}
               <input
                 {...register('dropoffDateTime', { required: true })}
                 className="w-full p-2 border border-gray-300 rounded"
                 type="datetime-local"
+                min={today} // Set the minimum date to today's date
               />
             </div>
             {errors.pickupDateTime && <p className="text-red-500">Pickup date and time are required</p>}
@@ -225,42 +240,27 @@ export const BookingPage = () => {
           </motion.button>
         </form>
 
-
-        {/* Display total cost */}
+        {/* Display Total Cost */}
         {totalCost > 0 && (
-          <div className="mt-4">
-            <p className="text-lg font-bold">Total Cost: ₹{totalCost}</p>
-          </div>
-        )}
-
-        {/* Display Pickup and Dropoff Details */}
-        {pickupDetails.location && (
-          <div className="mt-4">
-            <p className="text-lg font-semibold">Pickup Details</p>
-            <p>Location: {pickupDetails.location}</p>
-            <p>Date/Time: {pickupDetails.dateTime}</p>
-          </div>
-        )}
-        {dropoffDetails.location && (
-          <div className="mt-4">
-            <p className="text-lg font-semibold">Dropoff Details</p>
-            <p>Location: {dropoffDetails.location}</p>
-            <p>Date/Time: {dropoffDetails.dateTime}</p>
-          </div>
-        )}
-
-        {/* Pay Now Button */}
-        {totalCost > 0 && (
-          <motion.button
-            type='button'
-            onClick={() => handleSubmit(bookingSubmit)()}
-            className="mt-6 w-full px-4 py-2 text-white bg-green-500 rounded-lg hover:bg-green-600 transition duration-300"
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
+          <motion.div
+            className="mt-4 p-4 bg-green-100 border border-green-400 rounded-lg"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
             transition={{ duration: 0.8 }}
           >
-            Pay Now
-          </motion.button>
+            <h2 className="text-lg font-semibold">Total Cost: ₹{totalCost}</h2>
+
+            {/* Pay Now Button */}
+            <motion.button
+              onClick={handleSubmit(bookingSubmit)}
+              className="w-full mt-4 px-4 py-2 text-white bg-green-500 rounded-lg hover:bg-green-600 transition duration-300"
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.8 }}
+            >
+              Pay Now
+            </motion.button>
+          </motion.div>
         )}
       </motion.div>
     </div>
