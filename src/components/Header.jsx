@@ -84,7 +84,7 @@ export const Header = () => {
       {/* Mobile Menu (Visible on small screens) */}
       {menuOpen && (
         <motion.div
-          className="absolute top-20 left-0 w-full bg-white dark:bg-gray-800 shadow-xl z-50 md:hidden"
+          className="absolute top-20 left-0 w-full bg-white shadow-xl z-50 md:hidden"
           initial={{ opacity: 0, y: -50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}

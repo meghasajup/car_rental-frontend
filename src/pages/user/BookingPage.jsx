@@ -15,7 +15,7 @@ export const BookingPage = () => {
   const [totalCost, setTotalCost] = useState(0);
   const [pickupDetails, setPickupDetails] = useState({});
   const [dropoffDetails, setDropoffDetails] = useState({});
-  const [selfDrive, setSelfDrive] = useState(true); 
+  const [selfDrive, setSelfDrive] = useState(true);
 
   // Fetch car details
   useEffect(() => {
@@ -34,7 +34,7 @@ export const BookingPage = () => {
   const calculateTotalCost = (pickupDateTime, dropoffDateTime) => {
     const start = new Date(pickupDateTime);
     const end = new Date(dropoffDateTime);
-    const days = Math.max((end - start) / (1000 * 60 * 60 * 24), 1); 
+    const days = Math.max((end - start) / (1000 * 60 * 60 * 24), 1);
     return carDetails.pricePerDay * days;
   };
 
@@ -61,7 +61,7 @@ export const BookingPage = () => {
       const bookingResponse = await axiosInstance.post('/booking/createBooking', {
         ...data,
         car: id,
-        user: '66e071ec53f36dfb8b78e40c', 
+        user: '66e071ec53f36dfb8b78e40c',
         totalCost,
       }, {
         withCredentials: true,
@@ -72,10 +72,10 @@ export const BookingPage = () => {
         carDetails,
         amount: totalCost,
       });
-      
+
       const stripe = await loadStripe(import.meta.env.VITE_REACT_APP_STRIPE_API_KEY);
       const sessionId = sessionResponse?.data?.sessionId;
-      
+
       const result = await stripe.redirectToCheckout({ sessionId });
 
       if (result.error) {
@@ -92,7 +92,7 @@ export const BookingPage = () => {
   const handleToggleChange = (event) => {
     const isChecked = event.target.checked;
     setSelfDrive(isChecked);
-    
+
     if (!isChecked) {
       // Clear the license number field if not self-drive
       setValue('licenceNumber', '');
@@ -118,22 +118,52 @@ export const BookingPage = () => {
           {/* Pickup Location */}
           <div>
             <label className="block mb-2">Pickup Location</label>
-            <input
+            <select
               {...register('pickupLocation', { required: true })}
               className="w-full p-2 border border-gray-300 rounded"
-              placeholder="Enter Pickup Location"
-            />
+            >
+              <option value="">Select Pickup Location</option>
+              <option value="Kasarkode">Kasarkode</option>
+              <option value="Kannur">Kannur</option>
+              <option value="Wayanad">Wayanad</option>
+              <option value="Kozhikode">Kozhikode</option>
+              <option value="Malappuram">Malappuram</option>
+              <option value="Palakkad">Palakkad</option>
+              <option value="Thrissur">Thrissur</option>
+              <option value="Idukki">Idukki</option>
+              <option value="Alappuzha">Alappuzha</option>
+              <option value="Ernakulam">Ernakulam</option>
+              <option value="Kottayam">Kottayam</option>
+              <option value="Pathanamthittta">Pathanamthitta</option>
+              <option value="Kollam">Kollam</option>
+              <option value="Thiruvanathapuram">Thiruvanathapuram</option>
+            </select>
             {errors.pickupLocation && <p className="text-red-500">Pickup location is required</p>}
           </div>
 
           {/* Dropoff Location */}
           <div>
             <label className="block mb-2">Dropoff Location</label>
-            <input
+            <select
               {...register('dropoffLocation', { required: true })}
               className="w-full p-2 border border-gray-300 rounded"
-              placeholder="Enter Dropoff Location"
-            />
+            >
+              <option value="">Select Dropoff Location</option>
+              <option value="Kasarkode">Kasarkode</option>
+              <option value="Kannur">Kannur</option>
+              <option value="Wayanad">Wayanad</option>
+              <option value="Kozhikode">Kozhikode</option>
+              <option value="Malappuram">Malappuram</option>
+              <option value="Palakkad">Palakkad</option>
+              <option value="Thrissur">Thrissur</option>
+              <option value="Idukki">Idukki</option>
+              <option value="Alappuzha">Alappuzha</option>
+              <option value="Ernakulam">Ernakulam</option>
+              <option value="Kottayam">Kottayam</option>
+              <option value="Pathanamthittta">Pathanamthitta</option>
+              <option value="Kollam">Kollam</option>
+              <option value="Thiruvanathapuram">Thiruvanathapuram</option>
+            </select>
             {errors.dropoffLocation && <p className="text-red-500">Dropoff location is required</p>}
           </div>
 
@@ -194,6 +224,7 @@ export const BookingPage = () => {
             Calculate Total Cost
           </motion.button>
         </form>
+
 
         {/* Display total cost */}
         {totalCost > 0 && (
