@@ -24,8 +24,8 @@ export const AdminUserManagement = () => {
                 method: 'GET',
                 headers: {
                     "Access-Control-Allow-Origin": "*",
-                    Authorization: `Bearer ${Cookies.get('loginToken')}` ,
-                  }
+                    Authorization: `Bearer ${Cookies.get('loginToken')}`,
+                }
             });
             setUsers(data.data);
         } catch (error) {
@@ -37,7 +37,6 @@ export const AdminUserManagement = () => {
     // Create or update user
     const onSubmit = async (formData) => {
         if (editingUserId) {
-            // Update existing user
             try {
                 await axiosInstance.put(`/admin/userUpdate/${editingUserId}`, formData);
                 fetchUsers();
@@ -49,7 +48,6 @@ export const AdminUserManagement = () => {
                 console.error('Error updating user:', error);
             }
         } else {
-            // Create new user
             try {
                 await axiosInstance.post('/admin/createuserByAd', formData);
                 fetchUsers();
@@ -74,7 +72,6 @@ export const AdminUserManagement = () => {
         }
     };
 
-    // Set user to edit
     const editUser = (user) => {
         setEditingUserId(user._id);
         reset({
@@ -85,10 +82,10 @@ export const AdminUserManagement = () => {
     };
 
     return (
-        <div className="min-h-screen p-10 ">
-            <div className="max-w-4xl mx-auto shadow-xl rounded-lg p-8 border border-gray-900">
+        <div className="min-h-screen p-4 sm:p-10">
+            <div className="max-w-4xl mx-auto shadow-xl rounded-lg p-4 sm:p-8 border border-gray-900">
                 <motion.h2
-                    className="text-2xl font-bold text-center mb-6 text-gray"
+                    className="text-xl sm:text-2xl font-bold text-center mb-6 text-gray"
                     initial={{ opacity: 0, y: -50 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5 }}
@@ -181,7 +178,7 @@ export const AdminUserManagement = () => {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.3, duration: 0.5 }}
                 >
-                    <h3 className="text-xl font-semibold mb-4 text-gray-800">Users List</h3>
+                    <h3 className="text-lg sm:text-xl font-semibold mb-4 text-gray-800">Users List</h3>
                     <ul className="grid grid-cols-1 gap-4">
                         {users.map((user) => (
                             <motion.li
@@ -189,28 +186,39 @@ export const AdminUserManagement = () => {
                                 className="flex justify-between items-center p-4 bg-white shadow rounded-lg hover:bg-gray-50"
                                 whileHover={{ scale: 1.02 }}
                             >
-                                <div>
-                                    <p className="text-lg font-medium text-gray-900">{user.name}</p>
-                                    <p className="text-gray-600">{user.email}</p>
-                                    <p className="text-gray-600">{user.phone}</p>
+                                <div className="flex items-center space-x-4">
+                                    <img
+                                        src={user.profileImage || 'default-image-url.jpg'}
+                                        alt={user.name}
+                                        className="w-16 h-16 rounded-full object-cover"
+                                    />
+                                    <div>
+                                        <p className="text-lg font-medium text-gray-900">{user.name}</p>
+                                        <p className="text-gray-600">{user.email}</p>
+                                        <p className="text-gray-600">{user.phone}</p>
+                                    </div>
                                 </div>
-                                <div className="flex space-x-4">
+
+                                <div className="flex flex-col sm:flex-row sm:space-x-2 space-y-2 sm:space-y-0">
                                     <button
-                                        className="bg-gradient-to-r from-[#66bb6a] via-[#43a047] to-[#388e3c] shadow-xl py-2 px-3 rounded-lg text-white hover:bg-yellow-500"
+                                        className="bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-lg text-center"
                                         onClick={() => editUser(user)}
                                     >
                                         Edit
                                     </button>
+
                                     <button
-                                        className="bg-gradient-to-r from-[#ff6f61] via-[#f44336] to-[#e57373] shadow-xl py-2 px-3 rounded-lg text-white hover:bg-red-600"
+                                        className="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded-lg text-center"
                                         onClick={() => deleteUser(user._id)}
                                     >
                                         Delete
                                     </button>
                                 </div>
+
                             </motion.li>
                         ))}
                     </ul>
+
                 </motion.div>
             </div>
         </div>
