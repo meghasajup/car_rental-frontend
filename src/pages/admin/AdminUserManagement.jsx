@@ -6,13 +6,11 @@ import { toast } from 'react-hot-toast';
 import Cookies from 'js-cookie';
 
 export const AdminUserManagement = () => {
-    const { register, handleSubmit, reset, formState: { errors }, watch } = useForm();
+    const { register, handleSubmit, reset, formState: { errors } } = useForm();
     const [users, setUsers] = useState([]);
     const [editingUserId, setEditingUserId] = useState(null);
 
-    const password = watch('password');
-
-    // Fetch users 
+    // Fetch users
     useEffect(() => {
         fetchUsers();
     }, []);
@@ -34,29 +32,17 @@ export const AdminUserManagement = () => {
         }
     };
 
-    // Create or update user
+    // Update user
     const onSubmit = async (formData) => {
-        if (editingUserId) {
-            try {
-                await axiosInstance.put(`/admin/userUpdate/${editingUserId}`, formData);
-                fetchUsers();
-                reset();
-                setEditingUserId(null);
-                toast.success('User updated successfully');
-            } catch (error) {
-                toast.error('Error updating user');
-                console.error('Error updating user:', error);
-            }
-        } else {
-            try {
-                await axiosInstance.post('/admin/createuserByAd', formData);
-                fetchUsers();
-                reset();
-                toast.success('User created successfully');
-            } catch (error) {
-                toast.error('Error creating user');
-                console.error('Error creating user:', error);
-            }
+        try {
+            await axiosInstance.put(`/admin/userUpdate/${editingUserId}`, formData);
+            fetchUsers();
+            reset();
+            setEditingUserId(null);
+            toast.success('User updated successfully');
+        } catch (error) {
+            toast.error('Error updating user');
+            console.error('Error updating user:', error);
         }
     };
 
@@ -90,86 +76,51 @@ export const AdminUserManagement = () => {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5 }}
                 >
-                    {editingUserId ? 'Edit User' : 'Create User'}
+                    {editingUserId ? 'Edit User' : 'Select a User to Edit'}
                 </motion.h2>
 
-                {/* User Form */}
-                <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-                    <div className="flex flex-col">
-                        <input
-                            type="text"
-                            className="p-2 border border-gray rounded focus:ring-2 focus:ring-blue-400"
-                            {...register('name', { required: 'Name is required' })}
-                            placeholder="Name"
-                        />
-                        {errors.name && <p className="text-red-500">{errors.name.message}</p>}
-                    </div>
+                {/* User Form - Only show when editing */}
+                {editingUserId && (
+                    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+                        <div className="flex flex-col">
+                            <input
+                                type="text"
+                                className="p-2 border border-gray rounded focus:ring-2 focus:ring-blue-400"
+                                {...register('name', { required: 'Name is required' })}
+                                placeholder="Name"
+                            />
+                            {errors.name && <p className="text-red-500">{errors.name.message}</p>}
+                        </div>
 
-                    <div className="flex flex-col">
-                        <input
-                            type="email"
-                            className="p-2 border border-gray rounded focus:ring-2 focus:ring-blue-400"
-                            {...register('email', { required: 'Email is required' })}
-                            placeholder="Email"
-                        />
-                        {errors.email && <p className="text-red-500">{errors.email.message}</p>}
-                    </div>
+                        <div className="flex flex-col">
+                            <input
+                                type="email"
+                                className="p-2 border border-gray rounded focus:ring-2 focus:ring-blue-400"
+                                {...register('email', { required: 'Email is required' })}
+                                placeholder="Email"
+                            />
+                            {errors.email && <p className="text-red-500">{errors.email.message}</p>}
+                        </div>
 
-                    <div className="flex flex-col">
-                        <input
-                            type="text"
-                            className="p-2 border border-gray rounded focus:ring-2 focus:ring-blue-400"
-                            {...register('phone', { required: 'Phone is required' })}
-                            placeholder="Phone"
-                        />
-                        {errors.phone && <p className="text-red-500">{errors.phone.message}</p>}
-                    </div>
+                        <div className="flex flex-col">
+                            <input
+                                type="text"
+                                className="p-2 border border-gray rounded focus:ring-2 focus:ring-blue-400"
+                                {...register('phone', { required: 'Phone is required' })}
+                                placeholder="Phone"
+                            />
+                            {errors.phone && <p className="text-red-500">{errors.phone.message}</p>}
+                        </div>
 
-                    {!editingUserId && (
-                        <>
-                            <div className="flex flex-col">
-                                <input
-                                    type="text"
-                                    className="p-2 border border-gray rounded focus:ring-2 focus:ring-blue-400"
-                                    {...register('username', { required: 'Username is required' })}
-                                    placeholder="Username"
-                                />
-                                {errors.username && <p className="text-red-500">{errors.username.message}</p>}
-                            </div>
-
-                            <div className="flex flex-col">
-                                <input
-                                    type="password"
-                                    className="p-2 border border-gray rounded focus:ring-2 focus:ring-blue-400"
-                                    {...register('password', { required: 'Password is required' })}
-                                    placeholder="Password"
-                                />
-                                {errors.password && <p className="text-red-500">{errors.password.message}</p>}
-                            </div>
-
-                            <div className="flex flex-col">
-                                <input
-                                    type="password"
-                                    className="p-2 border border-gray rounded focus:ring-2 focus:ring-blue-400"
-                                    {...register('confirmPassword', {
-                                        required: 'Confirm Password is required',
-                                        validate: value => value === password || 'Passwords do not match'
-                                    })}
-                                    placeholder="Confirm Password"
-                                />
-                                {errors.confirmPassword && <p className="text-red-500">{errors.confirmPassword.message}</p>}
-                            </div>
-                        </>
-                    )}
-
-                    <motion.button
-                        type="submit"
-                        className="w-full bg-gradient-to-r from-[#8A3FFC] via-[#5821CE] to-[#3B1AAB] hover:bg-blue-600 text-white py-2 rounded-lg shadow transition duration-300"
-                        whileHover={{ scale: 1.05 }}
-                    >
-                        {editingUserId ? 'Update User' : 'Create User'}
-                    </motion.button>
-                </form>
+                        <motion.button
+                            type="submit"
+                            className="w-full bg-gradient-to-r from-[#8A3FFC] via-[#5821CE] to-[#3B1AAB] hover:bg-blue-600 text-white py-2 rounded-lg shadow transition duration-300"
+                            whileHover={{ scale: 1.05 }}
+                        >
+                            Update User
+                        </motion.button>
+                    </form>
+                )}
 
                 {/* User List */}
                 <motion.div
@@ -214,7 +165,6 @@ export const AdminUserManagement = () => {
                                         Delete
                                     </button>
                                 </div>
-
                             </motion.li>
                         ))}
                     </ul>
