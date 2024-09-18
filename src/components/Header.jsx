@@ -20,14 +20,16 @@ export const Header = () => {
     >
       {/* Logo Section */}
       <div>
-        <motion.h1
-          className="text-3xl font-bold font-sans cursor-pointer dark:text-grey"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.3, duration: 0.5 }}
-        >
-          Carista
-        </motion.h1>
+        <Link to={'/'}>
+          <motion.h1
+            className="text-3xl font-bold font-sans cursor-pointer dark:text-grey"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.3, duration: 0.5 }}
+          >
+            Carista
+          </motion.h1>
+        </Link>
       </div>
 
       {/* Hamburger Icon for Mobile */}
