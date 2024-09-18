@@ -71,7 +71,7 @@ export const LoginPage = () => {
               type="email"
               {...register("email")}
               placeholder="Enter your email"
-              className="input input-bordered rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-cyan-500 transition-transform"
+              className="input input-bordered rounded-lg  focus:outline-none focus:ring-2 focus:ring-cyan-500 transition-transform"
               required
             />
           </div>
