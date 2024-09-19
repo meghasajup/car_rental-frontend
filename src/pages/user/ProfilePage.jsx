@@ -93,7 +93,7 @@ export const ProfilePage = () => {
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.8, ease: "easeOut", delay: 0.7 }}
       >
-        <span className="mr-2">Dashboard</span>
+        <span className="mr-2">My bookings</span>
       </motion.button>
 
 
