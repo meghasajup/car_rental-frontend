@@ -35,7 +35,7 @@ export const BookingPage = () => {
     const start = new Date(pickupDateTime);
     const end = new Date(dropoffDateTime);
     const days = Math.max((end - start) / (1000 * 60 * 60 * 24), 1);
-    return carDetails.pricePerDay * days;
+    return Math.round(carDetails.pricePerDay * days);
   };
 
   // Handle cost calculation
@@ -104,7 +104,7 @@ export const BookingPage = () => {
     const today = new Date();
     const year = today.getFullYear();
     const month = String(today.getMonth() + 1).padStart(2, '0');
-    const day = String(today.getDate()).padStart(2, '0'); 
+    const day = String(today.getDate()).padStart(2, '0');
     const hours = String(today.getHours()).padStart(2, '0');
     const minutes = String(today.getMinutes()).padStart(2, '0');
     return `${year}-${month}-${day}T${hours}:${minutes}`;
@@ -188,14 +188,14 @@ export const BookingPage = () => {
                 {...register('pickupDateTime', { required: true })}
                 className="w-full p-2 border border-gray-300 rounded"
                 type="datetime-local"
-                min={today} 
+                min={today}
               />
               {/* Dropoff Date/Time */}
               <input
                 {...register('dropoffDateTime', { required: true })}
                 className="w-full p-2 border border-gray-300 rounded"
                 type="datetime-local"
-                min={today} 
+                min={today}
               />
             </div>
             {errors.pickupDateTime && <p className="text-red-500">Pickup date and time are required</p>}
@@ -239,15 +239,15 @@ export const BookingPage = () => {
           </motion.button>
         </form>
 
-         {/* Display Total Cost and Pickup/Dropoff Details */}
-         {totalCost > 0 && (
+        {/* Display Total Cost and Pickup/Dropoff Details */}
+        {totalCost > 0 && (
           <motion.div
             className="mt-4 p-4 bg-green-100 border border-green-400 rounded-lg"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8 }}
           >
-            <h2 className="text-lg font-semibold">Total Cost: ₹{totalCost}</h2>
+            <h2 className="text-lg font-semibold">Total Cost: ₹{totalCost.toFixed(2)}</h2>
             <p className="mt-2"><strong>Pickup Location:</strong> {pickupDetails.location} at {pickupDetails.dateTime}</p>
             <p className="mt-2"><strong>Dropoff Location:</strong> {dropoffDetails.location} at {dropoffDetails.dateTime}</p>
 
