@@ -11,7 +11,7 @@ export const userLogin = async (data) => {
         return response?.data;
     } catch (error) {
         console.log(error);
-        toast.error('Login failed');
+        toast.error(error.response?.data?.message);
     }
 };
 
@@ -20,7 +20,7 @@ export const userRegister = async (formData) => {
         const response = await axiosInstance({
             url: '/user/create',
             method: 'POST',
-            data: formData, 
+            data: formData,
             headers: {
                 'Content-Type': 'multipart/form-data',
             },
@@ -28,6 +28,7 @@ export const userRegister = async (formData) => {
         return response?.data;
     } catch (error) {
         console.error(error);
+        toast.error(error.response?.data?.message);
     }
 };
 

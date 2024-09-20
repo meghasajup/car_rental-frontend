@@ -27,23 +27,26 @@ export const RegisterPage = () => {
       formData.append('phone', getValues('phone'));
       formData.append('password', getValues('password'));
       formData.append('confirmPassword', getValues('confirmPassword'));
-  
+
       // Append the profile image (file)
       const profileImage = getValues('profileImage')[0];
       if (profileImage) {
         formData.append('profileImage', profileImage);
       }
-  
+
       const response = await userRegister(formData);
-  
-      toast.success('Registration Success');
-      navigate('/login');
+      if (response) {
+        toast.success('Registration Success');
+        navigate('/login');
+      }
+
+
     } catch (error) {
-      toast.error('Registration Failed');
+      toast.error(error.response?.data?.message);
       console.log(error);
     }
   };
-  
+
 
   return (
     <div className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden">
@@ -78,7 +81,7 @@ export const RegisterPage = () => {
 
         <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {/* <div className="form-control">
+            {/* <div className="form-control">
               <label className="label">
                 <span className="label-text text-gray font-semibold">User Name</span>
               </label>
