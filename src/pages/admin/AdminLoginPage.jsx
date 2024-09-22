@@ -27,8 +27,7 @@ export const AdminLoginPage = () => {
         navigate('/admin/admin-dashboard');
       }
     } catch (error) {
-      toast.error(error.response.data.message ||  'Invalid Credentials');
-
+      toast.error(error.response?.data?.message || 'Invalid Credentials');
       console.log(error);
     }
   };

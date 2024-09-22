@@ -44,7 +44,7 @@ export const CarDetails = () => {
             fetchCarReviews(); 
         } catch (error) {
             console.log(error);
-            toast.error('Failed to submit review');
+            toast.error("Review must be at least 15 characters long");
         }
     };
 
