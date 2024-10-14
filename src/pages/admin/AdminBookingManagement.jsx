@@ -152,12 +152,12 @@ export const AdminBookingManagement = () => {
                 <td className="px-4 py-2 border">{booking.pickupLocation}</td>
                 <td className="px-4 py-2 border">{booking.dropoffLocation}</td>
                 <td className="px-4 py-2 border">
-                  <button
+                  {/* <button
                     onClick={() => startEdit(booking)}
                     className="text-green-500 hover:text-green-700 mr-6"
                   >
                     <FaEdit size={20} />
-                  </button>
+                  </button> */}
                   <button
                     onClick={() => deleteBooking(booking._id)}
                     className="text-red-500 hover:text-red-700"
