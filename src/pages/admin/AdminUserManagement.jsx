@@ -131,7 +131,7 @@ export const AdminUserManagement = () => {
                 >
                     <h3 className="text-lg sm:text-xl font-semibold mb-4 text-gray-800">Users List</h3>
                     <ul className="grid grid-cols-1 gap-4">
-                        {users.map((user) => (
+                        {users.slice().reverse().map((user) => ( // Reverse the order of the users here
                             <motion.li
                                 key={user._id}
                                 className="flex justify-between items-center p-4 bg-white shadow rounded-lg hover:bg-gray-50"
@@ -168,7 +168,6 @@ export const AdminUserManagement = () => {
                             </motion.li>
                         ))}
                     </ul>
-
                 </motion.div>
             </div>
         </div>

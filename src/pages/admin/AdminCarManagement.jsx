@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react"; // Import useRef
 import { axiosInstance } from "../../config/axiosInstance";
 import { useNavigate } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
@@ -23,6 +23,7 @@ export const AdminCarManagement = () => {
   });
 
   const navigate = useNavigate();
+  const carRefs = useRef({}); // Create a ref object to store car refs
 
   // Fetch all cars
   useEffect(() => {
@@ -32,10 +33,10 @@ export const AdminCarManagement = () => {
           url: "/admin/cars",
           method: 'GET',
           headers: {
-              "Access-Control-Allow-Origin": "*",
-              Authorization: `Bearer ${Cookies.get('loginToken')}` ,
-            }
-      });
+            "Access-Control-Allow-Origin": "*",
+            Authorization: `Bearer ${Cookies.get('loginToken')}`,
+          }
+        });
         setCars(data.data);
       } catch (error) {
         toast.error("Error fetching cars");
@@ -67,6 +68,13 @@ export const AdminCarManagement = () => {
       registrationNumber: car.registrationNumber,
       availability: car.availability,
     });
+
+    // Scroll to the car item immediately after setting the edit state
+    setTimeout(() => {
+      if (carRefs.current[car._id]) {
+        carRefs.current[car._id].scrollIntoView({ behavior: "smooth", block: "center" });
+      }
+    }, 100); // Adjust the delay as needed
   };
 
   // Handle Update Car
@@ -110,9 +118,9 @@ export const AdminCarManagement = () => {
       </button>
 
       <div className="car-list">
-        {/* List of Cars */}
-        {cars.map((car) => (
-          <div key={car._id} className="car-item">
+        {/* List of Cars in Reverse Order */}
+        {cars.slice().reverse().map((car) => (
+          <div key={car._id} className="car-item" ref={el => carRefs.current[car._id] = el}>
             {/* Car Image */}
             <img src={car.image} alt={`${car.brand} ${car.model}`} className="car-image" />
             <h2>{car.brand} {car.model}</h2>
