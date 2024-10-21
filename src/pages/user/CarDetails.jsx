@@ -3,16 +3,12 @@ import { Link, useParams } from 'react-router-dom';
 import { axiosInstance } from '../../config/axiosInstance';
 import { FaGasPump, FaPalette, FaCogs, FaCar, FaTachometerAlt, FaMapMarkerAlt } from 'react-icons/fa';
 import { motion } from 'framer-motion';
-import { useForm } from 'react-hook-form';
-import { toast } from 'react-hot-toast';
-import ReactStars from 'react-rating-stars-component'; 
+import ReactStars from 'react-rating-stars-component';
 
 export const CarDetails = () => {
     const [carDetails, setCarDetails] = useState({});
     const [reviews, setReviews] = useState([]);
     const { id } = useParams();
-    const { register, handleSubmit, reset } = useForm();
-    const [rating, setRating] = useState(0); 
 
     const fetchCarDetails = async () => {
         try {
@@ -32,40 +28,15 @@ export const CarDetails = () => {
         }
     };
 
-    const onSubmitReview = async (data) => {
-        try {
-            await axiosInstance.post('/review/createReviews', {
-                carId: id,
-                rating, 
-                ...data,
-            });
-            toast.success('Review submitted successfully!');
-            reset();
-            fetchCarReviews(); 
-        } catch (error) {
-            console.log(error);
-            toast.error("Review must be at least 15 characters long");
-        }
-    };
-
     useEffect(() => {
         fetchCarDetails();
         fetchCarReviews();
     }, [id]);
 
-    const starConfig = {
-        size: 30,
-        count: 5,
-        isHalf: false,
-        value: rating,
-        onChange: (newRating) => setRating(newRating),
-        activeColor: "#ffd700",
-    };
-
     return (
         <div className="p-6 max-w-7xl mx-auto">
             <div className="flex flex-col lg:flex-row gap-8">
-                <motion.div
+            <motion.div
                     className="lg:w-1/2 mb-6"
                     initial={{ opacity: 0, x: -50 }}
                     animate={{ opacity: 1, x: 0 }}
@@ -143,32 +114,9 @@ export const CarDetails = () => {
                 </motion.div>
             </div>
 
+            {/* Display reviews section only */}
             <div className="w-full mt-12">
                 <h2 className="text-2xl font-semibold mb-4">Reviews</h2>
-                <form onSubmit={handleSubmit(onSubmitReview)} className="mb-8">
-                    <div className="flex flex-col mb-4">
-                        <label className="text-lg mb-2">Rating</label>
-                        <ReactStars {...starConfig} />
-                    </div>
-
-                    <div className="flex flex-col mb-4">
-                        <label className="text-lg mb-2">Review</label>
-                        <textarea
-                            className="border p-2 rounded"
-                            rows="4"
-                            {...register('reviewText', { required: true })} 
-                            placeholder="Write your review"
-                        ></textarea>
-                    </div>
-
-                    <button
-                        type="submit"
-                        className="px-6 py-3 bg-blue-500 text-white rounded-lg shadow-lg hover:bg-blue-700 transition duration-300"
-                    >
-                        Submit Review
-                    </button>
-                </form>
-
                 <div className="flex flex-col space-y-6">
                     {reviews.length > 0 ? (
                         reviews.map((review) => (
