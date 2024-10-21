@@ -5,46 +5,19 @@ import {
   CardBody,
   CardFooter,
   Typography,
-  Button,
   Tooltip,
 } from "@material-tailwind/react";
 import { Link } from "react-router-dom";
 import { axiosInstance } from '../../config/axiosInstance';
+import { motion } from 'framer-motion';
 
-export function CarCard({ car, userId }) {
+export function CarCard({ car, userId, onRemove }) {
   const [isLiked, setIsLiked] = useState(car.isLiked || false);
 
-  // Function to handle add/remove to wishlist
-  const toggleWishlist = async () => {
-    try {
-      setIsLiked((prevLiked) => !prevLiked); // Optimistically update the state
-
-      if (isLiked) {
-        const response = await removeFromWishlist(car._id, userId);
-        if (!response.success) {
-          setIsLiked(true);
-          console.error(response.message);
-        }
-      } else {
-        const response = await addToWishlist(car._id, userId);
-        if (!response.success) {
-          setIsLiked(false);
-          console.error(response.message);
-        }
-      }
-    } catch (error) {
-      console.error("Error toggling wishlist:", error);
-      setIsLiked((prevLiked) => !prevLiked);
-    }
-  };
-
-  // Add car to the wishlist (using push)
+  // Add car to the wishlist
   const addToWishlist = async (carId, userId) => {
     try {
-      const response = await axiosInstance.post('/wishlist/add', {
-        carId,
-        userId,
-      });
+      const response = await axiosInstance.post('/wishlist/add', { carId, userId });
       return response.data;
     } catch (error) {
       console.error("Error adding to wishlist:", error);
@@ -52,8 +25,8 @@ export function CarCard({ car, userId }) {
     }
   };
 
-  // Remove car from the wishlist (using pull)
-  const removeFromWishlist = async (carId, userId) => {
+  // Remove car from the wishlist
+  const removeFromWishlist = async (carId) => {
     try {
       const response = await axiosInstance.delete(`/wishlist/remove/${carId}`);
       return response.data;
@@ -62,19 +35,42 @@ export function CarCard({ car, userId }) {
       return { success: false, message: error.response?.data?.message || "Error removing from wishlist" };
     }
   };
-  
+
+  // Toggle wishlist state on heart icon click
+  const toggleWishlist = async () => {
+    try {
+      if (isLiked) {
+        const response = await removeFromWishlist(car._id);
+        if (response.success) {
+          setIsLiked(false); // Remove red color from heart
+        }
+      } else {
+        const response = await addToWishlist(car._id, userId);
+        if (response.success) {
+          setIsLiked(true); // Add red color to heart
+        }
+      }
+    } catch (error) {
+      console.error("Error toggling wishlist:", error);
+    }
+  };
+
+  // Handle wishlist removal via button click
+  const handleRemoveFromWishlist = async () => {
+    const response = await removeFromWishlist(car._id);
+    if (response.success) {
+      onRemove(); // Update parent state through prop
+      setIsLiked(false); // Ensure the local state is also updated
+    }
+  };
 
   return (
     <Card className="w-full max-w-[26rem] shadow-2xl p-4 bg-transparent transform transition-all duration-300 hover:shadow-3xl hover:scale-105">
       <CardHeader floated={false} color="blue-gray" className="relative">
-        <img
-          src={car.image}
-          alt="car image"
-          className="w-full h-64 object-cover"
-        />
-        <div className="to-bg-black-10 absolute inset-0 h-full w-full bg-gradient-to-tr from-transparent via-transparent to-black/60 " />
+        <img src={car.image} alt="car" className="w-full h-64 object-cover" />
+        <div className="absolute inset-0 h-full w-full bg-gradient-to-tr from-transparent via-transparent to-black/60" />
 
-        {/* Wishlist icon in the top-right corner */}
+        {/* Wishlist Icon */}
         <div className="absolute top-3 right-3 cursor-pointer" onClick={toggleWishlist}>
           {isLiked ? (
             <svg
@@ -111,23 +107,16 @@ export function CarCard({ car, userId }) {
       </CardHeader>
 
       <CardBody>
-        <div className="mb-3 flex items-center justify-between">
-          <Typography variant="h5" color="blue-gray" className="font-medium text-gray-500">
-            {car.model || 'Model'}
-          </Typography>
-        </div>
-
+        <Typography variant="h5" color="blue-gray" className="font-medium text-gray-500">
+          {car.model || 'Model'}
+        </Typography>
         <Typography color="gray" className="text-gray-500">
-          Price Per Day: ₹{car.pricePerDay || 'Price per day'}
+          Price Per Day: ₹{car.pricePerDay}
         </Typography>
         <Typography color="gray" className="text-gray-500">
           {car.location || 'Not available'}
         </Typography>
-
-        <Typography
-          color={car.availability ? "green" : "red"}
-          className="text-lg font-semibold mt-3"
-        >
+        <Typography color={car.availability ? "green" : "red"} className="text-lg font-semibold mt-3">
           {car.availability ? "Available" : "Not Available"}
         </Typography>
 
@@ -171,12 +160,28 @@ export function CarCard({ car, userId }) {
         </div>
       </CardBody>
 
-      <CardFooter className="pt-3">
-        <Link to={`/user/car-details/${car._id}`}>
-          <Button size="lg" fullWidth={true} className="from-indigo-700 to-purple-700 bg-gradient-to-r text-white p-4">
+      <CardFooter className="flex items-center gap-4">
+        <Link to={`/user/car-details/${car._id}`} className="w-full">
+          <motion.button
+            className="w-full px-4 py-3 font-semibold bg-gradient-to-r from-[#8A3FFC] via-[#5821CE] to-[#3B1AAB] text-white rounded-lg shadow-lg hover:bg-cyan-500 transition duration-300 ease-in-out"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          >
             More Details
-          </Button>
+          </motion.button>
         </Link>
+
+        <motion.button
+          className="w-full px-4 py-3 font-semibold bg-gradient-to-r from-red-500 to-red-700 text-white rounded-lg shadow-lg hover:bg-red-800 transition duration-300"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          onClick={handleRemoveFromWishlist}
+        >
+          Remove Wishlist
+        </motion.button>
       </CardFooter>
     </Card>
   );
