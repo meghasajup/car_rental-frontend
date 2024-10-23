@@ -48,8 +48,8 @@ export const PaymentSuccess = () => {
         <h1 className="text-2xl font-bold text-gray-900 mb-4">Payment Successful!</h1>
         <p className="text-gray-600 mb-6">Thank you for your purchase. Your payment has been processed successfully.</p>
         
-        <Link to="/user/home" className="inline-block px-6 py-3 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition duration-300">
-          Go to Homepage
+        <Link to="/user/dashboard" className="inline-block px-6 py-3 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition duration-300">
+          Go to Bookings
         </Link>
       </motion.div>
     </div>

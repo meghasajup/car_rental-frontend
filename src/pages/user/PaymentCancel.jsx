@@ -59,8 +59,8 @@ export const PaymentCancel = () => {
         <h1 className="text-2xl font-bold text-gray-900 mb-4">Payment Cancelled</h1>
         <p className="text-gray-600 mb-6">Your payment was not completed. Please try again or contact support if you need help.</p>
 
-        <Link to="/user/home" className="inline-block px-6 py-3 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition duration-300">
-          Return to Homepage
+        <Link to="/user/dashboard" className="inline-block px-6 py-3 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition duration-300">
+          Go to Bookings
         </Link>
       </motion.div>
     </div>
