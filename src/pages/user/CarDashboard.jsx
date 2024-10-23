@@ -100,8 +100,8 @@ export const CarDashboard = () => {
         }
     };
 
-    // Sort bookings by pickupDateTime in descending order
-    const sortedBookings = [...bookings].sort((a, b) => new Date(b.pickupDateTime) - new Date(a.pickupDateTime));
+    // Sort bookings by pickupDateTime in ascending order (oldest first)
+    const sortedBookings = [...bookings].sort((a, b) => new Date(a.pickupDateTime) - new Date(b.pickupDateTime));
 
     if (loading) {
         return (
@@ -228,57 +228,7 @@ export const CarDashboard = () => {
                                     <div className="mt-4 bg-gray-100 p-3 rounded-lg">
                                         <p className="font-semibold">Latest Review:</p>
                                         <p>{latestReview.reviewText}</p>
-                                        <div className="flex items-center">
-                                            <Rating
-                                                count={5}
-                                                size={20}
-                                                value={latestReview.rating}
-                                                edit={false} // Disable editing for display
-                                            />
-                                            <p className="ml-2 text-gray-500 text-sm">
-                                                {new Date(latestReview.createdAt).toLocaleDateString()}
-                                            </p>
-                                        </div>
-                                    </div>
-                                )}
-
-                                {/* Show/Hide All Reviews */}
-                                {sortedReviews.length > 1 && (
-                                    <div className="mt-2">
-                                        <button
-                                            className="text-blue-500 underline"
-                                            onClick={() =>
-                                                setShowAllReviews((prev) => ({
-                                                    ...prev,
-                                                    [booking.car._id]: !prev[booking.car._id],
-                                                }))
-                                            }
-                                        >
-                                            {showAllReviews[booking.car._id] ? 'Hide All Reviews' : 'Show All Reviews'}
-                                        </button>
-                                    </div>
-                                )}
-
-                                {/* Display All Reviews */}
-                                {/* Display All Reviews */}
-                                {showAllReviews[booking.car._id] && (
-                                    <div className="mt-4 space-y-2">
-                                        {sortedReviews.map((review, i) => (
-                                            <div key={i} className="p-3 bg-gray-50 rounded-lg shadow">
-                                                <p>{review.reviewText}</p>
-                                                <div className="flex items-center">
-                                                    <Rating
-                                                        count={5}
-                                                        size={20}
-                                                        value={review.rating}
-                                                        edit={false} // Disable editing for display
-                                                    />
-                                                    <p className="ml-2 text-gray-500 text-sm">
-                                                        {new Date(review.createdAt).toLocaleDateString()}
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        ))}
+                                        <Rating count={5} size={20} value={latestReview.rating} edit={false} />
                                     </div>
                                 )}
                             </motion.div>
