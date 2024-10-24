@@ -1,6 +1,6 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { axiosInstance } from '../../config/axiosInstance'; 
+import { axiosInstance } from '../../config/axiosInstance';
 import { toast } from 'react-hot-toast';
 
 export const CreateCar = () => {
@@ -13,6 +13,7 @@ export const CreateCar = () => {
 
   const onSubmit = async (data) => {
     try {
+      console.log("Form Data", data);
       const formData = new FormData();
       formData.append('brand', data.brand);
       formData.append('model', data.model);
@@ -29,20 +30,19 @@ export const CreateCar = () => {
       formData.append('location', data.location);
       formData.append('image', data.image[0]); // Assuming you're uploading one image
 
-      const response = await axiosInstance.post('/car/create', formData, {
+      const response = await axiosInstance.post('/admin/carCreate', formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
+      console.log(response);
 
-      if (response.data.status) {
+      if (response) {
         toast.success('Car created successfully!');
         reset(); // Reset form after successful submission
-      } else {
-        toast.error(response.data.error || 'Failed to create car');
-      }
+      } 
     } catch (error) {
       toast.error('Error creating car. Please try again.');
       console.log(error);
-      
+
     }
   };
 
