@@ -43,41 +43,40 @@ export const CarDashboard = () => {
     }, []);
 
     const handleReviewSubmit = async (carId) => {
-        try {
-            // Check if a review already exists for the car
-            const existingReviews = reviews[carId] || [];
-            if (existingReviews.length > 0) {
-                toast.error("You can only submit one review per car.");
-                return;
-            }
-
-            const { reviewText, rating } = reviewData[carId] || {};
-            if (!reviewText || !rating) {
-                toast.error("Please provide both rating and review text");
-                return;
-            }
-
-            // Submit the new review
-            await axiosInstance.post('/review/createReviews', {
-                carId,
-                rating,
-                reviewText,
-            });
-
-            // Update the reviews state to include the new review
-            const newReview = { car: carId, rating, reviewText, createdAt: new Date().toISOString() };
-            setReviews((prev) => ({
-                ...prev,
-                [carId]: [newReview, ...(prev[carId] || [])], // Add new review at the top
-            }));
-
-            toast.success("Review submitted successfully!");
-            setReviewData((prev) => ({ ...prev, [carId]: { reviewText: '', rating: 0 } }));
-            setShowAllReviews((prev) => ({ ...prev, [carId]: false })); // Reset to show only the latest review
-        } catch (error) {
-            toast.error('Error submitting review');
+    try {
+        if (reviews[carId] && reviews[carId].some(review => review.user === "currentUserId")) {
+            toast.error("You've already submitted a review for this car.");
+            return;
         }
-    };
+
+        const { reviewText, rating } = reviewData[carId] || {};
+        if (!reviewText || !rating) {
+            toast.error("Please provide both rating and review text");
+            return;
+        }
+
+        // Submit the new review
+        await axiosInstance.post('/review/createReviews', {
+            carId,
+            rating,
+            reviewText,
+        });
+
+        // Update the reviews state to include the new review
+        const newReview = { car: carId, rating, reviewText, createdAt: new Date().toISOString(), user: "currentUserId" };
+        setReviews((prev) => ({
+            ...prev,
+            [carId]: [newReview, ...(prev[carId] || [])], // Add new review at the top
+        }));
+
+        toast.success("Review submitted successfully!");
+        setReviewData((prev) => ({ ...prev, [carId]: { reviewText: '', rating: 0 } }));
+        setShowAllReviews((prev) => ({ ...prev, [carId]: false })); // Reset to show only the latest review
+    } catch (error) {
+        toast.error('Error submitting review');
+    }
+};
+
 
     const handleRatingChange = (newRating, carId) => {
         setReviewData((prev) => ({
@@ -166,14 +165,12 @@ export const CarDashboard = () => {
                                             <h3 className="text-xl font-semibold">{booking.car.brand} {booking.car.model}</h3>
                                             <p className="text-gray-600">Category: {booking.car.category}</p>
                                             <p className="text-gray-600">Price/Day: ₹{booking.car.pricePerDay}</p>
-
                                             <p className="text-gray-600">
                                                 <strong>Pickup:</strong> {new Date(booking.pickupDateTime).toLocaleString()}
                                             </p>
                                             <p className="text-gray-600">
                                                 <strong>Return:</strong> {new Date(booking.dropoffDateTime).toLocaleString()}
                                             </p>
-
                                             <p className="text-gray-600 font-bold mt-2">
                                                 <strong>Status: </strong>
                                                 <span
@@ -202,58 +199,80 @@ export const CarDashboard = () => {
                                         </div>
                                     </div>
 
+                                    {/* Review Section */}
                                     <div className="mt-4">
                                         <h4 className="text-lg font-bold">Leave a Review</h4>
-                                        {sortedReviews.length > 0 ? (
-                                            <p className="text-red-400">Review already submitted</p>
-                                        ) : (
-                                            <>
-                                                <Rating
-                                                    count={5}
-                                                    size={24}
-                                                    value={reviewData[booking.car._id]?.rating || 0}
-                                                    onChange={(newRating) => handleRatingChange(newRating, booking.car._id)}
-                                                />
-                                                <textarea
-                                                    className="w-full p-2 mt-2 border rounded"
-                                                    rows={3}
-                                                    placeholder="Write your review here..."
-                                                    value={reviewData[booking.car._id]?.reviewText || ''}
-                                                    onChange={(e) => handleReviewTextChange(e, booking.car._id)}
-                                                ></textarea>
-                                                <button
-                                                    className="mt-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-700 transition duration-300"
-                                                    onClick={() => handleReviewSubmit(booking.car._id)}
-                                                >
-                                                    Submit Review
-                                                </button>
-                                            </>
-                                        )}
+                                        <Rating
+                                            count={5}
+                                            size={24}
+                                            value={reviewData[booking.car._id]?.rating || 0}
+                                            onChange={(newRating) => handleRatingChange(newRating, booking.car._id)}
+                                        />
+                                        <textarea
+                                            className="w-full p-2 mt-2 border rounded"
+                                            rows={3}
+                                            placeholder="Write your review here..."
+                                            value={reviewData[booking.car._id]?.reviewText || ''}
+                                            onChange={(e) => handleReviewTextChange(e, booking.car._id)}
+                                        ></textarea>
+                                        <button
+                                            className="mt-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-700 transition duration-300"
+                                            onClick={() => handleReviewSubmit(booking.car._id)}
+                                        >
+                                            Submit Review
+                                        </button>
                                     </div>
 
-                                    <div className="mt-4">
-                                        <h4 className="text-lg font-bold">Reviews</h4>
-                                        {sortedReviews.length === 0 ? (
-                                            <p>No reviews yet.</p>
-                                        ) : (
-                                            <div>
-                                                {sortedReviews.map((review, index) => (
-                                                    <div key={index} className="mb-2 border-b pb-2">
-                                                        <Rating
-                                                            count={5}
-                                                            value={review.rating}
-                                                            edit={false}
-                                                            size={20}
-                                                        />
-                                                        <p>{review.reviewText}</p>
-                                                        <p className="text-sm text-gray-500">
-                                                            {new Date(review.createdAt).toLocaleString()}
-                                                        </p>
-                                                    </div>
-                                                ))}
-                                            </div>
-                                        )}
-                                    </div>
+                                    {latestReview && (
+                                        <div className="mt-4 bg-gray-100 p-3 rounded-lg">
+                                            <p className="font-bold">Latest Review:</p>
+                                            <p className="italic">{latestReview.reviewText}</p>
+                                            <Rating
+                                                count={5}
+                                                size={24}
+                                                value={latestReview.rating}
+                                                edit={false}
+                                            />
+                                            <p className="text-sm text-gray-600">
+                                                Reviewed on {new Date(latestReview.createdAt).toLocaleDateString()}
+                                            </p>
+                                        </div>
+                                    )}
+
+                                    {sortedReviews.length > 1 && (
+                                        <div className="mt-2">
+                                            <button
+                                                className="text-blue-500 hover:underline"
+                                                onClick={() =>
+                                                    setShowAllReviews((prev) => ({
+                                                        ...prev,
+                                                        [booking.car._id]: !prev[booking.car._id],
+                                                    }))
+                                                }
+                                            >
+                                                {showAllReviews[booking.car._id] ? 'Hide Reviews' : 'Show All Reviews'}
+                                            </button>
+
+                                            {showAllReviews[booking.car._id] && (
+                                                <div className="mt-2 space-y-2">
+                                                    {sortedReviews.slice(1).map((review, i) => (
+                                                        <div key={i} className="bg-gray-100 p-3 rounded-lg">
+                                                            <p className="italic">{review.reviewText}</p>
+                                                            <Rating
+                                                                count={5}
+                                                                size={24}
+                                                                value={review.rating}
+                                                                edit={false}
+                                                            />
+                                                            <p className="text-sm text-gray-600">
+                                                                Reviewed on {new Date(review.createdAt).toLocaleDateString()}
+                                                            </p>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            )}
+                                        </div>
+                                    )}
                                 </motion.div>
                             );
                         })}
