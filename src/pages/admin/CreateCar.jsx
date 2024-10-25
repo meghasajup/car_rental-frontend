@@ -1,5 +1,6 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate for navigation
 import { axiosInstance } from '../../config/axiosInstance';
 import { toast } from 'react-hot-toast';
 
@@ -10,6 +11,8 @@ export const CreateCar = () => {
     formState: { errors },
     reset,
   } = useForm();
+  
+  const navigate = useNavigate(); // Initialize useNavigate
 
   const onSubmit = async (data) => {
     try {
@@ -38,11 +41,11 @@ export const CreateCar = () => {
       if (response) {
         toast.success('Car created successfully!');
         reset(); // Reset form after successful submission
+        navigate('/admin/car-management'); // Navigate to car management page
       } 
     } catch (error) {
       toast.error('Error creating car. Please try again.');
       console.log(error);
-
     }
   };
 
