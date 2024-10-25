@@ -116,30 +116,31 @@ export const CarDetails = () => {
 
             {/* Display reviews section only */}
             <div className="w-full mt-12">
-                <h2 className="text-2xl font-semibold mb-4">Reviews</h2>
-                <div className="flex flex-col space-y-6">
-                    {reviews.length > 0 ? (
-                        reviews.map((review) => (
-                            <div key={review._id} className="p-4 border rounded-lg shadow-md">
-                                <p className="font-semibold">{review.user.name}</p>
-                                <ReactStars
-                                    count={5}
-                                    size={24}
-                                    value={review.rating}
-                                    edit={false}
-                                    activeColor="#ffd700"
-                                />
-                                <p className="mt-2">{review.reviewText}</p>
-                                <p className="text-gray-500 text-sm">
-                                    Reviewed on {new Date(review.createdAt).toLocaleDateString()}
-                                </p>
-                            </div>
-                        ))
-                    ) : (
-                        <p>No reviews yet.</p>
-                    )}
+    <h2 className="text-2xl font-semibold mb-4">Reviews</h2>
+    <div className="flex flex-col space-y-6">
+        {reviews.length > 0 ? (
+            // Reverse the reviews array to show newest first
+            [...reviews].reverse().map((review) => (
+                <div key={review._id} className="p-4 border rounded-lg shadow-md">
+                    <p className="font-semibold">{review.user.name}</p>
+                    <ReactStars
+                        count={5}
+                        size={24}
+                        value={review.rating}
+                        edit={false}
+                        activeColor="#ffd700"
+                    />
+                    <p className="mt-2">{review.reviewText}</p>
+                    <p className="text-gray-500 text-sm">
+                        Reviewed on {new Date(review.createdAt).toLocaleDateString()}
+                    </p>
                 </div>
-            </div>
+            ))
+        ) : (
+            <p>No reviews yet.</p>
+        )}
+    </div>
+</div>
         </div>
     );
 };
