@@ -46,13 +46,13 @@ export const CarCard = ({ car, userId, onRemove }) => {
         const response = await removeFromWishlist(car._id);
         if (response.success) {
           setIsLiked(false); // Remove red color from heart
-          localStorage.setItem(`heart-${car._id}`, 'false'); // Update local storage
+          localStorage.setItem(`heart-${car._id}`, 'false'); 
         }
       } else {
         const response = await addToWishlist(car._id, userId);
         if (response.success) {
           setIsLiked(true); // Add red color to heart
-          localStorage.setItem(`heart-${car._id}`, 'true'); // Update local storage
+          localStorage.setItem(`heart-${car._id}`, 'true'); 
         }
       }
     } catch (error) {
@@ -66,7 +66,7 @@ export const CarCard = ({ car, userId, onRemove }) => {
     if (response.success) {
       onRemove(); // Update parent state through prop
       setIsLiked(false); // Ensure the local state is also updated
-      localStorage.setItem(`heart-${car._id}`, 'false'); // Update local storage
+      localStorage.setItem(`heart-${car._id}`, 'false'); 
     }
   };
 
