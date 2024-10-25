@@ -44,6 +44,13 @@ export const CarDashboard = () => {
 
     const handleReviewSubmit = async (carId) => {
         try {
+            // Check if a review already exists for the car
+            const existingReviews = reviews[carId] || [];
+            if (existingReviews.length > 0) {
+                toast.error("You can only submit one review per car.");
+                return;
+            }
+
             const { reviewText, rating } = reviewData[carId] || {};
             if (!reviewText || !rating) {
                 toast.error("Please provide both rating and review text");
@@ -133,7 +140,6 @@ export const CarDashboard = () => {
                         .slice()
                         .reverse() // Reverse to show the latest booking first
                         .map((booking, index) => {
-                            // Sort reviews for each car in descending order based on createdAt
                             const sortedReviews = [...(reviews[booking.car._id] || [])].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
                             const latestReview = sortedReviews[0]; // Get the latest review
 
@@ -161,7 +167,6 @@ export const CarDashboard = () => {
                                             <p className="text-gray-600">Category: {booking.car.category}</p>
                                             <p className="text-gray-600">Price/Day: ₹{booking.car.pricePerDay}</p>
 
-                                            {/* Booked Date and Time */}
                                             <p className="text-gray-600">
                                                 <strong>Pickup:</strong> {new Date(booking.pickupDateTime).toLocaleString()}
                                             </p>
@@ -169,7 +174,6 @@ export const CarDashboard = () => {
                                                 <strong>Return:</strong> {new Date(booking.dropoffDateTime).toLocaleString()}
                                             </p>
 
-                                            {/* Booking Status */}
                                             <p className="text-gray-600 font-bold mt-2">
                                                 <strong>Status: </strong>
                                                 <span
@@ -180,14 +184,13 @@ export const CarDashboard = () => {
                                                                 ? 'text-orange-300'
                                                                 : booking.bookingStatus === 'confirmed'
                                                                     ? 'text-green-500'
-                                                                    : 'text-gray-600' // default color if status is unknown
+                                                                    : 'text-gray-600'
                                                     }
                                                 >
                                                     {booking.bookingStatus ? booking.bookingStatus : 'Unknown'}
                                                 </span>
                                             </p>
 
-                                            {/* Cancel Booking Button */}
                                             {(booking.bookingStatus === 'pending' || booking.bookingStatus === 'confirmed') && (
                                                 <button
                                                     className="mt-2 px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-700 transition duration-300"
@@ -199,83 +202,58 @@ export const CarDashboard = () => {
                                         </div>
                                     </div>
 
-                                    {/* Review Section */}
                                     <div className="mt-4">
                                         <h4 className="text-lg font-bold">Leave a Review</h4>
-                                        <Rating
-                                            count={5}
-                                            size={24}
-                                            value={reviewData[booking.car._id]?.rating || 0}
-                                            onChange={(newRating) => handleRatingChange(newRating, booking.car._id)}
-                                        />
-                                        <textarea
-                                            className="w-full p-2 mt-2 border rounded"
-                                            rows={3}
-                                            placeholder="Write your review here..."
-                                            value={reviewData[booking.car._id]?.reviewText || ''}
-                                            onChange={(e) => handleReviewTextChange(e, booking.car._id)}
-                                        ></textarea>
-                                        <button
-                                            className="mt-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-700 transition duration-300"
-                                            onClick={() => handleReviewSubmit(booking.car._id)}
-                                        >
-                                            Submit Review
-                                        </button>
+                                        {sortedReviews.length > 0 ? (
+                                            <p className="text-red-400">Review already submitted</p>
+                                        ) : (
+                                            <>
+                                                <Rating
+                                                    count={5}
+                                                    size={24}
+                                                    value={reviewData[booking.car._id]?.rating || 0}
+                                                    onChange={(newRating) => handleRatingChange(newRating, booking.car._id)}
+                                                />
+                                                <textarea
+                                                    className="w-full p-2 mt-2 border rounded"
+                                                    rows={3}
+                                                    placeholder="Write your review here..."
+                                                    value={reviewData[booking.car._id]?.reviewText || ''}
+                                                    onChange={(e) => handleReviewTextChange(e, booking.car._id)}
+                                                ></textarea>
+                                                <button
+                                                    className="mt-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-700 transition duration-300"
+                                                    onClick={() => handleReviewSubmit(booking.car._id)}
+                                                >
+                                                    Submit Review
+                                                </button>
+                                            </>
+                                        )}
                                     </div>
 
-                                    {/* Latest Review Display */}
-                                    {latestReview && (
-                                        <div className="mt-4 bg-gray-100 p-3 rounded-lg">
-                                            <p className="font-bold">Latest Review:</p>
-                                            <p className="italic">{latestReview.reviewText}</p>
-                                            <Rating
-                                                count={5}
-                                                size={24}
-                                                value={latestReview.rating}
-                                                edit={false}
-                                            />
-                                            <p className="text-sm text-gray-600">
-                                                Reviewed on {new Date(latestReview.createdAt).toLocaleDateString()}
-                                            </p>
-                                        </div>
-                                    )}
-
-                                    {/* Toggle button to show all reviews */}
-                                    {sortedReviews.length > 1 && (
-                                        <div className="mt-2">
-                                            <button
-                                                className="text-blue-500 hover:underline"
-                                                onClick={() =>
-                                                    setShowAllReviews((prev) => ({
-                                                        ...prev,
-                                                        [booking.car._id]: !prev[booking.car._id],
-                                                    }))
-                                                }
-                                            >
-                                                {showAllReviews[booking.car._id] ? 'Hide' : 'Show All'} Reviews
-                                            </button>
-                                        </div>
-                                    )}
-
-                                    {/* All Reviews */}
-                                    {showAllReviews[booking.car._id] && (
-                                        <div className="mt-4">
-                                            {sortedReviews.map((review, idx) => (
-                                                <div key={idx} className="mb-4">
-                                                    <p className="italic">{review.reviewText}</p>
-                                                    <Rating
-                                                        count={5}
-                                                        size={24}
-                                                        value={review.rating}
-                                                        edit={false}
-                                                    />
-                                                    <p className="text-sm text-gray-600">
-                                                        Reviewed on {new Date(review.createdAt).toLocaleDateString()}
-                                                    </p>
-                                                </div>
-                                            ))}
-                                        </div>
-                                    )}
+                                    <div className="mt-4">
+                                        <h4 className="text-lg font-bold">Reviews</h4>
+                                        {sortedReviews.length === 0 ? (
+                                            <p>No reviews yet.</p>
+                                        ) : (
+                                            <div>
+                                                {sortedReviews.map((review, index) => (
+                                                    <div key={index} className="mb-2 border-b pb-2">
+                                                        <Rating
+                                                            count={5}
+                                                            value={review.rating}
+                                                            edit={false}
+                                                            size={20}
+                                                        />
+                                                        <p>{review.reviewText}</p>
+                                                        <p className="text-sm text-gray-500">
+                                                            {new Date(review.createdAt).toLocaleString()}
+                                                        </p>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        )}
+                                    </div>
                                 </motion.div>
                             );
                         })}
